@@ -373,7 +373,8 @@ def print_wcnf(kb):
 if __name__ == "__main__":
 	filename = sys.argv[1]
 	kb = KnowledgeBase(open(filename).read().split("\n"))
-	#print_gcnf(kb)
+	print("KnowledgeBase in CNF: ")
+	print_gcnf(kb)
 	#print_wcnf(kb)
 	print("KB atoms: " + str(kb.atoms))
 	print("KB formulas: " + str(kb.formulas))
