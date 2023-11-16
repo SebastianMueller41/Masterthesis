@@ -1,32 +1,9 @@
 """
 Copyright (c) <2023> <Andreas Niskanen, University of Helsinki>
-
-
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+...
 """
 
-import itertools, sys
+import itertools, os
 import lark
 
 grammar = """
@@ -370,12 +347,39 @@ def print_wcnf(kb):
 	for clause in hard:
 		print(str(top) + " " + " ".join(map(str, clause)) + " 0")
 
-if __name__ == "__main__":
-	filename = sys.argv[1]
-	kb = KnowledgeBase(open(filename).read().split("\n"))
-	print("KnowledgeBase in CNF: ")
-	print_gcnf(kb)
-	#print_wcnf(kb)
-	print("KB atoms: " + str(kb.atoms))
-	print("KB formulas: " + str(kb.formulas))
-	print("KB format: " + str(kb.format))
+def write_gcnf_to_file(kb, filename):
+    hard, soft = kb.to_group_cnf()
+    n_vars = next(kb.var_counter) - 1
+    n_clauses = len(hard) + len(soft)
+    n_groups = len(soft)
+
+    with open(filename, 'w') as file:
+        for atom in kb.atoms:
+            file.write("c " + atom + " = " + str(kb.atom_vars[atom]) + "\n")
+        for i, lit in enumerate(soft):
+            file.write("c F" + str(i+1) + " = " + str(lit) + "\n")
+        file.write("p gcnf " + str(n_vars) + " " + str(n_clauses) + " " + str(n_groups) + "\n")
+        for clause in hard:
+            file.write(" ".join(map(str, clause)) + " 0\n")
+        for i, lit in enumerate(soft):
+            file.write("{" + str(i+1) + "} " + str(lit) + " 0\n")
+
+def write_wcnf_to_file(kb, filename):
+    hard, soft = kb.to_group_cnf()
+    n_vars = next(kb.var_counter) - 1
+    n_clauses = len(hard) + len(soft)
+    top = len(soft) + 1
+
+    with open(filename, 'w') as file:
+        for atom in kb.atoms:
+            file.write("c " + atom + " = " + str(kb.atom_vars[atom]) + "\n")
+        for i, lit in enumerate(soft):
+            file.write("c F" + str(i+1) + " = " + str(lit) + "\n")
+        file.write("p wcnf " + str(n_vars) + " " + str(n_clauses) + " " + str(top) + "\n")
+        for i, lit in enumerate(soft):
+            file.write("1 " + str(lit) + " 0\n")
+        for clause in hard:
+            file.write(str(top) + " " + " ".join(map(str, clause)) + " 0\n")
+
+def normalize_path(path):
+    return path.replace(os.sep, '_').replace(':', '')
