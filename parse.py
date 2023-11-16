@@ -347,6 +347,21 @@ def print_wcnf(kb):
 	for clause in hard:
 		print(str(top) + " " + " ".join(map(str, clause)) + " 0")
 
+def convert_wcnf_to_cnf(wcnf_filename, cnf_filename):
+    with open(wcnf_filename, 'r') as wcnf_file, open(cnf_filename, 'w') as cnf_file:
+        for line in wcnf_file:
+            if line.startswith('p wcnf'):
+                # Change 'p wcnf' to 'p cnf'
+                parts = line.split()
+                parts[1] = 'cnf'
+                cnf_file.write(' '.join(parts) + '\n')
+            elif line[0].isdigit():
+                # Remove weights from the clauses
+                _, *clause = line.split()
+                cnf_file.write(' '.join(clause) + '\n')
+            else:
+                cnf_file.write(line)
+
 def write_gcnf_to_file(kb, filename):
     hard, soft = kb.to_group_cnf()
     n_vars = next(kb.var_counter) - 1

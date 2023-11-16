@@ -3,9 +3,12 @@ import subprocess
 import os
 import parse
 
+print("Current Working Directory:", os.getcwd())
+
 def run_open_wbo(wcnf_filename, output_filename):
-    open_wbo_path = "/path/to/open-wbo"  # Replace with the actual path to the open-wbo executable
-    subprocess.run([open_wbo_path, wcnf_filename, "-o", output_filename])
+    open_wbo_path = "open-wbo/open-wbo" 
+    print("TEST!")
+    subprocess.run([open_wbo_path, wcnf_filename, output_filename])
 
 def run_minisat(cnf_filename, output_filename):
     subprocess.run(['minisat', cnf_filename, output_filename])
@@ -25,26 +28,29 @@ if __name__ == "__main__":
         os.makedirs(output_directory)
 
     # Generate WCNF file
-    wcnf_filename = os.path.join(output_directory, normalized_path + '_output.wcnf')
+    wcnf_filename = os.path.join(output_directory, normalized_path + '.wcnf')
     kb = parse.KnowledgeBase(open(dataset_filepath).read().split("\n"))
     parse.write_wcnf_to_file(kb, wcnf_filename)
-    print(f"WCNF data saved to {wcnf_filename}")
+    print(f"WCNF data saved to {os.path.abspath(wcnf_filename)}")  # Print the absolute path
+
+    print("WCNF File Path:", wcnf_filename)
 
     if solver_type == "maxsat":
         # Run Open-WBO on the WCNF file
-        open_wbo_output_filename = os.path.join(output_directory, normalized_path + '_openwbo.result')
+        open_wbo_output_filename = os.path.join(output_directory, normalized_path + '_maxsat.result')
+        # open_wbo_output_filename = os.path.join(output_directory, normalized_path + '_openwbo.result')
         run_open_wbo(wcnf_filename, open_wbo_output_filename)
-        print(f"Open-WBO result saved to {open_wbo_output_filename}")
+        print(f"Open-WBO result saved to {os.path.abspath(open_wbo_output_filename)}")  # Print the absolute path
     elif solver_type == "minisat":
         # Convert WCNF to CNF for MiniSat
         cnf_filename = os.path.join(output_directory, normalized_path + '_converted.cnf')
         parse.convert_wcnf_to_cnf(wcnf_filename, cnf_filename)
-        print(f"CNF data converted and saved to {cnf_filename}")
+        print(f"CNF data converted and saved to {os.path.abspath(cnf_filename)}")  # Print the absolute path
 
         # Run MiniSat on the converted CNF file
         minisat_output_filename = cnf_filename.replace('.cnf', '_minisat.result')
         run_minisat(cnf_filename, minisat_output_filename)
-        print(f"MiniSat result saved to {minisat_output_filename}")
+        print(f"MiniSat result saved to {os.path.abspath(minisat_output_filename)}")  # Print the absolute path
     else:
         print("Invalid solver type. Please choose 'minisat' or 'maxsat'.")
         sys.exit(1)
