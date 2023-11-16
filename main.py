@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     if solver_type == "maxsat":
         # Run Open-WBO on the WCNF file
-        open_wbo_output_filename = os.path.join(output_directory, normalized_path + '_maxsat.result')
+        open_wbo_output_filename = os.path.join(output_directory, 'maxsat.result')
         # open_wbo_output_filename = os.path.join(output_directory, normalized_path + '_openwbo.result')
         run_open_wbo(wcnf_filename, open_wbo_output_filename)
         print(f"Open-WBO result saved to {os.path.abspath(open_wbo_output_filename)}")  # Print the absolute path
