@@ -3,7 +3,7 @@
 To get started, please make sure that you have installed lark.
 If not please install it as follows:
 
-'''bash
+```bash
 pip3 install lark
 
 **Solvers**
