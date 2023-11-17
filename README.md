@@ -8,9 +8,11 @@ pip3 install lark
 ```
 
 **Solvers**
+
 The code supports two different solvers.
 
 **Minisat Solver**
+
 To use the Minisat solver, ensure that the Minisat solver is installed. Follow the instructions based on your operating system:
 
 Linux (Debian/Ubuntu):
