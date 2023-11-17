@@ -29,7 +29,7 @@ git clone https://github.com/niklasso/minisat.git
 cd minisat
 make config prefix=/your/preferred/directory
 make install
-````
+```
 **MaxSAT Solver**
 To use the MaxSAT solver, you'll need to install 'gmp' (GNU Multiple Precision Arithmetic Library) first.
 
