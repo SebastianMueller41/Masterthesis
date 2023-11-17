@@ -7,11 +7,11 @@ If not please install it as follows:
 pip3 install lark
 ```
 
-**Solvers**<br>
+**Solvers**
 
 The code supports two different solvers.
 
-**Minisat Solver**<br>
+**Minisat Solver**
 
 To use the Minisat solver, ensure that the Minisat solver is installed. Follow the instructions based on your operating system:
 
@@ -31,6 +31,7 @@ make config prefix=/your/preferred/directory
 make install
 ```
 **MaxSAT Solver**
+
 To use the MaxSAT solver, you'll need to install 'gmp' (GNU Multiple Precision Arithmetic Library) first.
 
 Linux:
