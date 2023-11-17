@@ -40,6 +40,7 @@ For macOS:
 brew install gmp
 ```
 Windows:
+
 For Windows users, you can download precompiled binaries or source code from the GMP website (https://gmplib.org/). 
 Installing from source will require additional steps, including configuration and compilation.
 
