@@ -5,6 +5,7 @@ If not please install it as follows:
 
 ```bash
 pip3 install lark
+```
 
 **Solvers**
 The code supports two different solvers.
