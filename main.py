@@ -7,7 +7,6 @@ print("Current Working Directory:", os.getcwd())
 
 def run_open_wbo(wcnf_filename, output_filename):
     open_wbo_path = "open-wbo/open-wbo" 
-    print("TEST!")
     subprocess.run([open_wbo_path, wcnf_filename, output_filename])
 
 def run_minisat(cnf_filename, output_filename):
