@@ -47,15 +47,11 @@ Windows:
 For Windows users, you can download precompiled binaries or source code from the GMP website (https://gmplib.org/). 
 Installing from source will require additional steps, including configuration and compilation.
 
-Please note that you may need to adjust the CFLAGS in the Makefile of the Open-WBO solver if necessary.
+Please note that it might be necessary to change the CFLAG in the Makefile of the open-wbo solver.
 
-Running the Program
-After the installation, you can use the program with either the Minisat or MaxSAT solver as arguments.
+After the installation the program can be used with minisat or maxsat as arguments.
 
-Usage: python main.py <solver_type> <dataset_file>
-solver_type: minisat or maxsat
-
-Examples:
+To run the program with the minisat solver use the following code.
 
 ```bash
 python3 main.py minisat Dataset_a/sig3_5_15/srs_0.txt         
