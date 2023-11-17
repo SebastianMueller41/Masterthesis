@@ -7,11 +7,11 @@ If not please install it as follows:
 pip3 install lark
 ```
 
-**Solvers**
+**Solvers**<br>
 
 The code supports two different solvers.
 
-**Minisat Solver**
+**Minisat Solver**<br>
 
 To use the Minisat solver, ensure that the Minisat solver is installed. Follow the instructions based on your operating system:
 
