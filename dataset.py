@@ -27,6 +27,10 @@ class DataSet:
         if input_file_path:
             self.load_elements_from_file(input_file_path)
 
+    def is_empty(self):
+        # Assuming you have some structure storing elements (e.g., a list, dictionary, etc.)
+        return len(self.elements) == 0
+
     def load_elements_from_file(self, file_path):
         """
         Load elements from the specified file path into the dataset.
