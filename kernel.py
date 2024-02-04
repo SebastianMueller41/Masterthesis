@@ -55,14 +55,25 @@ def kernel_black_box(B_dataset, alpha, output_file_path="Temp/found_kernels"):
     Returns:
         DataSet: The dataset after processing with kernel_black_box.
     """
+    i = 0
     # Iterate over elements of B, clone B and remove element
-    for i, element in enumerate(B_dataset.get_elements()):
+    while i < len(B_dataset.get_elements()):
+        element = B_dataset.get_elements()[i]
+        print("Checking line: " + element + " with index: " + str(i))
         cloned_B_dataset = B_dataset.clone()
+        print("Removing element: " + element)
         cloned_B_dataset.remove_element(element)
-    # Check if alpha in Cn(B - {beta}, alpha)
+        print("B = " + str(cloned_B_dataset.get_elements()))
+        # Check if alpha in Cn(B - {beta}, alpha)
         if Cn(cloned_B_dataset, alpha):
-            print(element + " not in CN, removing: " + element)
+            print("SHRINK: " + alpha + " in CN, removing: " + element)
             B_dataset.remove_element(element)
+            print("CONTINUE SHRINKING WITH : " + str(B_dataset.get_elements()))
+            # Do not increment i, since we want to check the new element at the same index after removal
+        else:
+            # Increment i only if the element was not removed
+            i += 1
+
 
     print("Kernel output: " + str(B_dataset.get_elements()))
     print("KERNEL BLACKBOX FINISHED")
@@ -88,6 +99,7 @@ def Cn(B_dataset, alpha):
     # Clone B and add !alpha to check for entailment
     B_copy = B_dataset.clone()
     B_copy.add_element("!"+alpha)
+    print("Checking Cn() with B: "+ str(B_copy.get_elements()))
 
     # Call parse.py to transform B_copy into CNF
     B_copy.to_file(temp_file)
