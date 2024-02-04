@@ -39,27 +39,56 @@ if __name__ == "__main__":
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
     
-    # Initialize the hitting set tree
-    tree = HittingSetTree()
+    # Assuming the necessary imports and class definitions are already in place
+
+    def print_tree(node, level=0):
+        """
+        Recursively print the tree starting from the given node.
+        
+        Args:
+            node (HSTreeNode): The current node to print.
+            level (int): The current level in the tree for indentation purposes.
+        """
+        indent = "  " * level
+        print(f"{indent}Kernel: {node.kernel}")
+        for child in node.children:
+            print_tree(child, level + 1)
 
     # Load the dataset from the specified file
     input_dataset = DataSet(dataset_filepath)
 
-    # Apply the expand-shrink algorithm to find the initial kernel
-    found_kernel = expand_shrink(input_dataset, "A1").get_elements()
+    # Initialize the hitting set tree
+    tree = HittingSetTree()
 
-    # Insert the found kernel into the hitting set tree
-    tree.insert_kernel(found_kernel)
+    # Keep a mutable copy of the input dataset that can be modified in each iteration
+    mutable_dataset = DataSet(dataset_filepath)
 
-    # Print the kernel of the first child node, if it exists
-    if tree.root.children:  # Check if there are children to avoid IndexError
-        first_child_node = tree.root.children[0]
-        if first_child_node.kernel:  # Check if kernel has elements
-            first_set = first_child_node.kernel[0]
-            second_set = first_child_node.kernel[1]
-            print("First set:", first_set)
-            print("Second set:", second_set)
-    else:
-        print("No child nodes found.")
+    while True:  # Continue until no more kernels are found
+        # Apply the expand-shrink algorithm to find a kernel
+        result = expand_shrink(mutable_dataset, "A1")
 
-    print("Next step, find kernel without: " + str(first_set))
+        # Check if a kernel was found by ensuring result is not None
+        if result is not None:
+            found_kernel = result.get_elements()
+            print(f"Kernel output: {found_kernel}")
+
+            # Check if the found kernel list is empty, indicating a leaf node
+            if not found_kernel:
+                print("Reached a leaf node (empty kernel). Terminating loop.")
+                break
+
+            # Insert the found kernel into the hitting set tree
+            tree.insert_kernel(found_kernel)
+
+            # Remove the first element of the found kernel from mutable_dataset for the next iteration
+            element_to_remove = found_kernel[0]
+            mutable_dataset.remove_element(element_to_remove)
+            print(f"Removed '{element_to_remove}' from dataset for next iteration.")
+        else:
+            print("No kernel found. Terminating loop.")
+            break
+
+    # After finding no more kernels, print the tree
+    print("Final Hitting Set Tree:")
+    print_tree(tree.root)
+
