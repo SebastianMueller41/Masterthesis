@@ -41,6 +41,55 @@ def print_tree(node, level=0):
     for child in node.children:
         print_tree(child, level + 1)
 
+def generate_latex_tree(node, level=0):
+    indent = "  " * level
+    if node.is_leaf():
+        return f"{indent}[\checkmark, edge label={node.edge_label}]"
+    else:
+        children_str = "\n".join(generate_latex_tree(child, level + 1) for child in node.children)
+        return (f"{indent}[{', ' if level else ''}dot, label={node.label}, "
+                f"{node.edge_label}\n{children_str}\n{indent}]")
+
+def to_latex(tree_root):
+    latex_header = """\\begin{figure}[H]
+    \\centering
+    \\tikzset{%
+    dot/.style={fill=black, ring},
+    ring/.style={circle, draw, inner sep=0pt, minimum size=7pt}
+    }
+    \\forestset{%
+    my edge label/.style n args=2{
+        +edge label/.wrap value={node [midway, font=\\footnotesize, #1] {#2}},
+    },
+    edge left/.style={
+        my edge label={left,xshift=-2mm,yshift=1.5mm}{#1},
+    },
+    edge right/.style={
+        my edge label={right, xshift=2mm,yshift=1mm}{#1},
+    }
+    }
+    \\begin{forest}
+    for tree={
+        s sep+=40mm,
+        l sep+=13mm,
+    },
+    before typesetting nodes={
+        where n children=0{
+        label/.wrap pgfmath arg={below:$#1$}{content()},
+        content=,
+        dot,
+        }{}
+    }"""
+
+    latex_footer = """\\end{forest}
+    \\caption{HS-tree for the conflict set \\( B' \\)}
+    \\label{fig:hs-tree}
+    \\end{figure}"""
+
+    tree_str = generate_latex_tree(tree_root)
+    return f"{latex_header}\n{tree_str}\n{latex_footer}"
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python main.py <dataset_file>")
@@ -63,3 +112,6 @@ if __name__ == "__main__":
     # After spanning the tree, print it
     print("Final Hitting Set Tree:")
     print_tree(tree.root)
+
+    print("\nLatex Code:\n")
+    print(to_latex(tree.root))
