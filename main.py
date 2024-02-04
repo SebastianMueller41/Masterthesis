@@ -1,55 +1,65 @@
-import sys
-import subprocess
+"""
+This script takes a dataset file as input and applies an expand-shrink algorithm to 
+find a kernel with respect to a given parameter. The resulting kernel is then used to 
+initialize a hitting set tree. This script demonstrates the setup and initial steps of 
+the kernelization process for the given dataset.
+
+The script is executed from the command line with the dataset file as an argument.
+"""
+
 import os
-import parse
+import sys
+from hittingsettree import HittingSetTree
+from kernel import expand_shrink
+from dataset import DataSet
 
-print("Current Working Directory:", os.getcwd())
+def generate_output_filename(input_filename):
+    """
+    Generate an output filename with '_CNF' appended before the file extension.
 
-def run_open_wbo(wcnf_filename, output_filename):
-    open_wbo_path = "open-wbo/open-wbo" 
-    subprocess.run([open_wbo_path, wcnf_filename, output_filename])
+    Args:
+        input_filename (str): The name of the input file.
 
-def run_minisat(cnf_filename, output_filename):
-    subprocess.run(['minisat', cnf_filename, output_filename])
+    Returns:
+        str: The name of the output file with '_CNF' appended before the extension.
+    """
+    name, ext = os.path.splitext(input_filename)
+    return f"{name}_CNF{ext}"
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python main.py <solver_type> <dataset_file>")
-        print("solver_type: minisat or maxsat")
+    # Ensure the correct number of command line arguments
+    if len(sys.argv) < 2:
+        print("Usage: python main.py <dataset_file>")
         sys.exit(1)
 
-    solver_type = sys.argv[1].lower()
-    dataset_filepath = sys.argv[2]
-    normalized_path = parse.normalize_path(dataset_filepath)
+    dataset_filepath = sys.argv[1]
     output_directory = 'Results'
 
+    # Create the output directory if it doesn't exist
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
+    
+    # Initialize the hitting set tree
+    tree = HittingSetTree()
 
-    # Generate WCNF file
-    wcnf_filename = os.path.join(output_directory, normalized_path + '.wcnf')
-    kb = parse.KnowledgeBase(open(dataset_filepath).read().split("\n"))
-    parse.write_wcnf_to_file(kb, wcnf_filename)
-    print(f"WCNF data saved to {os.path.abspath(wcnf_filename)}")  # Print the absolute path
+    # Load the dataset from the specified file
+    input_dataset = DataSet(dataset_filepath)
 
-    print("WCNF File Path:", wcnf_filename)
+    # Apply the expand-shrink algorithm to find the initial kernel
+    found_kernel = expand_shrink(input_dataset, "A1").get_elements()
 
-    if solver_type == "maxsat":
-        # Run Open-WBO on the WCNF file
-        open_wbo_output_filename = os.path.join(output_directory, 'maxsat.result')
-        # open_wbo_output_filename = os.path.join(output_directory, normalized_path + '_openwbo.result')
-        run_open_wbo(wcnf_filename, open_wbo_output_filename)
-        print(f"Open-WBO result saved to {os.path.abspath(open_wbo_output_filename)}")  # Print the absolute path
-    elif solver_type == "minisat":
-        # Convert WCNF to CNF for MiniSat
-        cnf_filename = os.path.join(output_directory, normalized_path + '_converted.cnf')
-        parse.convert_wcnf_to_cnf(wcnf_filename, cnf_filename)
-        print(f"CNF data converted and saved to {os.path.abspath(cnf_filename)}")  # Print the absolute path
+    # Insert the found kernel into the hitting set tree
+    tree.insert_kernel(found_kernel)
 
-        # Run MiniSat on the converted CNF file
-        minisat_output_filename = cnf_filename.replace('.cnf', '_minisat.result')
-        run_minisat(cnf_filename, minisat_output_filename)
-        print(f"MiniSat result saved to {os.path.abspath(minisat_output_filename)}")  # Print the absolute path
+    # Print the kernel of the first child node, if it exists
+    if tree.root.children:  # Check if there are children to avoid IndexError
+        first_child_node = tree.root.children[0]
+        if first_child_node.kernel:  # Check if kernel has elements
+            first_set = first_child_node.kernel[0]
+            second_set = first_child_node.kernel[1]
+            print("First set:", first_set)
+            print("Second set:", second_set)
     else:
-        print("Invalid solver type. Please choose 'minisat' or 'maxsat'.")
-        sys.exit(1)
+        print("No child nodes found.")
+
+    print("Next step, find kernel without: " + str(first_set))
