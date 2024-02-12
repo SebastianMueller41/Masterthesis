@@ -11,7 +11,9 @@ The module contains the following key functions:
 """
 
 import subprocess
-from dataset import DataSet
+from .parse import CNFConverter
+from src.structs.dataset import DataSet
+
 
 def expand_shrink(B_dataset, alpha):
     """
@@ -94,7 +96,7 @@ def Cn(B_dataset, alpha):
     Returns:
         bool: True if alpha is a consequence of the dataset, False otherwise.
     """
-    temp_file="Temp/temp_dimacs.cnf"
+    temp_file="tmp/temp_dimacs.cnf"
 
     # Clone B and add !alpha to check for entailment
     B_copy = B_dataset.clone()
@@ -103,7 +105,11 @@ def Cn(B_dataset, alpha):
 
     # Call parse.py to transform B_copy into CNF
     B_copy.to_file(temp_file)
-    subprocess.run(['python', 'parse.py', temp_file, temp_file])
+    #subprocess.run(['python3', 'parse.py', temp_file, temp_file])
+    converter = CNFConverter(verbose=False)
+    converter.convert_to_cnf(temp_file, temp_file)
+
+
 
     # Call miniSat and interpret the output
     result = subprocess.run(['minisat', temp_file], capture_output=True, text=True)
