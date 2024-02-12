@@ -5,7 +5,7 @@ arguments, along with an optional flag to control console output verbosity.
 """
 
 import sys
-from core import KnowledgeBase
+from .core import KnowledgeBase
 
 class CNFConverter:
     def __init__(self, verbose=False):

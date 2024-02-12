@@ -17,7 +17,7 @@ class HSTreeNode:
         children (list of HSTreeNode): Child nodes of this node.
     """
     
-    def __init__(self, kernel=None, children=None):
+    def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None):
         """
         Initialize a node for the hitting set tree.
 
@@ -27,6 +27,18 @@ class HSTreeNode:
         """
         self.kernel = kernel  # The kernel for this node
         self.children = children if children is not None else []  # List of child nodes
+        self.edge = edge if edge is not None else ""
+        self.level=level
+        self.dataset=dataset
+
+    def get_kernel(self):
+        return self.kernel
+    
+    def set_kernel(self, kernel):
+        self.kernel = kernel
+        
+    def get_dataset(self):
+        return self.dataset
 
     def add_child(self, child):
         """
@@ -35,6 +47,7 @@ class HSTreeNode:
         Args:
             child (HSTreeNode): A child node to be added.
         """
+        child.level = self.level + 1
         self.children.append(child)
 
     def print_node(self, level=0):
@@ -66,6 +79,7 @@ class HittingSetTree:
             initial_kernel (list, optional): An initial kernel to store at the root of the tree.
         """
         self.root = HSTreeNode(kernel=initial_kernel)  # Initialize root with the given kernel
+        self.boundary = 0
 
     def insert_kernel(self, kernel, parent=None):
         """
@@ -87,3 +101,29 @@ class HittingSetTree:
         new_node = HSTreeNode(kernel=kernel)
         parent.add_child(new_node)
         return new_node
+    
+    def print_tree(self, node=None, level=0):
+        if node is None:
+            node = self.root
+        indent = "  " * level
+        print(f"{indent}Kernel: {node.kernel}")
+        for child in node.children:
+            self.print_tree(child, level + 1)
+            
+
+    def print_tree_to_file(self, node=None, level=0, output_file="tmp/tree_output.txt"):
+        if node is None:
+            node = self.root
+
+        indent = "  " * level
+        output_text = f"{level}{indent}Kernel: {node.kernel}  Edge:{node.edge} Level: {node.level}\n"
+
+        with open(output_file, "a") as file:
+            file.write(output_text)
+
+        for child in node.children:
+            self.print_tree_to_file(child, level + 1, output_file)
+        
+    def print_newline(self, output_file="tmp/tree_output.txt"):    
+        with open(output_file, "a") as file:
+            file.write("\n\n")
