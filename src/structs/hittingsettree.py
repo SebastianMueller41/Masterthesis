@@ -116,7 +116,7 @@ class HittingSetTree:
             node = self.root
 
         indent = "  " * level
-        output_text = f"{level}{indent}Kernel: {node.kernel}  Edge:{node.edge} Level: {node.level}\n"
+        output_text = f"{level}{indent}Kernel: {node.kernel}, Edge: {node.edge}, Level: {node.level}, Bound: {self.boundary}\n"
 
         with open(output_file, "a") as file:
             file.write(output_text)

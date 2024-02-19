@@ -7,7 +7,7 @@ the kernelization process for the given dataset.
 The script is executed from the command line with the dataset file as an argument.
 """
 
-import os
+import os, sys
 from src.search.hybrid import HybridSearch
 from src.search.bfs import BFS
 from src.solver.kernelsolver import KernelSolver
@@ -31,9 +31,24 @@ if __name__ == "__main__":
     #     print("Usage: python main.py <dataset_file>")
     #     sys.exit(1)
 
-    # dataset_filepath = sys.argv[1]
+    dataset_filepath = sys.argv[1]
+    strategy_param = sys.argv[2]
+
+    #print(f"sys.argv[2] = {strategy_param}")
     #dataset_filepath = "data/Test_Datasets/test_UNSAT2.txt"
-    dataset_filepath = "data/Dataset_A/sig3_5_15/srs_0.txt"
-    
-    KernelSolver(BFS(ExpandShrink(), DataSet(dataset_filepath), "A1" )).solve()
-    KernelSolver(HybridSearch(ExpandShrink(), DataSet(dataset_filepath), "A1" )).solve()
+    #dataset_filepath = "data/Dataset_A/sig3_5_15/srs_0.txt"
+    #datas = DataSet(dataset_filepath,strategy_param)
+    #print(datas.get_elements_with_values())
+
+    # Ensure strategy_param is an integer for comparison
+    try:
+        strategy_param = int(strategy_param)
+    except ValueError:
+        print(f"Invalid strategy_param: {strategy_param}. Must be an integer.")
+
+    if strategy_param == 0:
+        KernelSolver(BFS(ExpandShrink(), DataSet(dataset_filepath,strategy_param), "A1" )).solve()
+    elif 0 < strategy_param < 3:
+        KernelSolver(HybridSearch(ExpandShrink(), DataSet(dataset_filepath,strategy_param), "A1")).solve()
+    else:
+        print("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")

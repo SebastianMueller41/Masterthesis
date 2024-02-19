@@ -70,6 +70,7 @@ class HybridSearch(Strategy):
                     #self.dfs(current_node.get_dataset(), alpha, curr)
                 else:
                     current_node.set_kernel("LEAF")
+                    # Sets the boundary to the level of the found LEAF node (this equals the cardinality of the hitting set)
                     self.tree.boundary = current_node.level
                     
                     self.log_tree()
