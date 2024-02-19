@@ -5,6 +5,8 @@ provides functionality to load data from a file, access elements, add or remove 
 clone itself, and write its contents to a file.
 """
 
+from src.values.values import assign_fixed_value, assign_unique_random_values, assign_inconsistency_value
+
 class DataSet:
     """
     A class to manage a collection of elements.
@@ -15,26 +17,27 @@ class DataSet:
         elements (list): A list of elements representing the dataset.
     """
     
-    def __init__(self, input_file_path=None, elements=None):
+    def __init__(self, input_file_path=None, strategy_param=None, elements=None, strategy=None):
         """
-        Initialize a new DataSet instance, optionally loading elements from a file.
+        Initialize a new DataSet instance, optionally loading elements from a file and applying a value assignment strategy.
 
         Args:
             input_file_path (str, optional): The path to a file from which to load elements.
             elements (list, optional): An initial list of elements to populate the dataset.
+            strategy (str, optional): The strategy identifier (e.g., "A1").
+            strategy_param (int, optional): The parameter that defines how values are assigned to the elements.
         """
         self.elements = elements if elements is not None else []
+        self.element_values = {}  # Initialize the mapping of elements to values
         if input_file_path:
             self.load_elements_from_file(input_file_path)
+        if strategy_param:
+            self.apply_value_assignment_strategy(strategy_param)
 
     def load_elements_from_file(self, file_path):
         """
         Load elements from the specified file path into the dataset.
-
         Each line in the file is treated as a separate element.
-
-        Args:
-            file_path (str): The path to the file from which to load elements.
         """
         try:
             with open(file_path, 'r') as file:
@@ -50,6 +53,16 @@ class DataSet:
             list: The elements contained in the dataset.
         """
         return self.elements
+
+    def get_elements_with_values(self):
+        """
+        Retrieve the elements of the dataset along with their assigned values.
+
+        Returns:
+            list of tuples: Each tuple contains an element and its corresponding value.
+        """
+        return [(element, self.element_values[element]) for element in self.elements]
+
 
     def add_element(self, element):
         """
@@ -92,3 +105,18 @@ class DataSet:
         with open(output_file_path, 'w') as file:
             for element in self.elements:
                 file.write(element + '\n')
+
+    def apply_value_assignment_strategy(self, strategy_param):
+        """
+        Apply a value assignment strategy to each element in the dataset based on the specified parameter.
+
+        Args:
+            strategy_param (int): The parameter defining the value assignment strategy.
+        """        
+        if strategy_param == 1:
+            assign_fixed_value(self, 1)
+        elif strategy_param == 2:
+            assign_unique_random_values(self)
+        elif strategy_param == 3:
+            assign_inconsistency_value(self)  # Placeholder for future implementation
+
