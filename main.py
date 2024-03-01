@@ -46,10 +46,13 @@ if __name__ == "__main__":
     except ValueError:
         print(f"Invalid strategy_param: {strategy_param}. Must be an integer.")
 
+    with open("tmp/tree_output.txt", 'w') as file:
+        pass  # Opening in write mode 'w' clears the file
+
     if strategy_param == 0:
         KernelSolver(BFS(ExpandShrink(), DataSet(dataset_filepath,strategy_param), "A1" )).solve()
     elif 0 < strategy_param < 4:
-        KernelSolver(HybridSearch(ExpandShrink(), DataSet(dataset_filepath,strategy_param), "A1")).solve()
+        KernelSolver(HybridSearch(ExpandShrink(), DataSet(dataset_filepath,strategy_param), "A1", strategy_param)).solve()
     else:
         print("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
     
