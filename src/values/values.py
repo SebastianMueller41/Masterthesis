@@ -1,4 +1,5 @@
 import random
+from src.values.inconsistency import calculate_inconsistency
 
 def assign_fixed_value(dataset, value):
     dataset.element_values = {element: value for element in dataset.elements}
@@ -22,4 +23,12 @@ def assign_unique_random_values(dataset):
         dataset.element_values[element] = range_of_values[i]
 
 def assign_inconsistency_value(dataset):
-    pass  # Placeholder for the inconsistency value assignment implementation
+    output_file_path = "tmp/dataset.txt"
+    dataset.to_file(output_file_path)
+    values = calculate_inconsistency(output_file_path)
+
+    for i, element in enumerate(dataset.elements):
+        dataset.element_values[element] = values[i]
+
+    with open(output_file_path, "a") as file:
+        file.write(f"\nInconsistensy Measures: {dataset.get_values()}")

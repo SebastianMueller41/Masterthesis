@@ -63,6 +63,14 @@ class DataSet:
         """
         return [(element, self.element_values[element]) for element in self.elements]
 
+    def get_values(self):
+        """
+        Retrieve the values assigned to the elements of the dataset.
+
+        Returns:
+            list: A list of values assigned to the elements.
+        """
+        return list(self.element_values.values())
 
     def add_element(self, element):
         """
@@ -118,5 +126,5 @@ class DataSet:
         elif strategy_param == 2:
             assign_unique_random_values(self)
         elif strategy_param == 3:
-            assign_inconsistency_value(self)  # Placeholder for future implementation
+            assign_inconsistency_value(self) 
 
