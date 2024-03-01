@@ -3,12 +3,12 @@ import os, sys
 
 def calculate_inconsistency(filepath, script_path='sat4im/src/sat4im.py'):
 
-    # Debugging prints
-    print(f"script_path: {script_path}")  # Ensure this is not None
-    print(f"filepath: {filepath}")  # Ensure this is not None
+    #Debugging prints
+    #print(f"script_path: {script_path}")  # Ensure this is not None
+    #print(f"filepath: {filepath}")  # Ensure this is not None
 
     # Run the subprocess for the entire dataset first to get the initial inconsistency measure
-    initial_result = subprocess.run(['python', script_path, filepath, 'h'], capture_output=True, text=True)
+    initial_result = subprocess.run(['python', script_path, filepath, 'sum'], capture_output=True, text=True)
     output_lines = initial_result.stdout.splitlines()
     initial_inconsistency_measure = None
     for line in output_lines:
@@ -23,8 +23,8 @@ def calculate_inconsistency(filepath, script_path='sat4im/src/sat4im.py'):
     with open(filepath, 'r') as file:
         lines = file.readlines()
 
-    #print("Initial inconsistency measure:", initial_inconsistency_measure)
-    #print("File content:")
+    print("Initial inconsistency measure:", initial_inconsistency_measure)
+    print("File content:")
     for line in lines:
         print(line, end='')
 

@@ -17,7 +17,7 @@ class HSTreeNode:
         children (list of HSTreeNode): Child nodes of this node.
     """
     
-    def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None):
+    def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None, bbvalue=0, parent=None):
         """
         Initialize a node for the hitting set tree.
 
@@ -25,11 +25,13 @@ class HSTreeNode:
             kernel (list): The data or 'kernel' for this node.
             children (list of HSTreeNode, optional): Child nodes of this node.
         """
-        self.kernel = kernel  # The kernel for this node
-        self.children = children if children is not None else []  # List of child nodes
-        self.edge = edge if edge is not None else ""
-        self.level=level
-        self.dataset=dataset
+        self.kernel = kernel
+        self.children = children if children is not None else []
+        self.edge = edge
+        self.level = level
+        self.dataset = dataset
+        self.bbvalue = bbvalue
+        self.parent = parent
 
     def get_kernel(self):
         return self.kernel
@@ -71,15 +73,17 @@ class HittingSetTree:
         root (HSTreeNode): The root node of the tree.
     """
     
-    def __init__(self, initial_kernel=None):
+    def __init__(self, dataset=None, initial_kernel=None):
         """
         Initialize the hitting set tree with an optional initial kernel at the root.
 
         Args:
             initial_kernel (list, optional): An initial kernel to store at the root of the tree.
         """
-        self.root = HSTreeNode(kernel=initial_kernel)  # Initialize root with the given kernel
-        self.boundary = 0
+        self.root = HSTreeNode(kernel=initial_kernel)
+        self.boundary = float('inf')  # Initialize the upper bound.
+        self.dataset = dataset
+        self.leaf_nodes= []
 
     def insert_kernel(self, kernel, parent=None):
         """
@@ -102,6 +106,15 @@ class HittingSetTree:
         parent.add_child(new_node)
         return new_node
     
+    def calculate_path_bbvalue_up_to_root(self, node, dataset):
+        cumulative_bbvalue = 0.0
+        current_node = node
+        while current_node is not None and current_node.parent is not None:  # Assuming each node has a 'parent' reference.
+            inconsistency_value = dataset.element_values.get(current_node.edge, 0)
+            cumulative_bbvalue += 1 / inconsistency_value if inconsistency_value != 0 else 0
+            current_node = current_node.parent
+        return cumulative_bbvalue
+
     def print_tree(self, node=None, level=0):
         if node is None:
             node = self.root
@@ -110,19 +123,21 @@ class HittingSetTree:
         for child in node.children:
             self.print_tree(child, level + 1)
             
-
-    def print_tree_to_file(self, node=None, level=0, output_file="tmp/tree_output.txt"):
+    def print_tree_to_file(self, node=None, level=0, output_file="tmp/tree_output.txt", dataset=None):
         if node is None:
             node = self.root
 
         indent = "  " * level
-        output_text = f"{level}{indent}Kernel: {node.kernel}, Edge: {node.edge}, Level: {node.level}, Bound: {self.boundary}\n"
+        # Calculate the hitting set value for the current node
+        hitting_set_value = self.calculate_path_bbvalue_up_to_root(node, dataset=dataset)
 
-        with open(output_file, "a") as file:
+        output_text = f"{level}{indent}Kernel: {node.kernel}, Edge: {node.edge}, Level: {node.level}, Bound: {self.boundary}, Hitting Set Value: {hitting_set_value}\n"
+
+        with open(output_file, 'a') as file:
             file.write(output_text)
 
         for child in node.children:
-            self.print_tree_to_file(child, level + 1, output_file)
+            self.print_tree_to_file(child, level + 1, output_file, dataset=dataset)
         
     def print_newline(self, output_file="tmp/tree_output.txt"):    
         with open(output_file, "a") as file:
