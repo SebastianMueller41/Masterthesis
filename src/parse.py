@@ -62,7 +62,9 @@ class CNFConverter:
             for lit in lits:
                 file.write(str(lit) + " 0\n")
 
-        print(f"CNF format saved to {output_filename}" if self.verbose else "")
+        if self.verbose:
+            print(f"CNF format saved to {output_filename}")
+
 
 # Check for proper command line arguments and initialize CNFConverter
 if __name__ == "__main__":

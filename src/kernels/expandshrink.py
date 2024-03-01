@@ -27,11 +27,11 @@ class ExpandShrink(KernelStrategy):
         # Iterate over B and add each line to B_prime
         for line in B_dataset.get_elements():
             B_prime.add_element(line)
-            print("Actual line: " + line)
-            print("B_prime: " + str(B_prime.get_elements()))
+            #print("Actual line: " + line)
+            #print("B_prime: " + str(B_prime.get_elements()))
             # Check if alpha is entailed by B_prime
             if self.cn(B_prime, alpha):
-                print("CALLING SHRINKING WITH B_prime: " + str(B_prime.get_elements()))
+                #print("CALLING SHRINKING WITH B_prime: " + str(B_prime.get_elements()))
                 return self.kernel_black_box(B_prime, alpha)
 
     def kernel_black_box(self, B_dataset, alpha, output_file_path="Temp/found_kernels"):
@@ -54,24 +54,24 @@ class ExpandShrink(KernelStrategy):
         # Iterate over elements of B, clone B and remove element
         while i < len(B_dataset.get_elements()):
             element = B_dataset.get_elements()[i]
-            print("Checking line: " + element + " with index: " + str(i))
+            #print("Checking line: " + element + " with index: " + str(i))
             cloned_B_dataset = B_dataset.clone()
-            print("Removing element: " + element)
+            #print("Removing element: " + element)
             cloned_B_dataset.remove_element(element)
-            print("B = " + str(cloned_B_dataset.get_elements()))
+            #print("B = " + str(cloned_B_dataset.get_elements()))
             # Check if alpha in Cn(B - {beta}, alpha)
             if self.cn(cloned_B_dataset, alpha):
-                print("SHRINK: " + alpha + " in CN, removing: " + element)
+                #print("SHRINK: " + alpha + " in CN, removing: " + element)
                 B_dataset.remove_element(element)
-                print("CONTINUE SHRINKING WITH : " + str(B_dataset.get_elements()))
+                #print("CONTINUE SHRINKING WITH : " + str(B_dataset.get_elements()))
                 # Do not increment i, since we want to check the new element at the same index after removal
             else:
                 # Increment i only if the element was not removed
                 i += 1
 
 
-        print("Kernel output: " + str(B_dataset.get_elements()))
-        print("KERNEL BLACKBOX FINISHED")
+        #print("Kernel output: " + str(B_dataset.get_elements()))
+        #print("KERNEL BLACKBOX FINISHED")
         return B_dataset
 
     def cn(self, B_dataset, alpha):
@@ -94,15 +94,13 @@ class ExpandShrink(KernelStrategy):
         # Clone B and add !alpha to check for entailment
         B_copy = B_dataset.clone()
         B_copy.add_element("!"+alpha)
-        print("Checking Cn() with B: "+ str(B_copy.get_elements()))
+        #print("Checking Cn() with B: "+ str(B_copy.get_elements()))
 
         # Call parse.py to transform B_copy into CNF
         B_copy.to_file(temp_file)
         #subprocess.run(['python3', 'parse.py', temp_file, temp_file])
         converter = CNFConverter(verbose=False)
         converter.convert_to_cnf(temp_file, temp_file)
-
-
 
         # Call miniSat and interpret the output
         result = subprocess.run(['minisat', temp_file], capture_output=True, text=True)
@@ -113,11 +111,11 @@ class ExpandShrink(KernelStrategy):
 
         # Process the output
         if "UNSAT" in last_line:
-            print(f"MiniSat result: UNSAT. Therefore, {alpha} is in Cn({B_dataset.get_elements()})")
+            #print(f"MiniSat result: UNSAT. Therefore, {alpha} is in Cn({B_dataset.get_elements()})")
             return True
         elif "SAT" in last_line:
-            print(f"MiniSat result: SAT. Therefore, {alpha} is not in Cn({B_dataset.get_elements()})")
+            #print(f"MiniSat result: SAT. Therefore, {alpha} is not in Cn({B_dataset.get_elements()})")
             return False
         else:
-            print("MiniSat output was unexpected.")
+            #print("MiniSat output was unexpected.")
             return None

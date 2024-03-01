@@ -48,7 +48,8 @@ if __name__ == "__main__":
 
     if strategy_param == 0:
         KernelSolver(BFS(ExpandShrink(), DataSet(dataset_filepath,strategy_param), "A1" )).solve()
-    elif 0 < strategy_param < 3:
+    elif 0 < strategy_param < 4:
         KernelSolver(HybridSearch(ExpandShrink(), DataSet(dataset_filepath,strategy_param), "A1")).solve()
     else:
         print("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
+    
