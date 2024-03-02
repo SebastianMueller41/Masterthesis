@@ -114,7 +114,7 @@ class HybridSearch(Strategy):
         hitting_set_value = self.tree.calculate_path_bbvalue_up_to_root(node, self.dataset)
 
         # Now compare the hitting set value (float) with the boundary (float).
-        return hitting_set_value > self.tree.boundary
+        return hitting_set_value >= self.tree.boundary
 
     def log_tree(self):
         self.tree.print_tree_to_file(dataset=self.dataset)    
