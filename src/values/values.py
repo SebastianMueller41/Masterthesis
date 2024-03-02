@@ -2,6 +2,13 @@ import random
 from src.values.inconsistency import calculate_inconsistency
 
 def assign_fixed_value(dataset, value):
+    """
+    Assigns the fixed value of 1 to each element in the dataset.
+
+    Args:
+        dataset (DataSet): The dataset to modify.
+        value (int): The fixed value that will be assigned to each element of the Dataset.
+    """
     dataset.element_values = {element: value for element in dataset.elements}
 
 def assign_unique_random_values(dataset):
@@ -21,6 +28,8 @@ def assign_unique_random_values(dataset):
     # Assign each element a unique value from the shuffled list
     for i, element in enumerate(dataset.elements):
         dataset.element_values[element] = range_of_values[i]
+    
+    print(f"Random values: {dataset.get_values()}")
 
 def assign_inconsistency_value(dataset):
     output_file_path = "tmp/dataset.txt"
