@@ -36,38 +36,11 @@ make config prefix=/your/preferred/directory
 make install
 ```
 
-**MaxSAT Solver**
-
-To use the MaxSAT solver, you'll need to install 'gmp' (GNU Multiple Precision Arithmetic Library) first.
-
-Linux:
-
-```bash
-sudo apt-get install libgmp-dev
-```
-
-For macOS:
-
-```bash
-brew install gmp
-```
-
-Windows:
-
-For Windows users, you can download precompiled binaries or source code from the GMP website (https://gmplib.org/).
-Installing from source will require additional steps, including configuration and compilation.
-
-Please note that it might be necessary to change the CFLAG in the Makefile of the open-wbo solver.
-
-After the installation the program can be used with minisat or maxsat as arguments.
-Usage: python main.py <solver_type> <dataset_file>
-solver_type: minisat or maxsat
-
 Examples:
 
 ```bash
-python3 main.py minisat Dataset_a/sig3_5_15/srs_0.txt
-python3 main.py maxsat Dataset_a/sig3_5_15/srs_0.txt
+python3 main.py Dataset_a/sig3_5_15/srs_0.txt
+python3 main.py Dataset_a/sig3_5_15/srs_0.txt
 ```
 
 To use the program with different Datasets, please change the path/to/file accordingly.
