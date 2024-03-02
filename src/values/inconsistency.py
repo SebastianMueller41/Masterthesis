@@ -4,8 +4,8 @@ import os, sys
 def calculate_inconsistency(filepath, script_path='sat4im/src/sat4im.py'):
 
     #Debugging prints
-    #print(f"script_path: {script_path}")  # Ensure this is not None
-    #print(f"filepath: {filepath}")  # Ensure this is not None
+    print(f"script_path: {script_path}")  # Ensure this is not None
+    print(f"filepath: {filepath}")  # Ensure this is not None
 
     # Run the subprocess for the entire dataset first to get the initial inconsistency measure
     initial_result = subprocess.run([sys.executable, script_path, filepath, 'h'], capture_output=True, text=True)
@@ -16,8 +16,7 @@ def calculate_inconsistency(filepath, script_path='sat4im/src/sat4im.py'):
             initial_inconsistency_measure = int(line.split()[1])
             break
     if initial_inconsistency_measure is None:
-        print("Failed to obtain initial inconsistency measure.")
-        return
+        sys.exit("Failed to obtain initial inconsistency measure. No dataset found.")
 
     # Read the dataset from the file
     with open(filepath, 'r') as file:
