@@ -40,7 +40,7 @@ def calculate_inconsistency(filepath, script_path='sat4im/src/sat4im.py'):
             temp_file.writelines(modified_lines)
 
         # Call the external script with the modified dataset
-        result = subprocess.run([sys.executable, script_path, temp_filepath, 'h'], capture_output=True, text=True)
+        result = subprocess.run(['python3', script_path, temp_filepath, 'h'], capture_output=True, text=True)
         output_lines = result.stdout.splitlines()
 
         # Search for the line starting with 'o' and extract the number
