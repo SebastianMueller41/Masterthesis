@@ -53,11 +53,12 @@ Ensure the minisat binary is in your system's PATH so that it can be invoked fro
 
 The main script requires two arguments:
 
-file_path: Path to the dataset/knowledgebase file.
-strategy_param: Strategy parameter indicating the approach to use.
-1: Cardinality
-2: Random
-3: Inconsistency
+1. `file_path`: Path to the dataset/knowledgebase file.
+2. `strategy_param`: Strategy parameter indicating the approach to use.
+
+- `1`: Cardinality
+- `2`: Random
+- `3`: Inconsistency
 
 ## Examples
 
