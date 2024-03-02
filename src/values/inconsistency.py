@@ -1,69 +1,50 @@
 import subprocess
-import os, sys
+import os
+import sys
+import tempfile
 
-def calculate_inconsistency(filepath, script_path='sat4im/src/sat4im.py'):
+def call_sat_solver(script_path, filepath, option='h'):
+    """Call the SAT solver script and return the output."""
+    try:
+        result = subprocess.run(
+            [sys.executable, script_path, filepath, option], 
+            capture_output=True, 
+            text=True,
+            check=True  # Ensures any subprocess errors are caught
+        )
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(f"Error calling SAT solver: {e}")
 
-    #Debugging prints
-    print(f"script_path: {script_path}")  # Ensure this is not None
-    print(f"filepath: {filepath}")  # Ensure this is not None
-
-    # Run the subprocess for the entire dataset first to get the initial inconsistency measure
-    initial_result = subprocess.run([sys.executable, script_path, filepath, 'h'], capture_output=True, text=True)
-    output_lines = initial_result.stdout.splitlines()
-    initial_inconsistency_measure = None
+    output_lines = result.stdout.splitlines()
     for line in output_lines:
         if line.startswith("o "):
-            initial_inconsistency_measure = int(line.split()[1])
-            break
-    if initial_inconsistency_measure is None:
-        sys.exit("Failed to obtain initial inconsistency measure. No dataset found.")
+            return int(line.split()[1])
+    raise ValueError("Failed to obtain inconsistency measure from SAT solver.")
 
-    # Read the dataset from the file
+def calculate_inconsistency(filepath, script_path='sat4im/src/sat4im.py'):
+    initial_inconsistency_measure = call_sat_solver(script_path, filepath)
+
     with open(filepath, 'r') as file:
         lines = file.readlines()
 
-    print("Initial inconsistency measure:", initial_inconsistency_measure)
+    print(f"Initial inconsistency measure: {initial_inconsistency_measure}")
     print("File content:")
     for line in lines:
         print(line, end='')
 
-    print("")
-
     inconsistency_differences = []
-
     for i in range(len(lines)):
-        # Remove the current line and save to a temporary file
-        modified_lines = lines[:i] + lines[i+1:]
-        temp_filepath = 'temp_dataset.txt'
-        with open(temp_filepath, 'w') as temp_file:
-            temp_file.writelines(modified_lines)
+        # Create a temporary file for the modified dataset
+        with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
+            temp_file.writelines(lines[:i] + lines[i+1:])
+            temp_filepath = temp_file.name
 
-        # Call the external script with the modified dataset
-        result = subprocess.run([sys.executable, script_path, temp_filepath, 'h'], capture_output=True, text=True)
-        output_lines = result.stdout.splitlines()
-
-        # Search for the line starting with 'o' and extract the number
-        inconsistency_measure = None
-        for line in output_lines:
-            if line.startswith("o "):
-                inconsistency_measure = int(line.split()[1])
-                break
-
-        if inconsistency_measure is not None:
-            # Calculate the difference in inconsistency value due to the removal of the current line
-            inconsistency_difference = initial_inconsistency_measure - inconsistency_measure
-            inconsistency_differences.append(inconsistency_difference)
-        else:
-            inconsistency_differences.append("Error: Could not calculate")
+        inconsistency_measure = call_sat_solver(script_path, temp_filepath)
+        inconsistency_difference = initial_inconsistency_measure - inconsistency_measure
+        inconsistency_differences.append(inconsistency_difference)
 
         # Clean up: Delete the temporary dataset file
         os.remove(temp_filepath)
 
-    """
-    # Print the inconsistency differences
-    for index, difference in enumerate(inconsistency_differences):
-        print(f"Inconsistency difference for line {index + 1}: {difference}")
-    """
-
-    print(f"List of inconsistency measures: {inconsistency_differences}\n")
+    print(f"\nList of inconsistency measures: {inconsistency_differences}")
     return inconsistency_differences

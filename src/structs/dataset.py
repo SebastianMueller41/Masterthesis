@@ -6,6 +6,7 @@ clone itself, and write its contents to a file.
 """
 
 from src.values.values import assign_fixed_value, assign_unique_random_values, assign_inconsistency_value
+import sys
 
 class DataSet:
     """
@@ -43,7 +44,7 @@ class DataSet:
             with open(file_path, 'r') as file:
                 self.elements = [line.strip() for line in file.readlines()]
         except FileNotFoundError:
-            print(f"File {file_path} not found. Starting with an empty dataset.")
+            sys.exit(f"File {file_path} not found.\nPlease check file path: {file_path}.")
 
     def get_elements(self):
         """
