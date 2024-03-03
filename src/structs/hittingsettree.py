@@ -17,7 +17,7 @@ class HSTreeNode:
         children (list of HSTreeNode): Child nodes of this node.
     """
     
-    def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None, bbvalue=0, parent=None):
+    def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None, bbvalue=0, parent=None, pruned=False):
         """
         Initialize a node for the hitting set tree.
 
@@ -32,6 +32,7 @@ class HSTreeNode:
         self.dataset = dataset
         self.bbvalue = bbvalue
         self.parent = parent
+        self.pruned = pruned
 
     def get_kernel(self):
         return self.kernel
@@ -64,6 +65,11 @@ class HSTreeNode:
         for child in self.children:
             child.print_node(level + 1)
 
+    def is_pruned(self):
+        return self.pruned
+    
+    def set_pruned(self, pruned=True):
+        self.pruned = pruned
 
 class HittingSetTree:
     """
@@ -114,6 +120,30 @@ class HittingSetTree:
             cumulative_bbvalue += 1 / inconsistency_value if inconsistency_value != 0 else 0
             current_node = current_node.parent
         return cumulative_bbvalue
+
+    def count_kernels_and_branches(self, node=None):
+        if node is None:
+            node = self.root
+        if not node or node.is_pruned():
+            return (0, 0)
+        
+        num_kernels = 1 if node.kernel else 0
+        num_branches = len(node.children)
+        
+        for child in node.children:
+            child_kernels, child_branches = self.count_kernels_and_branches(child)
+            num_kernels += child_kernels
+            num_branches += child_branches
+        
+        return (num_kernels, num_branches)
+    
+    def count_pruned_nodes(self, node=None):
+        if node is None:
+            node = self.root
+        count = 1 if node.is_pruned() else 0
+        for child in node.children:
+            count += self.count_pruned_nodes(child)
+        return count
 
     def print_tree(self, node=None, level=0):
         if node is None:

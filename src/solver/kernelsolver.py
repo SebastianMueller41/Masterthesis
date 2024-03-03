@@ -6,3 +6,4 @@ class KernelSolver:
 
     def solve(self) -> None:
         self.strategy.find_kernels()
+        return self.strategy.tree
