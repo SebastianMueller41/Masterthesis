@@ -4,55 +4,74 @@ find a kernel with respect to a given parameter. The resulting kernel is then us
 initialize a hitting set tree. This script demonstrates the setup and initial steps of 
 the kernelization process for the given dataset.
 
-The script is executed from the command line with the dataset file as an argument.
+The script can be executed from the command line with the dataset file and strategy 
+parameter as arguments. Logging to a database can be enabled or disabled via an 
+optional flag.
 """
 
-import os, sys
+import argparse
+import os
+import sys
+import time
+import resource  # Ensure this is imported for Unix-based systems resource tracking
 from src.search.hybrid import HybridSearch
 from src.search.bfs import BFS
 from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
-from src.structs.hittingsettree import HittingSetTree, HSTreeNode
 from src.structs.dataset import DataSet
+from src.structs.hittingsettree import HittingSetTree
 
-output_directory = 'Results'
+# Adjust the import path according to your project structure
+from data.database.database import create_connection, log_execution_data
 
-def generate_output_filename(input_filename):
-    name, ext = os.path.splitext(input_filename)
-    return f"{name}_CNF{ext}"
+# Set up argument parser
+parser = argparse.ArgumentParser(description='Run the kernelization process with optional database logging.')
+parser.add_argument('dataset_file', type=str, help='Path to the dataset file')
+parser.add_argument('strategy_param', type=int, help='Strategy parameter value')
+parser.add_argument('--log-db', action='store_true', help='Enable logging to database')
 
-def setup():
-    if not os.path.exists(output_directory):
-        os.makedirs(output_directory)
+# Parse arguments
+args = parser.parse_args()
+
+def read_dataset_content(dataset_filepath):
+    with open(dataset_filepath, 'r') as file:
+        return file.read()
 
 if __name__ == "__main__":
-    setup()
-    # if len(sys.argv) < 2:
-    #     print("Usage: python main.py <dataset_file>")
-    #     sys.exit(1)
+    create_connection()  # Prepare the database
+    start_time = time.time()
 
-    dataset_filepath = sys.argv[1]
-    strategy_param = sys.argv[2]
+    if not os.path.exists(args.dataset_file):
+        print(f"Dataset file not found: {args.dataset_file}")
+        sys.exit(1)
 
-    #print(f"sys.argv[2] = {strategy_param}")
-    #dataset_filepath = "data/Test_Datasets/test_UNSAT2.txt"
-    #dataset_filepath = "data/Dataset_A/sig3_5_15/srs_0.txt"
-    #datas = DataSet(dataset_filepath,strategy_param)
-    #print(datas.get_elements_with_values())
+    dataset_content = read_dataset_content(args.dataset_file)
 
-    # Ensure strategy_param is an integer for comparison
+    hitting_set_tree = None  # Initialize the hitting set tree to None
+
     try:
-        strategy_param = int(strategy_param)
-    except ValueError:
-        print(f"Invalid strategy_param: {strategy_param}. Must be an integer.")
+        if args.strategy_param == 0:
+            hitting_set_tree = KernelSolver(BFS(ExpandShrink(), DataSet(args.dataset_file, args.strategy_param), "A1")).solve()
+        elif 0 < args.strategy_param < 4:
+            hitting_set_tree = KernelSolver(HybridSearch(ExpandShrink(), DataSet(args.dataset_file, args.strategy_param), "A1", args.strategy_param)).solve()
+        else:
+            print("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
+            sys.exit(1)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        sys.exit(1)
 
-    with open("tmp/tree_output.txt", 'w') as file:
-        pass  # Opening in write mode 'w' clears the file
+    execution_time = time.time() - start_time  # Measure execution time
 
-    if strategy_param == 0:
-        KernelSolver(BFS(ExpandShrink(), DataSet(dataset_filepath,strategy_param), "A1" )).solve()
-    elif 0 < strategy_param < 4:
-        KernelSolver(HybridSearch(ExpandShrink(), DataSet(dataset_filepath,strategy_param), "A1", strategy_param)).solve()
+    if hitting_set_tree:
+        num_kernels, num_branches = hitting_set_tree.count_kernels_and_branches()
+        pruned_branches_count = hitting_set_tree.count_pruned_nodes()
     else:
-        print("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
-    
+        num_kernels = num_branches = pruned_branches_count = 0
+
+    resources_used = f"Memory Usage: {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
+
+    if args.log_db:
+        log_execution_data(execution_time, pruned_branches_count, resources_used, dataset_content, args.strategy_param, num_kernels, num_branches, args.dataset_file)
+
+    print(f"Execution time: {execution_time}s, Pruned branches: {pruned_branches_count}, Kernels: {num_kernels}, Branches: {num_branches}")

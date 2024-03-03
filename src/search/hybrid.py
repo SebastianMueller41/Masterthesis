@@ -27,6 +27,7 @@ class HybridSearch(Strategy):
             if self.should_prune(parent):
                 # Instead of returning, mark the parent as "PRUNED" and stop further processing
                 parent.kernel = "PRUNED"
+                parent.set_pruned()
                 return
             for element in parent.get_kernel():
                 reduced_dataset = parent.get_dataset().clone()
