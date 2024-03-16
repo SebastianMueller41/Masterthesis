@@ -144,6 +144,32 @@ class HittingSetTree:
         for child in node.children:
             count += self.count_pruned_nodes(child)
         return count
+    
+    def tree_depth(self, node=None):
+        """
+        Calculate the depth of the tree from the given node down to the deepest leaf.
+        
+        Args:
+            node (HSTreeNode, optional): The node to start calculating depth from. If None, start from the root.
+            
+        Returns:
+            int: The depth of the tree.
+        """
+        if node is None:
+            node = self.root
+        
+        # A leaf node has a depth of 0
+        if node.children == []:
+            return 0
+
+        # Recursively calculate the depth of each subtree and find the maximum
+        max_depth = 0
+        for child in node.children:
+            child_depth = self.tree_depth(child)
+            max_depth = max(max_depth, child_depth)
+
+        # Add 1 to the maximum depth of the subtree to account for the current node
+        return max_depth + 1
 
     def print_tree(self, node=None, level=0):
         if node is None:
