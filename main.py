@@ -13,7 +13,7 @@ import argparse
 import os
 import sys
 import time
-import resource  # Ensure this is imported for Unix-based systems resource tracking
+import resource
 from src.search.hybrid import HybridSearch
 from src.search.bfs import BFS
 from src.solver.kernelsolver import KernelSolver
@@ -21,8 +21,7 @@ from src.kernels.expandshrink import ExpandShrink
 from src.structs.dataset import DataSet
 from src.structs.hittingsettree import HittingSetTree
 
-# Adjust the import path according to your project structure
-from data.database.database import create_connection, log_execution_data
+from src.database.database import create_connection, log_execution_data
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Run the kernelization process with optional database logging.')
@@ -66,12 +65,13 @@ if __name__ == "__main__":
     if hitting_set_tree:
         num_kernels, num_branches = hitting_set_tree.count_kernels_and_branches()
         pruned_branches_count = hitting_set_tree.count_pruned_nodes()
+        tree_depth = hitting_set_tree.tree_depth()
     else:
         num_kernels = num_branches = pruned_branches_count = 0
 
-    resources_used = f"Memory Usage: {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
+    resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
     if args.log_db:
-        log_execution_data(execution_time, pruned_branches_count, resources_used, dataset_content, args.strategy_param, num_kernels, num_branches, args.dataset_file)
+        log_execution_data(execution_time, resources_used, dataset_content, args.strategy_param, num_kernels, num_branches, tree_depth, pruned_branches_count, args.dataset_file)
 
-    print(f"Execution time: {execution_time}s, Pruned branches: {pruned_branches_count}, Kernels: {num_kernels}, Branches: {num_branches}")
+    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Kernels: {num_kernels}, Branches: {num_branches}")
