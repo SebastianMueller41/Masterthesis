@@ -66,12 +66,13 @@ if __name__ == "__main__":
         num_kernels, num_branches = hitting_set_tree.count_kernels_and_branches()
         pruned_branches_count = hitting_set_tree.count_pruned_nodes()
         tree_depth = hitting_set_tree.tree_depth()
+        boundary = hitting_set_tree.boundary
     else:
         num_kernels = num_branches = pruned_branches_count = 0
 
     resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
     if args.log_db:
-        log_execution_data(execution_time, resources_used, dataset_content, args.strategy_param, num_kernels, num_branches, tree_depth, pruned_branches_count, args.dataset_file)
+        log_execution_data(execution_time, resources_used, dataset_content, args.strategy_param, num_kernels, num_branches, tree_depth, pruned_branches_count, boundary, args.dataset_file)
 
-    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Kernels: {num_kernels}, Branches: {num_branches}")
+    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}")
