@@ -112,6 +112,9 @@ class HittingSetTree:
         parent.add_child(new_node)
         return new_node
     
+    def add_leaf_node(self, leaf_node):
+        self.leaf_nodes.append(leaf_node)
+    
     def calculate_path_bbvalue_up_to_root(self, node, dataset):
         cumulative_bbvalue = 0.0
         current_node = node
@@ -142,7 +145,7 @@ class HittingSetTree:
     def get_hitting_set_for_optimal_solution(self):
         """
         """
-        return self.get_hitting_set_for_leaf(self, self.leaf_nodes[-1])
+        return self.get_hitting_set_for_leaf(self.leaf_nodes[-1])
 
     def count_kernels_and_branches(self, node=None):
         if node is None:

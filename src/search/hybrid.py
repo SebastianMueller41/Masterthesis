@@ -44,6 +44,7 @@ class HybridSearch(Strategy):
                     self.dfs(child_node.get_dataset(), alpha, child_node)
                 else:
                     child_node.set_kernel("LEAF")
+                    self.tree.add_leaf_node(child_node)
                     self.update_boundary_with_leaf(child_node)
         self.log_tree()
 
@@ -95,6 +96,7 @@ class HybridSearch(Strategy):
                             current_node.add_child(child_node)
                 else:
                     current_node.set_kernel("LEAF")
+                    self.tree.add_leaf_node(child_node)
                     self.update_boundary_with_leaf(current_node)
 
             self.log_tree()
