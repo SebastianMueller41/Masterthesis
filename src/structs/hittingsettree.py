@@ -120,6 +120,29 @@ class HittingSetTree:
             cumulative_bbvalue += 1 / inconsistency_value if inconsistency_value != 0 else 0
             current_node = current_node.parent
         return cumulative_bbvalue
+    
+    def get_hitting_set_for_leaf(self, leaf_node):
+        """
+        Traverses from a given leaf node up to the root node, collecting all edges.
+
+        Args:
+            leaf_node (HSTreeNode): The leaf node to start from.
+
+        Returns:
+            list: The hitting set consisting of all edges from the leaf to the root.
+        """
+        hitting_set = []
+        current_node = leaf_node
+        while current_node is not None and current_node.parent is not None:  # Ensure not at root
+            if current_node.edge is not None:  # Assuming edge attribute is used
+                hitting_set.append(current_node.edge)
+            current_node = current_node.parent
+        return hitting_set
+
+    def get_hitting_set_for_optimal_solution(self):
+        """
+        """
+        return self.get_hitting_set_for_leaf(self, self.leaf_nodes[-1])
 
     def count_kernels_and_branches(self, node=None):
         if node is None:
