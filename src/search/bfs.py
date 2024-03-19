@@ -18,8 +18,6 @@ class BFS(Strategy):
         ## print afterwards
         self.tree.print_tree()
             
-            
-        
     def span_tree_with_kernels(self, dataset, alpha, parent=None, removed=None):
         result = self.kernelStrategy.find_kernel(dataset, alpha)
         if result is not None:
@@ -27,6 +25,7 @@ class BFS(Strategy):
             if not found_kernel:
                 # If found_kernel is empty, we've hit a leaf node
                 child_node = HSTreeNode(kernel="LEAF")
+                self.tree.add_leaf_node(child_node)
                 parent.add_child(child_node)
                 return
             
@@ -53,6 +52,7 @@ class BFS(Strategy):
                 self.span_tree_with_kernels(reduced_dataset, alpha, parent, element)
         else:
             child_node = HSTreeNode(kernel="LEAF", edge=removed)
+            self.tree.add_leaf_node(child_node)
             parent.add_child(child_node)
             #logging
             self.tree.print_tree_to_file()    
