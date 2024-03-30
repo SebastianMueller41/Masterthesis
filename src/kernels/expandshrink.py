@@ -6,7 +6,7 @@ from src.structs.dataset import DataSet
 class ExpandShrink(KernelStrategy):
     def __init__(self, window_size=1, divide_and_conquer=False):  # Default to the basic expand-shrink method with window_size = 1 and without Divide_and_conquer
         self.window_size = window_size
-        self.divide_and_conquer = False # Set to FALSE PER DEFAULT UNTIL STRATEGY IMPLEMENTED
+        self.div_conq = divide_and_conquer # Set to FALSE PER DEFAULT UNTIL STRATEGY IMPLEMENTED
     
     def find_kernel(self, dataset, alpha):
             return self.expand_shrink(dataset, alpha)
@@ -30,7 +30,10 @@ class ExpandShrink(KernelStrategy):
             # After adding the window to B_prime, check if alpha is entailed
             if self.cn(B_prime, alpha):
                 # If alpha is entailed by the current B_prime, refine it to find the kernel
-                return self.kernel_black_box(B_prime, alpha)
+                if self.div_conq:
+                    return self.divide_and_conquer(B_prime, alpha)
+                else:
+                    return self.kernel_black_box(B_prime, alpha)
             
     def kernel_black_box(self, B_dataset, alpha):
         """
@@ -45,36 +48,58 @@ class ExpandShrink(KernelStrategy):
         Returns:
             DataSet: The dataset after processing with kernel_black_box.
         """
-        if self.divide_and_conquer:
-            # The divide and conquer implementation
-            def divide_and_conquer(B_dataset):
-                pass #TODO: Implement divide and conquer
-            
-            return divide_and_conquer(B_dataset)
-        else:
-            # The normal kernel_black_box implementation
-            i = 0
-            # Iterate over elements of B, clone B and remove element
-            while i < len(B_dataset.get_elements()):
-                element = B_dataset.get_elements()[i]
-                #print("Checking line: " + element + " with index: " + str(i))
-                cloned_B_dataset = B_dataset.clone()
-                #print("Removing element: " + element)
-                cloned_B_dataset.remove_element(element)
-                #print("B = " + str(cloned_B_dataset.get_elements()))
-                # Check if alpha in Cn(B - {beta}, alpha)
-                if self.cn(cloned_B_dataset, alpha):
-                    #print("SHRINK: " + alpha + " in CN, removing: " + element)
-                    B_dataset.remove_element(element)
-                    #print("CONTINUE SHRINKING WITH : " + str(B_dataset.get_elements()))
-                    # Do not increment i, since we want to check the new element at the same index after removal
-                else:
-                    # Increment i only if the element was not removed
-                    i += 1
+        #print(f"B_dataset before kbb: {B_dataset.get_elements()}")
+        # The normal kernel_black_box implementation
+        i = 0
+        # Iterate over elements of B, clone B and remove element
+        while i < len(B_dataset.get_elements()):
+            element = B_dataset.get_elements()[i]
+            #print("Checking line: " + element + " with index: " + str(i))
+            cloned_B_dataset = B_dataset.clone()
+            #print("Removing element: " + element)
+            cloned_B_dataset.remove_element(element)
+            #print("B = " + str(cloned_B_dataset.get_elements()))
+            # Check if alpha in Cn(B - {beta}, alpha)
+            if self.cn(cloned_B_dataset, alpha):
+                #print("SHRINK: " + alpha + " in CN, removing: " + element)
+                B_dataset.remove_element(element)
+                #print("CONTINUE SHRINKING WITH : " + str(B_dataset.get_elements()))
+                # Do not increment i, since we want to check the new element at the same index after removal
+            else:
+                # Increment i only if the element was not removed
+                i += 1
 
-            #print("Kernel output: " + str(B_dataset.get_elements()))
-            #print("KERNEL BLACKBOX FINISHED")
-            return B_dataset
+        #print(f"Kernel output: {B_dataset.get_elements()}")
+        #print("KERNEL BLACKBOX FINISHED")
+        return B_dataset
+        
+    def divide_and_conquer(self, B_dataset, alpha):
+        #print(f"Checking B_dataset: {B_dataset.get_elements()}, cn: {self.cn(B_dataset, alpha)}")
+        
+        # Base case: If the dataset is too small to split further meaningfully.
+        if B_dataset.size() <= 1:
+            return B_dataset if self.cn(B_dataset, alpha) else DataSet()
+
+        # Split the dataset into two halves.
+        B1, B2 = B_dataset.split()
+
+        # Check entailment for each half.
+        cn_B1 = self.cn(B1, alpha)
+        cn_B2 = self.cn(B2, alpha)
+
+        # If both halves fail the entailment check, pass them to kernel_black_box.
+        if not cn_B1 and not cn_B2:
+            #print("Neither half entails alpha, passing halves to kernel_black_box.")
+            return self.kernel_black_box(B_dataset, alpha)
+
+        # Recursively divide and conquer if any half entails alpha.
+        if cn_B1:
+            return self.divide_and_conquer(B1, alpha)
+        if cn_B2:
+            return self.divide_and_conquer(B2, alpha)
+
+        # Fallback, in case an unforeseen condition occurs.
+        return DataSet()
 
     def cn(self, B_dataset, alpha):
         """

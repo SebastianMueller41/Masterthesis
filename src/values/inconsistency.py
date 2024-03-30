@@ -3,7 +3,7 @@ import os
 import sys
 import tempfile
 
-def call_sat_solver(script_path, filepath, option='c'):
+def call_sat_solver(script_path, filepath, option='sum'):
     """Call the SAT solver script and return the output."""
     try:
         result = subprocess.run(

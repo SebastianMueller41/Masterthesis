@@ -62,9 +62,9 @@ if __name__ == "__main__":
 
     try:
         if args.strategy_param == 0:
-            hitting_set_tree = KernelSolver(BFS(ExpandShrink(args.sw_size,args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), "A1")).solve()
+            hitting_set_tree = KernelSolver(BFS(ExpandShrink(args.sw_size,args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), "arg_c192&&!arg_c192")).solve()
         elif 0 < args.strategy_param < 4:
-            hitting_set_tree = KernelSolver(HybridSearch(ExpandShrink(args.sw_size,args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), "A1", args.strategy_param)).solve()
+            hitting_set_tree = KernelSolver(HybridSearch(ExpandShrink(args.sw_size,args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), "arg_c192&&!arg_c192", args.strategy_param)).solve()
         else:
             print("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
             sys.exit(1)

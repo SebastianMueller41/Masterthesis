@@ -103,6 +103,42 @@ class DataSet:
             DataSet: A new DataSet instance containing the same elements.
         """
         return DataSet(elements=list(self.elements))
+    
+    def split(self):
+        """
+        Splits the dataset into two halves.
+
+        Returns:
+            tuple of DataSet: Two DataSet instances representing the split dataset.
+        """
+        mid_index = len(self.elements) // 2
+        first_half = DataSet(elements=self.elements[:mid_index])
+        second_half = DataSet(elements=self.elements[mid_index:])
+        return first_half, second_half
+    
+    def combine(self, other):
+        """
+        Combine two datasets into one, ensuring each element is unique.
+
+        Args:
+            other (DataSet): The other dataset to combine with this one.
+
+        Returns:
+            DataSet: A new dataset containing unique elements from both datasets.
+        """
+        # Use a set to ensure uniqueness
+        combined_elements_set = set(self.get_elements()) | set(other.get_elements())
+        # Return a new DataSet with the combined unique elements
+        return DataSet(elements=list(combined_elements_set))
+
+    def size(self):
+        """
+        Returns the number of elements in the dataset.
+
+        Returns:
+            int: The size of the dataset.
+        """
+        return len(self.elements)
 
     def to_file(self, output_file_path):
         """
