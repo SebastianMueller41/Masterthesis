@@ -54,16 +54,16 @@ class ExpandShrink(KernelStrategy):
         # Iterate over elements of B, clone B and remove element
         while i < len(B_dataset.get_elements()):
             element = B_dataset.get_elements()[i]
-            #print("Checking line: " + element + " with index: " + str(i))
+            print("Checking line: " + element + " with index: " + str(i))
             cloned_B_dataset = B_dataset.clone()
-            #print("Removing element: " + element)
+            print("Removing element: " + element)
             cloned_B_dataset.remove_element(element)
-            #print("B = " + str(cloned_B_dataset.get_elements()))
+            print("B = " + str(cloned_B_dataset.get_elements()))
             # Check if alpha in Cn(B - {beta}, alpha)
             if self.cn(cloned_B_dataset, alpha):
-                #print("SHRINK: " + alpha + " in CN, removing: " + element)
+                print("SHRINK: " + alpha + " in CN, removing: " + element)
                 B_dataset.remove_element(element)
-                #print("CONTINUE SHRINKING WITH : " + str(B_dataset.get_elements()))
+                print("CONTINUE SHRINKING WITH : " + str(B_dataset.get_elements()))
                 # Do not increment i, since we want to check the new element at the same index after removal
             else:
                 # Increment i only if the element was not removed
