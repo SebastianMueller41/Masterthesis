@@ -52,7 +52,16 @@ class ExpandShrink(KernelStrategy):
         # The normal kernel_black_box implementation
         i = 0
         # Iterate over elements of B, clone B and remove element
+
+        # Temporary debugging step
+        max_iterations = 30  # Set this to a reasonable limit based on expectations
+        current_iteration = 0
+
         while i < len(B_dataset.get_elements()):
+            if current_iteration > max_iterations:
+                print("Forced break for debugging.")
+                break
+            current_iteration += 1
             element = B_dataset.get_elements()[i]
             print("Checking line: " + element + " with index: " + str(i))
             cloned_B_dataset = B_dataset.clone()
