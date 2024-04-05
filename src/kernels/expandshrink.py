@@ -1,22 +1,44 @@
+import logging
 import subprocess
+# Assuming KernelStrategy, CNFConverter, and DataSet are defined elsewhere as in your original setup.
 from .kernelstrategy import KernelStrategy
 from src.parse import CNFConverter
 from src.structs.dataset import DataSet
 
+# Configure logging to file
+logging.basicConfig(filename='kernel_operations.log', # Log file name
+                    filemode='w', # Overwrite the log file on each run
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    level=logging.DEBUG)
+
 class ExpandShrink(KernelStrategy):
-    def __init__(self, window_size=1, divide_and_conquer=False):  # Default to the basic expand-shrink method with window_size = 1 and without Divide_and_conquer
+    def __init__(self, window_size=1, divide_and_conquer=False):  
+        # Default to the basic expand-shrink method with window_size = 1 and without Divide_and_conquer
         self.window_size = window_size
-        self.div_conq = divide_and_conquer # Set to FALSE PER DEFAULT UNTIL STRATEGY IMPLEMENTED
+        self.div_conq = divide_and_conquer  # Set to FALSE PER DEFAULT UNTIL STRATEGY IMPLEMENTED
     
     def find_kernel(self, dataset, alpha):
+        if self.cn(dataset, alpha):
+            # Starts the kernel finding process
+            logging.debug(f"Finding kernel for {len(dataset.get_elements())} elements of dataset = {dataset.get_elements()}")
             return self.expand_shrink(dataset, alpha)
+        else:
+            logging.debug(f"Dataset does not entail {alpha}, kernel = empty")
+            return None
     
     def expand_shrink(self, B_dataset, alpha):
+        # This function attempts to expand and then shrink the dataset around the concept 'alpha'
         elements = B_dataset.get_elements()
-        #print(f"ELEMENTS: {elements}")
+        logging.info(f"{len(elements)} ELEMENTS: {elements}")  # Shows the elements being processed
         B_prime = DataSet()
 
+        counter = 0
+
         for start in range(0, len(elements), self.window_size):
+            counter += 1
+            if counter > len(elements) + 5:
+                logging.warning("BREAK, MAX ITERATION, RETURNING NONE.")  # Logs a break in iteration
+                return None
             # Calculate the end of the current window, ensuring not to exceed the dataset's bounds
             window_end = min(start + self.window_size, len(elements))
 
@@ -25,61 +47,46 @@ class ExpandShrink(KernelStrategy):
             for element in window_elements:
                 B_prime.add_element(element)
 
-            #print(f"B_PRIME: {B_prime.get_elements()}")
+            logging.debug(f"B_PRIME with {len(B_prime.get_elements())} elements: {B_prime.get_elements()}")  # Logs the elements in B_prime after addition
 
             # After adding the window to B_prime, check if alpha is entailed
             if self.cn(B_prime, alpha):
                 # If alpha is entailed by the current B_prime, refine it to find the kernel
                 if self.div_conq:
-                    return self.divide_and_conquer(B_prime, alpha)
+                    return self.divide_and_conquer(B_prime, alpha)  # Divide and conquer strategy
                 else:
-                    return self.kernel_black_box(B_prime, alpha)
+                    return self.kernel_black_box(B_prime, alpha)  # Regular kernel black box strategy
             
     def kernel_black_box(self, B_dataset, alpha):
-        """
-        Optionally apply divide and conquer technique or the normal approach to find the kernel.
-        
-        Args:
-            B_dataset (DataSet): The dataset to be processed.
-            alpha (str): The element to be checked against the dataset.
-            output_file_path (str): The file path where the kernel will be saved.
-            use_divide_and_conquer (bool): If True, use the divide and conquer technique; otherwise, use the normal approach.
-        
-        Returns:
-            DataSet: The dataset after processing with kernel_black_box.
-        """
-        #print(f"B_dataset before kbb: {B_dataset.get_elements()}")
-        # The normal kernel_black_box implementation
+        # This is the core function for finding the kernel using either a normal approach or divide and conquer
         i = 0
-        # Iterate over elements of B, clone B and remove element
-
-        # Temporary debugging step
-        max_iterations = 30  # Set this to a reasonable limit based on expectations
+        max_iterations = len(B_dataset.get_elements()) + 5  # Temporary limit for debugging
         current_iteration = 0
 
         while i < len(B_dataset.get_elements()):
             if current_iteration > max_iterations:
-                print("Forced break for debugging.")
+                logging.error("Forced break for debugging.")  # Error logged if max iterations reached
                 break
             current_iteration += 1
             element = B_dataset.get_elements()[i]
-            print("Checking line: " + element + " with index: " + str(i))
+            logging.info(f"Checking line: {element} with index: {i}")  # Info about current element and index
             cloned_B_dataset = B_dataset.clone()
-            print("Removing element: " + element)
+            logging.debug(f"Removing element: {element}")  # Debug log for element removal
             cloned_B_dataset.remove_element(element)
-            print("B = " + str(cloned_B_dataset.get_elements()))
+            logging.debug(f"B with {len(cloned_B_dataset.get_elements())} elements = {cloned_B_dataset.get_elements()}")  # Debug log for current dataset state
+
             # Check if alpha in Cn(B - {beta}, alpha)
             if self.cn(cloned_B_dataset, alpha):
-                print("SHRINK: " + alpha + " in CN, removing: " + element)
+                logging.info(f"SHRINK: CN = {self.cn(cloned_B_dataset, alpha)}, removing: {element}")  # Info log for dataset shrink action
                 B_dataset.remove_element(element)
-                print("CONTINUE SHRINKING WITH : " + str(B_dataset.get_elements()))
+                logging.debug(f"CONTINUE SHRINKING WITH {len(B_dataset.get_elements())} elements : {B_dataset.get_elements()}")  # Debug log for continued shrinking
                 # Do not increment i, since we want to check the new element at the same index after removal
             else:
                 # Increment i only if the element was not removed
                 i += 1
 
-        #print(f"Kernel output: {B_dataset.get_elements()}")
-        #print("KERNEL BLACKBOX FINISHED")
+        logging.info(f"Kernel output with {len(B_dataset.get_elements())} elements: {B_dataset.get_elements()}")  # Logs the final kernel output
+        logging.info("KERNEL BLACKBOX FINISHED")  # Indicates the end of the kernel black box process
         return B_dataset
         
     def divide_and_conquer(self, B_dataset, alpha):
@@ -87,24 +94,29 @@ class ExpandShrink(KernelStrategy):
         
         # Base case: If the dataset is too small to split further meaningfully.
         if B_dataset.size() <= 1:
+            logging.info("DC: Datasetsize <= 1")
             return B_dataset if self.cn(B_dataset, alpha) else DataSet()
 
         # Split the dataset into two halves.
+        logging.info(f"DC splitting Dataset: {B_dataset.get_elements()}")
         B1, B2 = B_dataset.split()
 
         # Check entailment for each half.
         cn_B1 = self.cn(B1, alpha)
         cn_B2 = self.cn(B2, alpha)
+        logging.debug(f"DC Check entailment, cn_B1 = {cn_B1}, cn_B2 = {cn_B2}")
 
         # If both halves fail the entailment check, pass them to kernel_black_box.
         if not cn_B1 and not cn_B2:
-            #print("Neither half entails alpha, passing halves to kernel_black_box.")
+            logging.info("Neither half entails alpha, passing halves to kernel_black_box.")
             return self.kernel_black_box(B_dataset, alpha)
 
         # Recursively divide and conquer if any half entails alpha.
         if cn_B1:
+            logging.info(f"Recursively calling DC for B1 = {B1.get_elements()}")
             return self.divide_and_conquer(B1, alpha)
         if cn_B2:
+            logging.info(f"Recursively calling DC for B2 = {B2.get_elements()}")
             return self.divide_and_conquer(B2, alpha)
 
         # Fallback, in case an unforeseen condition occurs.
@@ -134,7 +146,6 @@ class ExpandShrink(KernelStrategy):
 
         # Call parse.py to transform B_copy into CNF
         B_copy.to_file(temp_file)
-        #subprocess.run(['python3', 'parse.py', temp_file, temp_file])
         converter = CNFConverter(verbose=False)
         converter.convert_to_cnf(temp_file, temp_file)
 
@@ -147,11 +158,11 @@ class ExpandShrink(KernelStrategy):
 
         # Process the output
         if "UNSAT" in last_line:
-            #print(f"MiniSat result: UNSAT. Therefore, {alpha} is in Cn({B_dataset.get_elements()})")
+            logging.debug(f"MiniSat result: UNSAT. Therefore, {alpha} is in Cn({B_dataset.get_elements()})")
             return True
         elif "SAT" in last_line:
-            #print(f"MiniSat result: SAT. Therefore, {alpha} is not in Cn({B_dataset.get_elements()})")
+            logging.debug(f"MiniSat result: SAT. Therefore, {alpha} is not in Cn({B_dataset.get_elements()})")
             return False
         else:
-            #print("MiniSat output was unexpected.")
+            logging.debug("MiniSat output was unexpected.")
             return None

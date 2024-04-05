@@ -32,8 +32,19 @@ parser.add_argument('--sw-size', '--sliding-window', type=int, default=1, help='
 parser.add_argument('-dc', '--divide-conquer', action='store_true', help='Activate the divide and conquer technique')
 parser.add_argument('--log-db', action='store_true', help='Enable logging to database')
 
-# Parse arguments
+# Create a mutually exclusive group for the -kernel and -remainder arguments
+group = parser.add_mutually_exclusive_group()
+group.add_argument('-k', '--kernel', action='store_const', const='kernel', dest='method', help='Use the kernel method')
+group.add_argument('-r', '--remainder', action='store_const', const='remainder', dest='method', help='Use the remainder method')
+
+# Parse the arguments
 args = parser.parse_args()
+
+# Now args.method will be either 'kernel', 'remainder', or None (if neither is specified)
+print(args.method)
+
+# Example usage:
+# python script.py dataset.txt 2 --sw-size 3 -dc --log-db --kernel
 
 # Function to read dataset and return its content
 def read_dataset_content(dataset_filepath):
@@ -62,15 +73,21 @@ if __name__ == "__main__":
 
     try:
         if args.strategy_param == 0:
-            hitting_set_tree = KernelSolver(BFS(ExpandShrink(args.sw_size,args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), "arg_0")).solve()
+            hitting_set_tree = KernelSolver(BFS(ExpandShrink(args.sw_size,args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), "arg_0&&!arg_0")).solve()
         elif 0 < args.strategy_param < 4:
-            hitting_set_tree = KernelSolver(HybridSearch(ExpandShrink(args.sw_size,args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), "arg_0", args.strategy_param)).solve()
+            hitting_set_tree = KernelSolver(HybridSearch(ExpandShrink(args.sw_size,args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), "arg_0&&!arg_0", args.strategy_param)).solve()
         else:
             print("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
             sys.exit(1)
     except Exception as e:
         print(f"An error occurred: {e}")
         sys.exit(1)
+
+    filename = "tree_output.txt"
+
+    # Open the file in write mode to clear its contents
+    with open(filename, 'w'):
+        pass  # This leaves the file empty
 
     execution_time = time.time() - start_time  # Measure execution time
 
@@ -86,7 +103,7 @@ if __name__ == "__main__":
     resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
     if args.log_db:
-        log_execution_data(execution_time, resources_used, dataset_content, args.strategy_param, num_kernels, num_branches, tree_depth, pruned_branches_count, boundary, args.dataset_file, optimal_hitting_set)
+        log_execution_data(execution_time, resources_used, dataset_content, args.strategy_param, num_kernels, num_branches, tree_depth, pruned_branches_count, boundary, args.dataset_file, optimal_hitting_set, args.divide_conquer, args.sw_size, args.method)
 
-    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}")
+    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.strategy_param}, Kernel_Remainder: {args.method}, Sliding Window size: {args.sw_size}, Divide and conquer: {args.divide_conquer}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}")
     print(f"Optimal hitting set: {optimal_hitting_set}")
