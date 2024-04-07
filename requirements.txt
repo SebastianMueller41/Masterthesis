@@ -10,6 +10,7 @@ importlib-metadata==7.0.1
 iniconfig==2.0.0
 lark==1.1.9
 locket==1.0.0
+mysql-connector-python
 netCDF4==1.6.5
 numpy==1.26.4
 ortools==9.8.3296
