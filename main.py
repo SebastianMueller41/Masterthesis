@@ -87,11 +87,7 @@ if __name__ == "__main__":
         print(f"An error occurred: {e}")
         sys.exit(1)
 
-    filename = "tree_output.txt"
-
-    # Open the file in write mode to clear its contents
-    with open(filename, 'w'):
-        pass  # This leaves the file empty
+    hitting_set_tree.print_tree_to_file(DataSet(args.dataset_file)) 
 
     execution_time = time.time() - start_time  # Measure execution time
 

@@ -46,7 +46,7 @@ class HybridSearch(Strategy):
                     child_node.set_kernel("LEAF")
                     self.tree.add_leaf_node(child_node)
                     self.update_boundary_with_leaf(child_node)
-        self.log_tree()
+        #self.log_tree()
 
     def calculate_bbvalue(self, current_node, element, dataset):
         # Retrieve the assigned value for the current element (either random or based on inconsistency)
@@ -99,7 +99,7 @@ class HybridSearch(Strategy):
                     self.tree.add_leaf_node(child_node)
                     self.update_boundary_with_leaf(current_node)
 
-            self.log_tree()
+            #self.log_tree()
 
     def calculate_path_bbvalue_up_to_root(self, node, dataset):
         cumulative_bbvalue = 0.0
