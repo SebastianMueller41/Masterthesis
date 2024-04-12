@@ -215,7 +215,7 @@ class HittingSetTree:
 
         output_text = f"{level}{indent}Kernel: {node.kernel}, Edge: {node.edge}, Level: {node.level}, Bound: {self.boundary}, Hitting Set Value: {hitting_set_value}\n"
 
-        with open(output_file, 'w') as file:
+        with open(output_file, 'a') as file:
             file.write(output_text)
 
         for child in node.children:
