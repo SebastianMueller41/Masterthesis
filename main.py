@@ -87,8 +87,6 @@ if __name__ == "__main__":
         print(f"An error occurred: {e}")
         sys.exit(1)
 
-    hitting_set_tree.print_tree_to_file(DataSet(args.dataset_file)) 
-
     execution_time = time.time() - start_time  # Measure execution time
 
     if hitting_set_tree:

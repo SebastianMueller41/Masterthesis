@@ -17,6 +17,7 @@ class HybridSearch(Strategy):
         self.dfs(self.dataset, self.alpha)
         self.bfs(self.alpha, self.tree.root)
         self.tree.print_tree()
+        self.log_tree()
 
     def dfs(self, dataset, alpha, parent: HSTreeNode = None):
         if parent is None:
