@@ -17,7 +17,7 @@ class BFS(Strategy):
         
         ## print afterwards
         self.tree.print_tree()
-        self.tree.print_tree_to_file()    
+        #self.tree.print_tree_to_file()    
             
     def span_tree_with_kernels(self, dataset, alpha, parent=None, removed=None):
         result = self.kernelStrategy.find_kernel(dataset, alpha)
@@ -56,5 +56,5 @@ class BFS(Strategy):
             self.tree.add_leaf_node(child_node)
             parent.add_child(child_node)
             #logging
-            self.tree.print_tree_to_file()    
-            self.tree.print_newline()
+            #self.tree.print_tree_to_file()    
+            #self.tree.print_newline()

@@ -21,6 +21,7 @@ from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
 from src.structs.dataset import DataSet
 from src.structs.hittingsettree import HittingSetTree
+from src.values.inconsistency import calculate_all_inconsistency_values, compute_shapley_values
 
 from src.database.database import create_connection, log_execution_data
 
@@ -65,6 +66,16 @@ if __name__ == "__main__":
 
     # Read the dataset
     dataset_content = read_dataset_content(args.dataset_file)
+
+    # Test shapley value
+    sat_solver_script = 'path_to_sat4im_script'
+
+    # Pre-calculate all inconsistency values for each subset
+    inconsistency_values = calculate_all_inconsistency_values(dataset_content, 'sat4im/src/sat4im.py')
+
+    # Compute Shapley values
+    shapley_values = compute_shapley_values(dataset_content, inconsistency_values)
+    print(shapley_values)
 
     # Validate the sliding window size
     if not 1 <= args.sw_size <= len(dataset_content):
