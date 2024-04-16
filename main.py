@@ -67,16 +67,6 @@ if __name__ == "__main__":
     # Read the dataset
     dataset_content = read_dataset_content(args.dataset_file)
 
-    # Test shapley value
-    sat_solver_script = 'path_to_sat4im_script'
-
-    # Pre-calculate all inconsistency values for each subset
-    inconsistency_values = calculate_all_inconsistency_values(dataset_content, 'sat4im/src/sat4im.py')
-
-    # Compute Shapley values
-    shapley_values = compute_shapley_values(dataset_content, inconsistency_values)
-    print(shapley_values)
-
     # Validate the sliding window size
     if not 1 <= args.sw_size <= len(dataset_content):
         sys.exit(f"--sw-size/--sliding-window must be between 1 and the length of the dataset ({len(dataset_content)}).")
