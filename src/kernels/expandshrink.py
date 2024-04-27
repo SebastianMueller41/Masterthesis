@@ -1,15 +1,14 @@
 import logging
 import subprocess
-# Assuming KernelStrategy, CNFConverter, and DataSet are defined elsewhere as in your original setup.
 from .kernelstrategy import KernelStrategy
 from src.parse import CNFConverter
 from src.structs.dataset import DataSet
 
 # Configure logging to file
-logging.basicConfig(filename='kernel_operations.log', # Log file name
+logging.basicConfig(filename='log/kernel_operations.log', # Log file name
                     filemode='w', # Overwrite the log file on each run
                     format='%(asctime)s - %(levelname)s - %(message)s',
-                    level=logging.CRITICAL)
+                    level=logging.DEBUG)
 
 class ExpandShrink(KernelStrategy):
     def __init__(self, window_size=1, divide_and_conquer=False):  
@@ -142,7 +141,6 @@ class ExpandShrink(KernelStrategy):
         # Clone B and add !alpha to check for entailment
         B_copy = B_dataset.clone()
         B_copy.add_element("!"+alpha)
-        #print("Checking Cn() with B: "+ str(B_copy.get_elements()))
 
         # Call parse.py to transform B_copy into CNF
         B_copy.to_file(temp_file)

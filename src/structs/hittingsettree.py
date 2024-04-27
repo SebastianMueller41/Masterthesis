@@ -79,7 +79,7 @@ class HittingSetTree:
         root (HSTreeNode): The root node of the tree.
     """
     
-    def __init__(self, dataset=None, initial_kernel=None):
+    def __init__(self, dataset=None, initial_kernel=None, output_file="tmp/tree_output.txt"):
         """
         Initialize the hitting set tree with an optional initial kernel at the root.
 
@@ -90,6 +90,12 @@ class HittingSetTree:
         self.boundary = float('inf')  # Initialize the upper bound.
         self.dataset = dataset
         self.leaf_nodes= []
+        self.output_file = output_file
+        
+        # Erase previous content of the output file at initialization
+        with open(self.output_file, 'w') as file:
+            file.truncate()  # Clears the file
+
 
     def insert_kernel(self, kernel, parent=None):
         """
@@ -145,7 +151,10 @@ class HittingSetTree:
     def get_hitting_set_for_optimal_solution(self):
         """
         """
-        return self.get_hitting_set_for_leaf(self.leaf_nodes[-1])
+        if self.leaf_nodes:
+            return self.get_hitting_set_for_leaf(self.leaf_nodes[-1])
+        else:
+            return None
 
     def count_kernels_and_branches(self, node=None):
         if node is None:

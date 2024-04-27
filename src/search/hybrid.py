@@ -47,7 +47,7 @@ class HybridSearch(Strategy):
                     child_node.set_kernel("LEAF")
                     self.tree.add_leaf_node(child_node)
                     self.update_boundary_with_leaf(child_node)
-        #self.log_tree()
+        self.log_tree()
 
     def calculate_bbvalue(self, current_node, element, dataset):
         # Retrieve the assigned value for the current element (either random or based on inconsistency)
@@ -100,13 +100,13 @@ class HybridSearch(Strategy):
                     self.tree.add_leaf_node(child_node)
                     self.update_boundary_with_leaf(current_node)
 
-            #self.log_tree()
+            self.log_tree()
 
     def calculate_path_bbvalue_up_to_root(self, node, dataset):
         cumulative_bbvalue = 0.0
         current_node = node
         while current_node is not None and current_node.edge is not None:
-            # Retrieve the inconsistency value for the current edge/formula
+            # Retrieve the value for the current edge/formula
             inconsistency_value = dataset.element_values.get(current_node.edge, 0)
             cumulative_bbvalue += 1 / float(inconsistency_value) if inconsistency_value != 0 else 0
             current_node = current_node.parent

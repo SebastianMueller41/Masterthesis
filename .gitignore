@@ -3,5 +3,5 @@ tmp/
 pyenv/
 src/database
 .DS_Store
-kernel_operations.log
+log/
 NOHUP
