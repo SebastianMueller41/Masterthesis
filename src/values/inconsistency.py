@@ -5,13 +5,8 @@ import tempfile
 import math
 from itertools import chain, combinations
 
-def call_sat_solver(script_path, subset, option='sum'):
+def call_sat_solver(script_path, temp_filepath, option='c'):
     """Call the SAT solver script and return the output using a subset."""
-    # Write the subset to a temporary file
-    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
-        temp_file.write('\n'.join(subset))
-        temp_filepath = temp_file.name
-
     try:
         result = subprocess.run(
             [sys.executable, script_path, temp_filepath, option], 
@@ -19,10 +14,14 @@ def call_sat_solver(script_path, subset, option='sum'):
             text=True,
             check=True  # Ensures any subprocess errors are caught
         )
-        os.remove(temp_filepath)  # Clean up the temporary file
     except subprocess.CalledProcessError as e:
-        os.remove(temp_filepath)  # Ensure the temporary file is removed even on error
-        raise RuntimeError(f"Error calling SAT solver: {e}")
+        # Print the stderr output to get more information about the error
+        print(f"Error calling SAT solver: {e}")
+        print(f"Command: {e.cmd}")
+        print(f"Return code: {e.returncode}")
+        print(f"Output: {e.output}")
+        print(f"Error output: {e.stderr}")
+        raise RuntimeError(f"Error calling SAT solver: {e.stderr}") from e
 
     output_lines = result.stdout.splitlines()
     for line in output_lines:

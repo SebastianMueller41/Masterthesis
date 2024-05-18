@@ -38,8 +38,7 @@ args = parser.parse_args()
 
 # Function to handle timeout
 def timeout_handler(signum, frame):
-    print("TIMEOUT, program exceeded the specified time limit.")
-    sys.exit("TIMEOUT")
+    sys.exit("TIMEOUT, program exceeded the specified time limit.")
 
 # Function to read dataset and return its content
 def read_dataset_content(dataset_filepath):

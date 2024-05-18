@@ -61,7 +61,6 @@ class ExpandShrink(KernelStrategy):
         i = 0
         max_iterations = len(B_dataset.get_elements()) + 5  # Temporary limit for debugging
         current_iteration = 0
-
         while i < len(B_dataset.get_elements()):
             if current_iteration > max_iterations:
                 logging.error("Forced break for debugging.")  # Error logged if max iterations reached
@@ -76,7 +75,7 @@ class ExpandShrink(KernelStrategy):
 
             # Check if alpha in Cn(B - {beta}, alpha)
             if self.cn(cloned_B_dataset, alpha):
-                logging.info(f"SHRINK: CN = {self.cn(cloned_B_dataset, alpha)}, removing: {element}")  # Info log for dataset shrink action
+                logging.info(f"SHRINK: CN = TRUE, removing: {element}")  # Info log for dataset shrink action
                 B_dataset.remove_element(element)
                 logging.debug(f"CONTINUE SHRINKING WITH {len(B_dataset.get_elements())} elements : {B_dataset.get_elements()}")  # Debug log for continued shrinking
                 # Do not increment i, since we want to check the new element at the same index after removal

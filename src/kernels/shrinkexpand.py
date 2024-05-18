@@ -36,12 +36,12 @@ class ShrinkExpand(KernelStrategy):
                 logging.info(f"Kernel found with {len(kernel.get_elements())} elements: {kernel.get_elements()}")
                 return kernel
         else:
-            logging.debug(f"Dataset does not entail {alpha}, remainder = {dataset}, kernel = empty")
+            logging.debug(f"Dataset does not entail {alpha}, remainder = {dataset.get_elements()}, kernel = empty")
             return None
 
     def find_remainder(self, dataset, alpha):
         remainder_dataset = self.shrink(dataset, alpha)
-        logging.info(f"After shrink: {remainder_dataset.get_elements()} elements")
+        logging.info(f"After shrink: {remainder_dataset.get_elements()}")
         return remainder_dataset
 
     def shrink(self, B_dataset, alpha):
@@ -50,30 +50,27 @@ class ShrinkExpand(KernelStrategy):
         i = 0
         removed_elements = DataSet()
         while i < len(B_dataset.get_elements()):
-            B_prime = B_dataset.clone()
-            element = B_prime.get_elements()[i]
-            logging.info(f"Checking and removing line: {element} with index: {i}")  # Info about current element and index
-            B_prime.remove_element(element)
-            logging.debug(f"B_prime with {len(B_prime.get_elements())} elements = {B_prime.get_elements()}")  # Debug log for current dataset state
+            #B_prime = B_dataset.clone()
+            element = B_dataset.get_elements()[i]
+            B_dataset.remove_element(element)
+            removed_elements.add_element(element)
+            logging.debug(f"Checking and removing: {element} with index: {i}, B_prime with {len(B_dataset.get_elements())} elements = {B_dataset.get_elements()}")  # Debug log for current dataset state
 
-            # Check if alpha in Cn(B - {beta}, alpha)
-            if self.cn(B_prime, alpha):
-                removed_elements.add_element(element)
-                B_dataset.remove_element(element)
-                logging.info(f"SHRINK: CN = {self.cn(B_prime, alpha)}, removing: {element}")  # Info log for dataset shrink action
+            if self.cn(B_dataset, alpha):
+                logging.info(f"SHRINK: CN = TRUE, {element} removed, B_dataset = {B_dataset.get_elements()}, removed elements: {removed_elements.get_elements()}")  # Info log for dataset shrink action
             else:
-                # Increment i only if the element was not removed
-                i += 1
-                logging.info(f"Remainder output with {len(B_dataset.get_elements())} elements: {B_dataset.get_elements()}")  # Logs the final kernel output
+                logging.info(f"FINISHED SHRINK, CN = FALSE, Remainder output with {len(B_dataset.get_elements())} elements: {B_dataset.get_elements()}, removed elements: {removed_elements.get_elements()}")  # Logs the final kernel output
+                logging.debug(f"CONTINUE WITH EXPAND, B = {B_dataset.get_elements()}")
                 return self.expand(B_dataset, removed_elements, alpha)
 
     def expand(self, B_dataset, removed_elements, alpha):
         """ Expands the dataset to ensure maximality while alpha is not entailed. """
-        for element in removed_elements.get_elements():
-            logging.debug(f"Checking element {element} of {len(removed_elements.get_elements())} removed elements = {removed_elements.get_elements()}")
-            B_dataset.add_element(element)
+        for element in list(reversed(removed_elements.get_elements())):
+            B_dataset.add_element_at_start(element)
+            logging.debug(f"EXPAND: Checking element {element} with B = {B_dataset.get_elements()}")
             if self.cn(B_dataset, alpha):
                 B_dataset.remove_element(element)  # Remove it if it causes entailment
+                logging.debug(f"EXPAND: CN = TRUE, removing element {element} with B = {B_dataset.get_elements()}")
         
         logging.debug(f"FINAL REMAINDER WITH {len(B_dataset.get_elements())} elements: {B_dataset.get_elements()}")
         return B_dataset
@@ -98,7 +95,7 @@ class ShrinkExpand(KernelStrategy):
         # Clone B and add !alpha to check for entailment
         B_copy = B_dataset.clone()
         B_copy.add_element("!("+alpha+")")
-        logging.debug(f"Checking with B_copy = {B_copy.get_elements()}")
+        #logging.debug(f"Checking with B_copy = {B_copy.get_elements()}")
 
         # Call parse.py to transform B_copy into CNF
         B_copy.to_file(temp_file)

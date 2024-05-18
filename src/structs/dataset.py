@@ -82,6 +82,16 @@ class DataSet:
         """
         if element not in self.elements:
             self.elements.append(element)
+    
+    def add_element_at_start(self, element):
+        """
+        Add an element to the start of the dataset if it is not already present.
+
+        Args:
+            element (str): The element to add to the dataset.
+        """
+        if element not in self.elements:
+            self.elements.insert(0, element)  # Inserts element at the start of the list
 
     def remove_element(self, element):
         """
