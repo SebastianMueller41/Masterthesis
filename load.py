@@ -68,6 +68,8 @@ def calculate_values(filepath,filename, script_path='sat4im/src/sat4im.py'):
 
     inconsistency_differences = []
     for i in range(len(lines)):
+        if lines[i].strip() == "":
+            continue
         with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
             temp_file.writelines(lines[:i] + lines[i+1:])
             temp_filepath = temp_file.name
@@ -77,7 +79,7 @@ def calculate_values(filepath,filename, script_path='sat4im/src/sat4im.py'):
             inconsistency_difference = initial_inconsistency_measure - inconsistency_measure
             inconsistency_differences.append(inconsistency_difference)
             random_value = range_of_values[i]
-            sql=f"INSERT INTO DATA_ENTRY (randomValue, inconsistencyValue, filename) VALUES ({random_value}, {inconsistency_difference}, '{filepath}')"
+            sql=f"INSERT INTO DATA_ENTRY (randomValue, inconsistencyValue, filename, line) VALUES ({random_value}, {inconsistency_difference}, '{filepath}', '{lines[i]}')"
             print(sql)
             log_execution_data(sql)
         finally:

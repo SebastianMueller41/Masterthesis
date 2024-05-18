@@ -5,6 +5,7 @@ provides functionality to load data from a file, access elements, add or remove 
 clone itself, and write its contents to a file.
 """
 
+from src.database.database import create_connection
 from src.values.values import assign_fixed_value, assign_unique_random_values, assign_inconsistency_value
 import sys
 
@@ -45,6 +46,21 @@ class DataSet:
                 self.elements = [line.strip() for line in file.readlines()]
         except FileNotFoundError:
             sys.exit(f"File {file_path} not found.\nPlease check file path: {file_path}.")
+    
+    def load_elements_from_db(self, file_path):
+        conn = create_connection()
+
+        if conn is not None:
+            cursor = conn.cursor()
+            try:
+                print("")
+            except Error as e:
+                print(f"Failed to insert data into MySQL database: {e}")
+            finally:
+                cursor.close()
+                conn.close()
+        else:
+            print("Connection to MySQL database failed")
 
     def get_elements(self):
         """

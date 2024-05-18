@@ -1,3 +1,2 @@
-CREATE TABLE DATA_SETS (id int AUTO_INCREMENT, filename varchar(2000),  PRIMARY KEY (id));
-CREATE TABLE DATA_ENTRY (id int auto_increment, randomValue int, iconsistencyValue int, datasetid int, PRIMARY KEY (id));
-
+CREATE TABLE DATA_SETS (filename varchar(307),  PRIMARY KEY (filename));
+CREATE TABLE DATA_ENTRY (id int auto_increment, randomValue int, inconsistencyValue int, filename varchar(1024), PRIMARY KEY (id));
