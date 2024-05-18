@@ -92,7 +92,7 @@ def list_files_excluding_db(root_folder):
         for filename in filenames:
             if filename == '.DS_Store':
                 continue
-            sql= f"INSERT INTO DATA_SETS VALUES ('" + {os.path.join(dirpath, filename)} + "');"
+            sql= f"INSERT INTO DATA_SETS VALUES ('{os.path.join(dirpath, filename)}');"
             print(os.path.join(dirpath, filename))
             log_execution_data(sql)
             calculate_values(os.path.join(dirpath, filename), filename)
