@@ -21,7 +21,7 @@ from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
 from src.kernels.shrinkexpand import ShrinkExpand
 from src.structs.dataset import DataSet
-from src.database.database import create_connection, log_execution_data
+from src.database.database import create_connection, create_ssh_tunnel_and_connect, log_execution_data
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Run the kernelization process with optional database logging.')
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     timeout_duration = 3600  # 3600 seconds or 1 hour
     signal.alarm(timeout_duration)  # Start the timer
 
-    create_connection()  # Prepare the database
+    #create_ssh_tunnel_and_connect()  # Prepare the database
     start_time = time.time()
 
     if not os.path.exists(args.dataset_file):

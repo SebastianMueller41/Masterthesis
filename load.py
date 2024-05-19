@@ -79,7 +79,7 @@ def calculate_values(filepath,filename, script_path='sat4im/src/sat4im.py'):
             inconsistency_difference = initial_inconsistency_measure - inconsistency_measure
             inconsistency_differences.append(inconsistency_difference)
             random_value = range_of_values[i]
-            sql=f"INSERT INTO DATA_ENTRY (randomValue, inconsistencyValue, filename, line) VALUES ({random_value}, {inconsistency_difference}, '{filepath}', '{lines[i]}')"
+            sql=f"INSERT INTO DATA_ENTRY (randomValue, inconsistencyValue, filename, line) VALUES ({random_value}, {inconsistency_difference}, '{filepath}', '{lines[i].strip()}')"
             print(sql)
             log_execution_data(sql)
         finally:
@@ -87,8 +87,8 @@ def calculate_values(filepath,filename, script_path='sat4im/src/sat4im.py'):
 
 def list_files_excluding_db(root_folder):
     for dirpath, dirnames, filenames in os.walk(root_folder):
-        if dirpath == "data/ARG":
-        #if dirpath == "data/SRS" or "data/Test_Datasets":
+        #if dirpath == "data/ARG":
+        if dirpath == "data/SRS" or "data/Test_Datasets":
             continue
         # Print filenames in the current directory
         for filename in filenames:

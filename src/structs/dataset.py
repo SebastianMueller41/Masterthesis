@@ -5,9 +5,10 @@ provides functionality to load data from a file, access elements, add or remove 
 clone itself, and write its contents to a file.
 """
 
-from src.database.database import create_connection
+from src.database.database import create_connection, create_ssh_tunnel_and_connect
 from src.values.values import assign_fixed_value, assign_unique_random_values, assign_inconsistency_value
 import sys
+from mysql.connector import Error
 
 class DataSet:
     """
@@ -31,8 +32,9 @@ class DataSet:
         """
         self.elements = elements if elements is not None else []
         self.element_values = {}  # Initialize the mapping of elements to values
+        self.strategy_param = strategy_param
         if input_file_path:
-            self.load_elements_from_file(input_file_path)
+            self.load_elements_from_db(input_file_path)
         if strategy_param:
             self.apply_value_assignment_strategy(strategy_param)
 
@@ -48,14 +50,27 @@ class DataSet:
             sys.exit(f"File {file_path} not found.\nPlease check file path: {file_path}.")
     
     def load_elements_from_db(self, file_path):
-        conn = create_connection()
+        conn = create_ssh_tunnel_and_connect()
 
         if conn is not None:
-            cursor = conn.cursor()
+            cursor = conn.cursor(dictionary=True)
             try:
-                print("")
+                query = f"SELECT randomvalue, inconsistencyvalue, filename, line FROM DATA_ENTRY where filename='{file_path}'"
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+                # Process the rows as needed, skipping empty lines
+                for row in rows:
+                    # Example processing: print non-empty rows
+                    if row['randomvalue'] == "" or row['inconsistencyvalue'] == "" or row['filename'] == "" or row['line'] == "":
+                        continue
+                    print(f"Random Value: {row['randomvalue']}, Inconsistency Value: {row['inconsistencyvalue']}, Filename: {row['filename']}, Value: {row['line']}")
+                    self.elements.append(row['line'])
+                    element_value = row['randomvalue'] if self.strategy_param == "random" else row['inconsistencyvalue']
+                    self.element_values[row['line']] = element_value
+
             except Error as e:
-                print(f"Failed to insert data into MySQL database: {e}")
+                print(f"Failed to load data from MySQL database: {e}")
             finally:
                 cursor.close()
                 conn.close()
