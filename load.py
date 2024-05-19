@@ -88,8 +88,9 @@ def calculate_values(filepath,filename, script_path='sat4im/src/sat4im.py'):
 def list_files_excluding_db(root_folder):
     for dirpath, dirnames, filenames in os.walk(root_folder):
         #if dirpath == "data/ARG":
-        if dirpath == "data/SRS" or "data/Test_Datasets":
+        if dirpath == "data/SRS" or dirpath == "data/Test_Datasets":
             continue
+        print(dirpath)
         # Print filenames in the current directory
         for filename in filenames:
             if filename == '.DS_Store':
