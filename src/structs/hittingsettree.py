@@ -70,6 +70,9 @@ class HSTreeNode:
     
     def set_pruned(self, pruned=True):
         self.pruned = pruned
+    
+    def __lt__(self, other):
+        return (self.dataset.element_values.get(self.edge, 0) if self.edge else 0) < (self.dataset.element_values.get(other.edge, 0) if other.edge else 0)
 
 class HittingSetTree:
     """
