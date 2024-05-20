@@ -1,5 +1,4 @@
-import random
-from collections import deque
+import heapq
 from src.kernels.kernelstrategy import KernelStrategy
 from src.structs.dataset import DataSet
 from src.structs.hittingsettree import HSTreeNode, HittingSetTree
@@ -11,115 +10,98 @@ class HybridSearch(Strategy):
         self.dataset = dataset
         self.alpha = alpha
         self.strategy_param = strategy_param
-        self.tree = HittingSetTree(dataset=dataset)  # Pass the dataset here
+        self.tree = HittingSetTree(dataset=dataset)
+        self.tree.boundary = float('inf')
 
     def find_kernels(self) -> None:
-        self.dfs(self.dataset, self.alpha)
-        self.bfs(self.alpha, self.tree.root)
+        initial_node = self.create_initial_node(self.dataset, self.alpha)
+        self.priority_search(initial_node)
         self.tree.print_tree()
         self.log_tree()
 
-    def dfs(self, dataset, alpha, parent: HSTreeNode = None):
-        if parent is None:
-            result = self.kernelStrategy.find_kernel(dataset, alpha)
-            self.tree.root = HSTreeNode(kernel=result.get_elements(), dataset=dataset, bbvalue=0, parent=None)
-            self.dfs(self.tree.root.dataset, alpha, self.tree.root)
-        else:
-            if self.should_prune(parent):
-                # Instead of returning, mark the parent as "PRUNED" and stop further processing
-                parent.kernel = "PRUNED"
-                parent.set_pruned()
-                return
-            for element in parent.get_kernel():
-                reduced_dataset = parent.get_dataset().clone()
-                reduced_dataset.remove_element(element)
+    def create_initial_node(self, dataset, alpha):
+        result = self.kernelStrategy.find_kernel(dataset, alpha)
+        initial_node = HSTreeNode(kernel=result.get_elements(), dataset=dataset, bbvalue=0, parent=None)
+        self.tree.root = initial_node
+        return initial_node
 
-                bbvalue = self.calculate_bbvalue(parent, element, reduced_dataset)
+    def priority_search(self, root: HSTreeNode):
+        priority_queue = []
+        self.add_to_priority_queue(priority_queue, root, 0)
 
-                child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=parent.level + 1, bbvalue=bbvalue, parent=parent)
-                parent.add_child(child_node)
+        while priority_queue:
+            _, current_node = heapq.heappop(priority_queue)
+            print(f"Expanding node with bbvalue: {current_node.bbvalue}, edge: {current_node.edge}")
 
-                result = self.kernelStrategy.find_kernel(reduced_dataset, alpha)
+            if self.should_prune(current_node):
+                print(f"Pruning node with bbvalue: {current_node.bbvalue}, edge: {current_node.edge}")
+                current_node.kernel = "PRUNED"
+                current_node.set_pruned()
+                continue
+
+            if current_node.get_kernel() is None:
+                result = self.kernelStrategy.find_kernel(current_node.get_dataset(), self.alpha)
                 if result is not None:
-                    child_node.set_kernel(result.get_elements())
-                    self.dfs(child_node.get_dataset(), alpha, child_node)
+                    current_node.set_kernel(result.get_elements())
+                    self.expand_children(current_node, priority_queue)
                 else:
-                    child_node.set_kernel("LEAF")
-                    self.tree.add_leaf_node(child_node)
-                    self.update_boundary_with_leaf(child_node)
-        self.log_tree()
+                    current_node.set_kernel("LEAF")
+                    self.tree.add_leaf_node(current_node)
+                    self.update_boundary_with_leaf(current_node)
+            else:
+                self.expand_children(current_node, priority_queue)
+
+            self.log_tree()
+
+    def expand_children(self, current_node, priority_queue):
+        children = []
+        for element in current_node.get_kernel():
+            reduced_dataset = current_node.get_dataset().clone()
+            reduced_dataset.remove_element(element)
+
+            bbvalue = self.calculate_bbvalue(current_node, element, reduced_dataset)
+            child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=current_node.level + 1, bbvalue=bbvalue, parent=current_node)
+            current_node.add_child(child_node)
+
+            priority = self.dataset.element_values.get(element, 0)
+            children.append((priority, child_node))
+
+        # Sort children by priority (highest first) and add them to the priority queue
+        children.sort(reverse=True, key=lambda x: x[0])
+        for priority, child_node in children:
+            self.add_to_priority_queue(priority_queue, child_node, priority)
+
+    def add_to_priority_queue(self, queue, node, priority):
+        print(f"Adding node to priority queue with priority: {-priority}, edge: {node.edge}")
+        heapq.heappush(queue, (-priority, node))
 
     def calculate_bbvalue(self, current_node, element, dataset):
-        # Retrieve the assigned value for the current element (either random or based on inconsistency)
-        assigned_value = dataset.element_values.get(element, 0)
-        
-        # Apply the 1/x transformation, treating 1/0 as 0
+        assigned_value = dataset.element_values.get(element, 1)  # Default value to 1 if not found
         transformed_value = 1 / assigned_value if assigned_value != 0 else 0
-        
-        # Update the bbvalue by adding the transformed value of the current element
-        return current_node.bbvalue + transformed_value
+        new_bbvalue = current_node.bbvalue + transformed_value
+        print(f"Calculating bbvalue: current_node bbvalue = {current_node.bbvalue}, element = {element}, assigned_value = {assigned_value}, transformed_value = {transformed_value}, new_bbvalue = {new_bbvalue}")
+        return new_bbvalue
 
     def update_boundary_with_leaf(self, leaf_node):
         leaf_path_measure = self.calculate_path_bbvalue_up_to_root(leaf_node, self.dataset)
-        if leaf_path_measure < self.tree.boundary:  # Assuming minimization
+        if leaf_path_measure < self.tree.boundary:  # Ensure boundary is updated correctly
             self.tree.boundary = leaf_path_measure
-            # Optionally, log or print the updated boundary for debugging
             print(f"Updated boundary: {self.tree.boundary}")
-
-    def bfs(self, alpha, root: HSTreeNode):
-        queue = deque([root])
-        while queue:
-            current_node = queue.popleft()
-            # Determine if the current node should be pruned
-            if self.should_prune(current_node):
-                # Mark this node as pruned and skip further processing
-                current_node.edge = "PRUNED"
-                continue  # Skip adding children or further processing for this node
-
-            if current_node.get_kernel() is None:
-                result = self.kernelStrategy.find_kernel(current_node.get_dataset(), alpha)
-                if result is not None:
-                    current_node.set_kernel(result.get_elements())
-                    for element in current_node.get_kernel():
-                        reduced_dataset = current_node.get_dataset().clone()
-                        reduced_dataset.remove_element(element)
-
-                        bbvalue = self.calculate_bbvalue(current_node, element, reduced_dataset)
-
-                        # Check again if the node should be pruned after calculating the new bbvalue
-                        if not self.should_prune(current_node):
-                            child_node = HSTreeNode(dataset=reduced_dataset, edge=element, bbvalue=bbvalue, parent=current_node)
-                            current_node.add_child(child_node)
-                            queue.append(child_node)
-                        else:
-                            # If the node is determined to be pruned at this stage, mark accordingly
-                            child_node = HSTreeNode(dataset=reduced_dataset, edge="PRUNED", parent=current_node)
-                            current_node.add_child(child_node)
-                else:
-                    current_node.set_kernel("LEAF")
-                    self.tree.add_leaf_node(child_node)
-                    self.update_boundary_with_leaf(current_node)
-
-            self.log_tree()
 
     def calculate_path_bbvalue_up_to_root(self, node, dataset):
         cumulative_bbvalue = 0.0
         current_node = node
         while current_node is not None and current_node.edge is not None:
-            # Retrieve the value for the current edge/formula
-            inconsistency_value = dataset.element_values.get(current_node.edge, 0)
-            cumulative_bbvalue += 1 / float(inconsistency_value) if inconsistency_value != 0 else 0
+            element_value = dataset.element_values.get(current_node.edge, 1)  # Default value to 1 if not found
+            cumulative_bbvalue += 1 / element_value if element_value != 0 else 0
             current_node = current_node.parent
         return cumulative_bbvalue
 
     def should_prune(self, node):
-        # Calculate the hitting set value for the node up to the root.
-        # Ensure this method returns a float representing the cumulative inconsistency value.
-        hitting_set_value = self.tree.calculate_path_bbvalue_up_to_root(node, self.dataset)
-
-        # Now compare the hitting set value (float) with the boundary (float).
-        return hitting_set_value >= self.tree.boundary
+        hitting_set_value = self.calculate_path_bbvalue_up_to_root(node, self.dataset)
+        print(f"Checking pruning: node bbvalue = {node.bbvalue}, hitting_set_value = {hitting_set_value}, boundary = {self.tree.boundary}")
+        return hitting_set_value >= self.tree.boundary  # Prune if greater than or equal to boundary
 
     def log_tree(self):
-        self.tree.print_tree_to_file(dataset=self.dataset)    
+        self.tree.print_tree_to_file(dataset=self.dataset)
         self.tree.print_newline()
