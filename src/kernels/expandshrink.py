@@ -20,12 +20,12 @@ class ExpandShrink(KernelStrategy):
         if self.cn(dataset, alpha):
             # Starts the kernel finding process
             logging.debug(f"Finding kernel for {len(dataset.get_elements())} elements of dataset = {dataset.get_elements()}")
-            return self.expand_shrink(dataset, alpha)
+            return self.expand(dataset, alpha)
         else:
             logging.debug(f"Dataset does not entail {alpha}, kernel = empty")
             return None
     
-    def expand_shrink(self, B_dataset, alpha):
+    def expand(self, B_dataset, alpha):
         # This function attempts to expand and then shrink the dataset around the concept 'alpha'
         elements = B_dataset.get_elements()
         logging.info(f"{len(elements)} ELEMENTS: {elements}")  # Shows the elements being processed
@@ -54,9 +54,9 @@ class ExpandShrink(KernelStrategy):
                 if self.div_conq:
                     return self.divide_and_conquer(B_prime, alpha)  # Divide and conquer strategy
                 else:
-                    return self.kernel_black_box(B_prime, alpha)  # Regular kernel black box strategy
+                    return self.shrink(B_prime, alpha)  # Regular kernel black box strategy
             
-    def kernel_black_box(self, B_dataset, alpha):
+    def shrink(self, B_dataset, alpha):
         # This is the core function for finding the kernel using either a normal approach or divide and conquer
         i = 0
         max_iterations = len(B_dataset.get_elements()) + 5  # Temporary limit for debugging
@@ -104,10 +104,10 @@ class ExpandShrink(KernelStrategy):
         cn_B2 = self.cn(B2, alpha)
         logging.debug(f"DC Check entailment, cn_B1 = {cn_B1}, cn_B2 = {cn_B2}")
 
-        # If both halves fail the entailment check, pass them to kernel_black_box.
+        # If both halves fail the entailment check, pass them to shrink.
         if not cn_B1 and not cn_B2:
-            logging.info("Neither half entails alpha, passing halves to kernel_black_box.")
-            return self.kernel_black_box(B_dataset, alpha)
+            logging.info("Neither half entails alpha, passing halves to shrink.")
+            return self.shrink(B_dataset, alpha)
 
         # Recursively divide and conquer if any half entails alpha.
         if cn_B1:
