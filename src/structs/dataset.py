@@ -5,10 +5,13 @@ provides functionality to load data from a file, access elements, add or remove 
 clone itself, and write its contents to a file.
 """
 
+import logging
 from src.database.database import create_connection, create_ssh_tunnel_and_connect
-from src.values.values import assign_fixed_value, assign_unique_random_values, assign_inconsistency_value
 import sys
 from mysql.connector import Error
+
+# Configure logging
+logging.basicConfig(filename='dataset.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
 
 class DataSet:
     """
@@ -61,10 +64,10 @@ class DataSet:
 
                 # Process the rows as needed, skipping empty lines
                 for row in rows:
-                    # Example processing: print non-empty rows
+                    # Example processing: log non-empty rows
                     if row['randomvalue'] == "" or row['inconsistencyvalue'] == "" or row['filename'] == "" or row['line'] == "":
                         continue
-                    print(f"Random Value: {row['randomvalue']}, Inconsistency Value: {row['inconsistencyvalue']}, Filename: {row['filename']}, Value: {row['line']}")
+                    logging.debug(f"Random Value: {row['randomvalue']}, Inconsistency Value: {row['inconsistencyvalue']}, Filename: {row['filename']}, Value: {row['line']}")
                     self.elements.append(row['line'])
                     element_value = None
                     if self.strategy_param == 2:
@@ -74,12 +77,12 @@ class DataSet:
                     self.element_values[row['line']] = element_value
 
             except Error as e:
-                print(f"Failed to load data from MySQL database: {e}")
+                logging.error(f"Failed to load data from MySQL database: {e}")
             finally:
                 cursor.close()
                 conn.close()
         else:
-            print("Connection to MySQL database failed")
+            logging.error("Connection to MySQL database failed")
 
     def get_elements(self):
         """
@@ -138,7 +141,7 @@ class DataSet:
         try:
             self.elements.remove(element)
         except ValueError:
-            print(f"Element {element} not found in the dataset.")
+            logging.warning(f"Element {element} not found in the dataset.")
 
     def clone(self):
         """

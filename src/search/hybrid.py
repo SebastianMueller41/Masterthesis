@@ -1,8 +1,12 @@
 import heapq
+import logging
 from src.kernels.kernelstrategy import KernelStrategy
 from src.structs.dataset import DataSet
 from src.structs.hittingsettree import HSTreeNode, HittingSetTree
 from .strategy import Strategy
+
+# Configure logging
+logging.basicConfig(filename='hybrid_search.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
 
 class HybridSearch(Strategy):
     def __init__(self, kernelStrategy: KernelStrategy, dataset: DataSet, alpha, strategy_param):
@@ -31,10 +35,10 @@ class HybridSearch(Strategy):
 
         while priority_queue:
             _, current_node = heapq.heappop(priority_queue)
-            print(f"Expanding node with bbvalue: {current_node.bbvalue}, edge: {current_node.edge}")
+            logging.debug(f"Expanding node with bbvalue: {current_node.bbvalue}, edge: {current_node.edge}")
 
             if self.should_prune(current_node):
-                print(f"Pruning node with bbvalue: {current_node.bbvalue}, edge: {current_node.edge}")
+                logging.debug(f"Pruning node with bbvalue: {current_node.bbvalue}, edge: {current_node.edge}")
                 current_node.kernel = "PRUNED"
                 current_node.set_pruned()
                 continue
@@ -72,21 +76,21 @@ class HybridSearch(Strategy):
             self.add_to_priority_queue(priority_queue, child_node, priority)
 
     def add_to_priority_queue(self, queue, node, priority):
-        print(f"Adding node to priority queue with priority: {-priority}, edge: {node.edge}")
+        logging.debug(f"Adding node to priority queue with priority: {-priority}, edge: {node.edge}")
         heapq.heappush(queue, (-priority, node))
 
     def calculate_bbvalue(self, current_node, element, dataset):
         assigned_value = dataset.element_values.get(element, 1)  # Default value to 1 if not found
         transformed_value = 1 / assigned_value if assigned_value != 0 else 0
         new_bbvalue = current_node.bbvalue + transformed_value
-        print(f"Calculating bbvalue: current_node bbvalue = {current_node.bbvalue}, element = {element}, assigned_value = {assigned_value}, transformed_value = {transformed_value}, new_bbvalue = {new_bbvalue}")
+        logging.debug(f"Calculating bbvalue: current_node bbvalue = {current_node.bbvalue}, element = {element}, assigned_value = {assigned_value}, transformed_value = {transformed_value}, new_bbvalue = {new_bbvalue}")
         return new_bbvalue
 
     def update_boundary_with_leaf(self, leaf_node):
         leaf_path_measure = self.calculate_path_bbvalue_up_to_root(leaf_node, self.dataset)
         if leaf_path_measure < self.tree.boundary:  # Ensure boundary is updated correctly
             self.tree.boundary = leaf_path_measure
-            print(f"Updated boundary: {self.tree.boundary}")
+            logging.debug(f"Updated boundary: {self.tree.boundary}")
 
     def calculate_path_bbvalue_up_to_root(self, node, dataset):
         cumulative_bbvalue = 0.0
@@ -99,7 +103,7 @@ class HybridSearch(Strategy):
 
     def should_prune(self, node):
         hitting_set_value = self.calculate_path_bbvalue_up_to_root(node, self.dataset)
-        print(f"Checking pruning: node bbvalue = {node.bbvalue}, hitting_set_value = {hitting_set_value}, boundary = {self.tree.boundary}")
+        logging.debug(f"Checking pruning: node bbvalue = {node.bbvalue}, hitting_set_value = {hitting_set_value}, boundary = {self.tree.boundary}")
         return hitting_set_value >= self.tree.boundary  # Prune if greater than or equal to boundary
 
     def log_tree(self):

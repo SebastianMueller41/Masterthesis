@@ -15,6 +15,7 @@ import sys
 import time
 import resource
 import signal
+import logging
 from src.search.hybrid import HybridSearch
 from src.search.bfs import BFS
 from src.solver.kernelsolver import KernelSolver
@@ -22,6 +23,9 @@ from src.kernels.expandshrink import ExpandShrink
 from src.kernels.shrinkexpand import ShrinkExpand
 from src.structs.dataset import DataSet
 from src.database.database import create_connection, create_ssh_tunnel_and_connect, log_execution_data
+
+# Configure logging
+logging.basicConfig(filename='main.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Run the kernelization process with optional database logging.')
@@ -40,53 +44,44 @@ args = parser.parse_args()
 def timeout_handler(signum, frame):
     sys.exit("TIMEOUT, program exceeded the specified time limit.")
 
-# Function to read dataset and return its content
-def read_dataset_content(dataset_filepath):
-    try:
-        with open(dataset_filepath, 'r') as file:
-            return [line.strip() for line in file.readlines()]
-    except FileNotFoundError:
-        sys.exit(f"File {dataset_filepath} not found.\nPlease check the file path.")
-
 if __name__ == "__main__":
     # Prepare for timeout
     signal.signal(signal.SIGALRM, timeout_handler)
     timeout_duration = 3600  # 3600 seconds or 1 hour
     signal.alarm(timeout_duration)  # Start the timer
 
-    #create_ssh_tunnel_and_connect()  # Prepare the database
-    start_time = time.time()
-
     if not os.path.exists(args.dataset_file):
-        print(f"Dataset file not found: {args.dataset_file}")
+        logging.error(f"Dataset file not found: {args.dataset_file}")
         sys.exit(1)
 
-    dataset_content = read_dataset_content(args.dataset_file)
-    if not 1 <= args.sw_size <= len(dataset_content):
-        sys.exit(f"--sw-size/--sliding-window must be between 1 and the length of the dataset ({len(dataset_content)}).")
+    dataset = DataSet(args.dataset_file, args.strategy_param)
+    if not 1 <= args.sw_size <= dataset.size():
+        sys.exit(f"--sw-size/--sliding-window must be between 1 and the length of the dataset ({dataset.size()}).")
     if args.alpha:
-        print(f"Alpha: {args.alpha}")
+        logging.info(f"Alpha: {args.alpha}")
+
+    start_time = time.time()
 
     hitting_set_tree = None
     try:
         if args.method == 'kernel':
             if args.strategy_param == 0:
-                hitting_set_tree = KernelSolver(BFS(ExpandShrink(args.sw_size, args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), args.alpha)).solve()
+                hitting_set_tree = KernelSolver(BFS(ExpandShrink(args.sw_size, args.divide_conquer), dataset, args.alpha)).solve()
             elif 0 < args.strategy_param < 4:
-                hitting_set_tree = KernelSolver(HybridSearch(ExpandShrink(args.sw_size, args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), args.alpha, args.strategy_param)).solve()
+                hitting_set_tree = KernelSolver(HybridSearch(ExpandShrink(args.sw_size, args.divide_conquer), dataset, args.alpha, args.strategy_param)).solve()
             else:
-                print("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
+                logging.error("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
                 sys.exit(1)
         elif args.method == 'remainder':
             if args.strategy_param == 0:
-                hitting_set_tree = KernelSolver(BFS(ShrinkExpand(args.sw_size, args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), args.alpha)).solve()
+                hitting_set_tree = KernelSolver(BFS(ShrinkExpand(args.sw_size, args.divide_conquer), dataset, args.alpha)).solve()
             elif 0 < args.strategy_param < 4:
-                hitting_set_tree = KernelSolver(HybridSearch(ShrinkExpand(args.sw_size, args.divide_conquer), DataSet(args.dataset_file, args.strategy_param), args.alpha, args.strategy_param)).solve()
+                hitting_set_tree = KernelSolver(HybridSearch(ShrinkExpand(args.sw_size, args.divide_conquer), dataset, args.alpha, args.strategy_param)).solve()
             else:
-                print("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
+                logging.error("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
                 sys.exit(1)
     except Exception as e:
-        print(f"An error occurred: {e}")
+        logging.error(f"An error occurred: {e}")
         sys.exit(1)
     finally:
         signal.alarm(0)  # Cancel the timeout
@@ -105,8 +100,12 @@ if __name__ == "__main__":
 
     resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
-    if args.log_db:
-        log_execution_data(execution_time, resources_used, dataset_content, args.strategy_param, num_kernels, num_branches, tree_depth, pruned_branches_count, boundary, args.dataset_file, optimal_hitting_set, args.divide_conquer, args.sw_size, args.method)
 
     print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.strategy_param}, Kernel_Remainder: {args.method}, Sliding Window size: {args.sw_size}, Divide and conquer: {args.divide_conquer}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}")
     print(f"Optimal hitting set: {optimal_hitting_set}")
+
+    if args.log_db:
+        log_execution_data(execution_time, resources_used, dataset.get_elements(), args.strategy_param, num_kernels, num_branches, tree_depth, pruned_branches_count, boundary, args.dataset_file, optimal_hitting_set, args.divide_conquer, args.sw_size, args.method)
+
+    logging.info(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.strategy_param}, Kernel_Remainder: {args.method}, Sliding Window size: {args.sw_size}, Divide and conquer: {args.divide_conquer}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}")
+    logging.info(f"Optimal hitting set: {optimal_hitting_set}")
