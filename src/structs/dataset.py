@@ -66,7 +66,11 @@ class DataSet:
                         continue
                     print(f"Random Value: {row['randomvalue']}, Inconsistency Value: {row['inconsistencyvalue']}, Filename: {row['filename']}, Value: {row['line']}")
                     self.elements.append(row['line'])
-                    element_value = row['randomvalue'] if self.strategy_param == "random" else row['inconsistencyvalue']
+                    element_value = None
+                    if self.strategy_param == 2:
+                        element_value = row['randomvalue']
+                    elif self.strategy_param == 3:
+                        element_value = row['inconsistencyvalue']
                     self.element_values[row['line']] = element_value
 
             except Error as e:
@@ -200,9 +204,10 @@ class DataSet:
             strategy_param (int): The parameter defining the value assignment strategy.
         """        
         if strategy_param == 1:
-            assign_fixed_value(self, 1)
-        elif strategy_param == 2:
-            assign_unique_random_values(self)
-        elif strategy_param == 3:
-            assign_inconsistency_value(self) 
-
+            for element in self.elements:
+                self.element_values[element] = 1
+        elif strategy_param == 2 or strategy_param == 3:
+            # Values already assigned during load_elements_from_db
+            for element in self.elements:
+                if element not in self.element_values:
+                    self.element_values[element] = None
