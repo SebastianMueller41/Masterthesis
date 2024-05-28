@@ -6,12 +6,12 @@ clone itself, and write its contents to a file.
 """
 
 import logging
-from src.database.database import create_connection, create_ssh_tunnel_and_connect
+from src.database.database import create_ssh_tunnel_and_connect
 import sys
 from mysql.connector import Error
 
-# Configure logging
-logging.basicConfig(filename='dataset.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
+# Configure logging and clear the log file before logging
+logging.basicConfig(filename='dataset.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
 
 class DataSet:
     """

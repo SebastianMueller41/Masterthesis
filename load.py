@@ -1,12 +1,6 @@
-
-import argparse
 import os
 import sys
-import time
-import resource
-import signal
 import random
-from src.structs.dataset import DataSet
 from src.database.database import create_connection, log_execution_data
 
 import subprocess
@@ -26,6 +20,24 @@ def log_execution_data(sql):
             conn.close()
     else:
         print("Connection to MySQL database failed")
+
+
+def check_filename_exists(filename):
+    """Check if the filename already exists in the DATA_SETS table."""
+    conn = create_connection()
+    if conn is not None:
+        cursor = conn.cursor()
+        try:
+            query = "SELECT COUNT(*) FROM DATA_SETS WHERE filename = %s"
+            cursor.execute(query, (filename,))
+            result = cursor.fetchone()
+            return result[0] > 0
+        finally:
+            cursor.close()
+            conn.close()
+    else:
+        print("Connection to MySQL database failed")
+        return False
 
 
 def call_sat_solver(script_path, temp_filepath, option='c'):
@@ -53,14 +65,12 @@ def call_sat_solver(script_path, temp_filepath, option='c'):
     raise ValueError("Failed to obtain inconsistency measure from SAT solver.")
 
 
-
-def calculate_values(filepath,filename, script_path='sat4im/src/sat4im.py'):
+def calculate_values(filepath, filename, script_path='sat4im/src/sat4im.py'):
     initial_inconsistency_measure = call_sat_solver(script_path, filepath)
 
     with open(filepath, 'r') as file:
         lines = file.readlines()
     
-
     print(f"Initial inconsistency measure: {initial_inconsistency_measure}")
 
     range_of_values = list(range(1, len(lines) + 1))
@@ -79,26 +89,29 @@ def calculate_values(filepath,filename, script_path='sat4im/src/sat4im.py'):
             inconsistency_difference = initial_inconsistency_measure - inconsistency_measure
             inconsistency_differences.append(inconsistency_difference)
             random_value = range_of_values[i]
-            sql=f"INSERT INTO DATA_ENTRY (randomValue, inconsistencyValue, filename, line) VALUES ({random_value}, {inconsistency_difference}, '{filepath}', '{lines[i].strip()}')"
+            sql = f"INSERT INTO DATA_ENTRY (randomValue, inconsistencyValue, filename, line) VALUES ({random_value}, {inconsistency_difference}, '{filepath}', '{lines[i].strip()}')"
             print(sql)
             log_execution_data(sql)
         finally:
             os.remove(temp_filepath)
 
+
 def list_files_excluding_db(root_folder):
     for dirpath, dirnames, filenames in os.walk(root_folder):
-        #if dirpath == "data/ARG":
         if dirpath == "data/SRS" or dirpath == "data/Test_Datasets":
             continue
         print(dirpath)
-        # Print filenames in the current directory
         for filename in filenames:
             if filename == '.DS_Store':
                 continue
-            sql= f"INSERT INTO DATA_SETS VALUES ('{os.path.join(dirpath, filename)}');"
-            print(os.path.join(dirpath, filename))
+            full_path = os.path.join(dirpath, filename)
+            if check_filename_exists(full_path):
+                print(f"Skipping {full_path} as it already exists in the database.")
+                continue
+            sql = f"INSERT INTO DATA_SETS (filename) VALUES ('{full_path}');"
+            print(full_path)
             log_execution_data(sql)
-            calculate_values(os.path.join(dirpath, filename), filename)
+            calculate_values(full_path, filename)
 
 if __name__ == "__main__":
     root_folder = 'data'

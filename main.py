@@ -22,7 +22,7 @@ from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
 from src.kernels.shrinkexpand import ShrinkExpand
 from src.structs.dataset import DataSet
-from src.database.database import create_connection, create_ssh_tunnel_and_connect, log_execution_data
+from src.database.database import log_execution_data
 
 # Configure logging
 logging.basicConfig(filename='main.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
