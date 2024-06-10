@@ -1,10 +1,10 @@
 """
-This script takes a dataset file as input and applies an expand-shrink algorithm to 
+This script takes a dataset from a MySQL database and applies an expand-shrink algorithm to 
 find a kernel with respect to a given parameter. The resulting kernel is then used to 
 initialize a hitting set tree. This script demonstrates the setup and initial steps of 
 the kernelization process for the given dataset.
 
-The script can be executed from the command line with the dataset file and strategy 
+The script can be executed from the command line with the dataset name and strategy 
 parameter as arguments. Logging to a database can be enabled or disabled via an 
 optional flag.
 """
@@ -22,14 +22,14 @@ from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
 from src.kernels.shrinkexpand import ShrinkExpand
 from src.structs.dataset import DataSet
-from src.database.database import log_execution_data
+from src.database.database import create_ssh_tunnel_and_connect, log_execution_data
 
 # Configure logging
 logging.basicConfig(filename='main.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Run the kernelization process with optional database logging.')
-parser.add_argument('dataset_file', type=str, help='Path to the dataset file')
+parser.add_argument('dataset_name', type=str, help='Name of the dataset stored in the database')
 parser.add_argument('strategy_param', type=int, help='Strategy parameter value')
 parser.add_argument('--sw-size', '--sliding-window', type=int, default=1, help='Define the window size for the sliding-window technique (default: 1)')
 parser.add_argument('-dc', '--divide-conquer', action='store_true', help='Activate the divide and conquer technique')
@@ -50,17 +50,15 @@ if __name__ == "__main__":
     timeout_duration = 3600  # 3600 seconds or 1 hour
     signal.alarm(timeout_duration)  # Start the timer
 
-    if not os.path.exists(args.dataset_file):
-        logging.error(f"Dataset file not found: {args.dataset_file}")
-        sys.exit(1)
+    conn = create_ssh_tunnel_and_connect()
 
-    dataset = DataSet(args.dataset_file, args.strategy_param)
+    start_time = time.time()
+
+    dataset = DataSet(conn, input_file_path=args.dataset_name, strategy_param=args.strategy_param)
     if not 1 <= args.sw_size <= dataset.size():
         sys.exit(f"--sw-size/--sliding-window must be between 1 and the length of the dataset ({dataset.size()}).")
     if args.alpha:
         logging.info(f"Alpha: {args.alpha}")
-
-    start_time = time.time()
 
     hitting_set_tree = None
     try:
@@ -100,12 +98,15 @@ if __name__ == "__main__":
 
     resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
-
     print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.strategy_param}, Kernel_Remainder: {args.method}, Sliding Window size: {args.sw_size}, Divide and conquer: {args.divide_conquer}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}")
     print(f"Optimal hitting set: {optimal_hitting_set}, Alpha: {args.alpha}")
 
     if args.log_db:
-        log_execution_data(execution_time, resources_used, dataset.get_elements(), args.strategy_param, num_kernels, num_branches, tree_depth, pruned_branches_count, boundary, args.dataset_file, optimal_hitting_set, args.divide_conquer, args.sw_size, args.method, args.alpha)
+        if conn is not None:
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.strategy_param, num_kernels, num_branches, tree_depth, pruned_branches_count, boundary, args.dataset_name, optimal_hitting_set, args.divide_conquer, args.sw_size, args.method, args.alpha)
+            conn.close()
+        else:
+            print("Connection to MySQL database failed")
 
     logging.info(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.strategy_param}, Kernel_Remainder: {args.method}, Sliding Window size: {args.sw_size}, Divide and conquer: {args.divide_conquer}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}")
     logging.info(f"Optimal hitting set: {optimal_hitting_set}, Alpha: {args.alpha}")

@@ -6,7 +6,6 @@ clone itself, and write its contents to a file.
 """
 
 import logging
-from src.database.database import create_ssh_tunnel_and_connect
 import sys
 from mysql.connector import Error
 
@@ -23,7 +22,7 @@ class DataSet:
         elements (list): A list of elements representing the dataset.
     """
     
-    def __init__(self, input_file_path=None, strategy_param=None, elements=None, strategy=None):
+    def __init__(self, conn=None, input_file_path=None, strategy_param=None, elements=None, strategy=None):
         """
         Initialize a new DataSet instance, optionally loading elements from a file and applying a value assignment strategy.
 
@@ -33,6 +32,7 @@ class DataSet:
             strategy (str, optional): The strategy identifier (e.g., "A1").
             strategy_param (int, optional): The parameter that defines how values are assigned to the elements.
         """
+        self.conn = conn
         self.elements = elements if elements is not None else []
         self.element_values = {}  # Initialize the mapping of elements to values
         self.strategy_param = strategy_param
@@ -53,10 +53,8 @@ class DataSet:
             sys.exit(f"File {file_path} not found.\nPlease check file path: {file_path}.")
     
     def load_elements_from_db(self, file_path):
-        conn = create_ssh_tunnel_and_connect()
-
-        if conn is not None:
-            cursor = conn.cursor(dictionary=True)
+        if self.conn is not None:
+            cursor = self.conn.cursor(dictionary=True)
             try:
                 query = f"SELECT randomvalue, inconsistencyvalue, filename, line FROM DATA_ENTRY where filename='{file_path}'"
                 cursor.execute(query)
@@ -80,7 +78,6 @@ class DataSet:
                 logging.error(f"Failed to load data from MySQL database: {e}")
             finally:
                 cursor.close()
-                conn.close()
         else:
             logging.error("Connection to MySQL database failed")
 
