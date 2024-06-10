@@ -6,3 +6,8 @@ src/database
 log/
 NOHUP
 dataset.log
+NOHUP
+.kerne_operations.log.swp
+.kernel_operations.log.swp
+.nohup.out.swp
+nohup.out
