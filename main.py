@@ -8,7 +8,6 @@ The script can be executed from the command line with the dataset name and strat
 parameter as arguments. Logging to a database can be enabled or disabled via an 
 optional flag.
 """
-
 import argparse
 import os
 import sys
@@ -42,7 +41,7 @@ args = parser.parse_args()
 
 # Function to handle timeout
 def timeout_handler(signum, frame):
-    sys.exit("TIMEOUT, program exceeded the specified time limit.")
+    raise TimeoutError("Program exceeded the specified time limit.")
 
 if __name__ == "__main__":
     # Prepare for timeout
@@ -78,6 +77,14 @@ if __name__ == "__main__":
             else:
                 logging.error("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
                 sys.exit(1)
+    except TimeoutError as e:
+        logging.error(f"Timeout occurred: {e}")
+        execution_time = time.time() - start_time
+        resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
+        if args.log_db and conn is not None:
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.strategy_param, None, None, None, None, None, args.dataset_name, None, args.divide_conquer, args.sw_size, args.method, args.alpha)
+            conn.close()
+        sys.exit(1)
     except Exception as e:
         logging.error(f"An error occurred: {e}")
         sys.exit(1)

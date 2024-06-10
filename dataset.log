@@ -1,38 +1,73 @@
-2024-06-10 23:05:23,132 DEBUG:starting thread (client mode): 0x24a9ac0
-2024-06-10 23:05:23,132 DEBUG:Local version/idstring: SSH-2.0-paramiko_3.4.0
-2024-06-10 23:05:23,177 DEBUG:Remote version/idstring: SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11
-2024-06-10 23:05:23,177 INFO:Connected (version 2.0, client OpenSSH_8.2p1)
-2024-06-10 23:05:23,211 DEBUG:=== Key exchange possibilities ===
-2024-06-10 23:05:23,211 DEBUG:kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group-exchange-sha256, diffie-hellman-group16-sha512, diffie-hellman-group18-sha512, diffie-hellman-group14-sha256, kex-strict-s-v00@openssh.com
-2024-06-10 23:05:23,211 DEBUG:server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa, ecdsa-sha2-nistp256, ssh-ed25519
-2024-06-10 23:05:23,211 DEBUG:client encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
-2024-06-10 23:05:23,211 DEBUG:server encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
-2024-06-10 23:05:23,211 DEBUG:client mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
-2024-06-10 23:05:23,211 DEBUG:server mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
-2024-06-10 23:05:23,211 DEBUG:client compress: none, zlib@openssh.com
-2024-06-10 23:05:23,211 DEBUG:server compress: none, zlib@openssh.com
-2024-06-10 23:05:23,211 DEBUG:client lang: <none>
-2024-06-10 23:05:23,211 DEBUG:server lang: <none>
-2024-06-10 23:05:23,211 DEBUG:kex follows: False
-2024-06-10 23:05:23,211 DEBUG:=== Key exchange agreements ===
-2024-06-10 23:05:23,212 DEBUG:Strict kex mode: True
-2024-06-10 23:05:23,212 DEBUG:Kex: curve25519-sha256@libssh.org
-2024-06-10 23:05:23,212 DEBUG:HostKey: ssh-ed25519
-2024-06-10 23:05:23,212 DEBUG:Cipher: aes128-ctr
-2024-06-10 23:05:23,212 DEBUG:MAC: hmac-sha2-256
-2024-06-10 23:05:23,212 DEBUG:Compression: none
-2024-06-10 23:05:23,212 DEBUG:=== End of kex handshake ===
-2024-06-10 23:05:23,255 DEBUG:Resetting outbound seqno after NEWKEYS due to strict mode
-2024-06-10 23:05:23,256 DEBUG:kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
-2024-06-10 23:05:23,256 DEBUG:Switch to new keys ...
-2024-06-10 23:05:23,256 DEBUG:Resetting inbound seqno after NEWKEYS due to strict mode
-2024-06-10 23:05:23,256 DEBUG:Attempting public-key auth...
-2024-06-10 23:05:23,256 DEBUG:Got EXT_INFO: {'server-sig-algs': b'ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com'}
-2024-06-10 23:05:23,318 DEBUG:userauth is OK
-2024-06-10 23:05:23,319 DEBUG:Finalizing pubkey algorithm for key of type 'ssh-rsa'
-2024-06-10 23:05:23,319 DEBUG:Our pubkey algorithm list: ['rsa-sha2-512', 'rsa-sha2-256', 'ssh-rsa']
-2024-06-10 23:05:23,319 DEBUG:Server-side algorithm list: ['ssh-ed25519', 'sk-ssh-ed25519@openssh.com', 'ssh-rsa', 'rsa-sha2-256', 'rsa-sha2-512', 'ssh-dss', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'sk-ecdsa-sha2-nistp256@openssh.com']
-2024-06-10 23:05:23,319 DEBUG:Agreed upon 'rsa-sha2-512' pubkey algorithm
-2024-06-10 23:05:23,379 INFO:Authentication (publickey) successful!
-2024-06-10 23:05:23,380 ERROR:Problem setting SSH Forwarder up: Couldn't open tunnel 127.0.0.1:3307 <> 127.0.0.1:3306 might be in use or destination not reachable
-2024-06-10 23:05:23,380 ERROR:Connection to MySQL database failed
+2024-06-10 23:19:46,953 DEBUG:starting thread (client mode): 0x7170430
+2024-06-10 23:19:46,953 DEBUG:Local version/idstring: SSH-2.0-paramiko_3.4.0
+2024-06-10 23:19:47,001 DEBUG:Remote version/idstring: SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11
+2024-06-10 23:19:47,001 INFO:Connected (version 2.0, client OpenSSH_8.2p1)
+2024-06-10 23:19:47,032 DEBUG:=== Key exchange possibilities ===
+2024-06-10 23:19:47,032 DEBUG:kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group-exchange-sha256, diffie-hellman-group16-sha512, diffie-hellman-group18-sha512, diffie-hellman-group14-sha256, kex-strict-s-v00@openssh.com
+2024-06-10 23:19:47,032 DEBUG:server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa, ecdsa-sha2-nistp256, ssh-ed25519
+2024-06-10 23:19:47,033 DEBUG:client encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
+2024-06-10 23:19:47,033 DEBUG:server encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
+2024-06-10 23:19:47,033 DEBUG:client mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
+2024-06-10 23:19:47,033 DEBUG:server mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
+2024-06-10 23:19:47,033 DEBUG:client compress: none, zlib@openssh.com
+2024-06-10 23:19:47,033 DEBUG:server compress: none, zlib@openssh.com
+2024-06-10 23:19:47,033 DEBUG:client lang: <none>
+2024-06-10 23:19:47,033 DEBUG:server lang: <none>
+2024-06-10 23:19:47,033 DEBUG:kex follows: False
+2024-06-10 23:19:47,033 DEBUG:=== Key exchange agreements ===
+2024-06-10 23:19:47,033 DEBUG:Strict kex mode: True
+2024-06-10 23:19:47,033 DEBUG:Kex: curve25519-sha256@libssh.org
+2024-06-10 23:19:47,033 DEBUG:HostKey: ssh-ed25519
+2024-06-10 23:19:47,033 DEBUG:Cipher: aes128-ctr
+2024-06-10 23:19:47,033 DEBUG:MAC: hmac-sha2-256
+2024-06-10 23:19:47,033 DEBUG:Compression: none
+2024-06-10 23:19:47,033 DEBUG:=== End of kex handshake ===
+2024-06-10 23:19:47,077 DEBUG:Resetting outbound seqno after NEWKEYS due to strict mode
+2024-06-10 23:19:47,077 DEBUG:kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
+2024-06-10 23:19:47,077 DEBUG:Switch to new keys ...
+2024-06-10 23:19:47,077 DEBUG:Resetting inbound seqno after NEWKEYS due to strict mode
+2024-06-10 23:19:47,077 DEBUG:Attempting public-key auth...
+2024-06-10 23:19:47,078 DEBUG:Got EXT_INFO: {'server-sig-algs': b'ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com'}
+2024-06-10 23:19:47,133 DEBUG:userauth is OK
+2024-06-10 23:19:47,134 DEBUG:Finalizing pubkey algorithm for key of type 'ssh-rsa'
+2024-06-10 23:19:47,134 DEBUG:Our pubkey algorithm list: ['rsa-sha2-512', 'rsa-sha2-256', 'ssh-rsa']
+2024-06-10 23:19:47,134 DEBUG:Server-side algorithm list: ['ssh-ed25519', 'sk-ssh-ed25519@openssh.com', 'ssh-rsa', 'rsa-sha2-256', 'rsa-sha2-512', 'ssh-dss', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'sk-ecdsa-sha2-nistp256@openssh.com']
+2024-06-10 23:19:47,134 DEBUG:Agreed upon 'rsa-sha2-512' pubkey algorithm
+2024-06-10 23:19:47,195 INFO:Authentication (publickey) successful!
+2024-06-10 23:19:47,211 DEBUG:[chan 0] Max packet in: 32768 bytes
+2024-06-10 23:19:47,691 DEBUG:Received global request "hostkeys-00@openssh.com"
+2024-06-10 23:19:47,691 DEBUG:Rejecting "hostkeys-00@openssh.com" global request from server.
+2024-06-10 23:19:47,692 DEBUG:Debug msg: b'/home/smueller/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding'
+2024-06-10 23:19:47,719 DEBUG:[chan 0] Max packet out: 32768 bytes
+2024-06-10 23:19:47,720 DEBUG:Secsh channel 0 opened.
+2024-06-10 23:19:47,723 DEBUG:Building SSL context
+2024-06-10 23:19:47,753 DEBUG:Switching to SSL
+2024-06-10 23:19:47,859 DEBUG:SSL has been enabled
+2024-06-10 23:19:47,859 DEBUG:Starting authorization phase
+2024-06-10 23:19:47,859 DEBUG:The provided initial strategy is caching_sha2_password
+2024-06-10 23:19:47,859 INFO:package: mysql.connector.plugins
+2024-06-10 23:19:47,859 INFO:plugin_name: caching_sha2_password
+2024-06-10 23:19:47,859 INFO:AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
+2024-06-10 23:19:47,886 DEBUG:Exchanging further packets
+2024-06-10 23:19:47,916 DEBUG:caching_sha2_password completed succesfully
+2024-06-10 23:19:48,186 DEBUG:Random Value: 7, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_0.txt, Value: !(!A1&&A2)
+2024-06-10 23:19:48,186 DEBUG:Random Value: 2, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_0.txt, Value: !(A0||A1)
+2024-06-10 23:19:48,186 DEBUG:Random Value: 1, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_0.txt, Value: A1||((A2&&A0)&&A1)
+2024-06-10 23:19:48,186 DEBUG:Random Value: 10, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_0.txt, Value: (A1||(A1&&A0))||A2
+2024-06-10 23:19:48,186 DEBUG:Random Value: 4, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_0.txt, Value: !A0
+2024-06-10 23:19:48,186 DEBUG:Random Value: 6, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_0.txt, Value: !A1
+2024-06-10 23:19:48,186 DEBUG:Random Value: 5, Inconsistency Value: 1, Filename: data/SRS/Dataset_A/sig3_5_15/srs_0.txt, Value: !A2
+2024-06-10 23:19:48,186 DEBUG:Random Value: 9, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_0.txt, Value: !A1&&(A2||A0)
+2024-06-10 23:19:48,186 DEBUG:Random Value: 3, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_0.txt, Value: A1&&A0
+2024-06-10 23:19:48,187 DEBUG:Random Value: 8, Inconsistency Value: 1, Filename: data/SRS/Dataset_A/sig3_5_15/srs_0.txt, Value: (A1||A1)&&(A2&&A0)
+2024-06-10 23:19:48,187 INFO:Alpha: A0&&!A0
+2024-06-10 23:19:48,673 DEBUG:MiniSat result: UNSAT. Therefore, A0&&!A0 is in Cn(['!(!A1&&A2)', '!(A0||A1)', 'A1||((A2&&A0)&&A1)', '(A1||(A1&&A0))||A2', '!A0', '!A1', '!A2', '!A1&&(A2||A0)', 'A1&&A0', '(A1||A1)&&(A2&&A0)'])
+2024-06-10 23:19:48,673 DEBUG:Finding kernel for 10 elements of dataset = ['!(!A1&&A2)', '!(A0||A1)', 'A1||((A2&&A0)&&A1)', '(A1||(A1&&A0))||A2', '!A0', '!A1', '!A2', '!A1&&(A2||A0)', 'A1&&A0', '(A1||A1)&&(A2&&A0)']
+2024-06-10 23:19:48,673 INFO:10 ELEMENTS: ['!(!A1&&A2)', '!(A0||A1)', 'A1||((A2&&A0)&&A1)', '(A1||(A1&&A0))||A2', '!A0', '!A1', '!A2', '!A1&&(A2||A0)', 'A1&&A0', '(A1||A1)&&(A2&&A0)']
+2024-06-10 23:19:48,673 DEBUG:B_PRIME with 1 elements: ['!(!A1&&A2)']
+2024-06-10 23:19:48,699 DEBUG:MiniSat result: SAT. Therefore, A0&&!A0 is not in Cn(['!(!A1&&A2)'])
+2024-06-10 23:19:48,699 DEBUG:B_PRIME with 2 elements: ['!(!A1&&A2)', '!(A0||A1)']
+2024-06-10 23:19:48,722 DEBUG:MiniSat result: SAT. Therefore, A0&&!A0 is not in Cn(['!(!A1&&A2)', '!(A0||A1)'])
+2024-06-10 23:19:48,722 DEBUG:B_PRIME with 3 elements: ['!(!A1&&A2)', '!(A0||A1)', 'A1||((A2&&A0)&&A1)']
+2024-06-10 23:19:48,725 ERROR:Timeout occurred: Program exceeded the specified time limit.
+2024-06-10 23:19:49,014 DEBUG:Dropping user packet because connection is dead.
