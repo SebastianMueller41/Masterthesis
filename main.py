@@ -102,10 +102,10 @@ if __name__ == "__main__":
 
 
     print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.strategy_param}, Kernel_Remainder: {args.method}, Sliding Window size: {args.sw_size}, Divide and conquer: {args.divide_conquer}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}")
-    print(f"Optimal hitting set: {optimal_hitting_set}")
+    print(f"Optimal hitting set: {optimal_hitting_set}, Alpha: {args.alpha}")
 
     if args.log_db:
-        log_execution_data(execution_time, resources_used, dataset.get_elements(), args.strategy_param, num_kernels, num_branches, tree_depth, pruned_branches_count, boundary, args.dataset_file, optimal_hitting_set, args.divide_conquer, args.sw_size, args.method)
+        log_execution_data(execution_time, resources_used, dataset.get_elements(), args.strategy_param, num_kernels, num_branches, tree_depth, pruned_branches_count, boundary, args.dataset_file, optimal_hitting_set, args.divide_conquer, args.sw_size, args.method, args.alpha)
 
     logging.info(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.strategy_param}, Kernel_Remainder: {args.method}, Sliding Window size: {args.sw_size}, Divide and conquer: {args.divide_conquer}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}")
-    logging.info(f"Optimal hitting set: {optimal_hitting_set}")
+    logging.info(f"Optimal hitting set: {optimal_hitting_set}, Alpha: {args.alpha}")
