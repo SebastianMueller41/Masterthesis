@@ -5,3 +5,4 @@ src/database
 .DS_Store
 log/
 NOHUP
+dataset.log
