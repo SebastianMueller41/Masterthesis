@@ -8,7 +8,7 @@ from src.structs.dataset import DataSet
 logging.basicConfig(filename='log/kernel_operations.log', # Log file name
                     filemode='w', # Overwrite the log file on each run
                     format='%(asctime)s - %(levelname)s - %(message)s',
-                    level=logging.DEBUG)
+                    level=logging.CRITICAL)
 
 class ExpandShrink(KernelStrategy):
     def __init__(self, window_size=1, divide_and_conquer=False):  

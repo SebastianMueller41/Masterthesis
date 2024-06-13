@@ -10,7 +10,7 @@ import sys
 from mysql.connector import Error
 
 # Configure logging and clear the log file before logging
-logging.basicConfig(filename='dataset.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
+logging.basicConfig(filename='log/dataset.log', filemode='w', level=logging.CRITICAL, format='%(asctime)s %(levelname)s:%(message)s')
 
 class DataSet:
     """

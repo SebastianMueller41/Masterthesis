@@ -8,7 +8,7 @@ logging.basicConfig(
     filename='log/kernel_operations.log',  # Log file name
     filemode='w',  # Overwrite the log file on each run
     format='%(asctime)s - %(levelname)s - %(message)s',  # Fix typo here
-    level=logging.DEBUG
+    level=logging.CRITICAL
 )
 
 class KernelAndRemainderFinder:

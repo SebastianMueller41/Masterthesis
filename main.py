@@ -24,7 +24,7 @@ from src.structs.dataset import DataSet
 from src.database.database import create_ssh_tunnel_and_connect, log_execution_data
 
 # Configure logging
-logging.basicConfig(filename='main.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
+logging.basicConfig(filename='log/main.log', level=logging.CRITICAL, format='%(asctime)s %(levelname)s:%(message)s')
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Run the kernelization process with optional database logging.')

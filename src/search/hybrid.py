@@ -6,7 +6,7 @@ from src.structs.hittingsettree import HSTreeNode, HittingSetTree
 from .strategy import Strategy
 
 # Configure logging
-logging.basicConfig(filename='hybrid_search.log',filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
+logging.basicConfig(filename='log/hybrid_search.log',filemode='w', level=logging.CRITICAL, format='%(asctime)s %(levelname)s:%(message)s')
 
 class HybridSearch(Strategy):
     def __init__(self, kernelStrategy: KernelStrategy, dataset: DataSet, alpha, strategy_param):
