@@ -46,7 +46,7 @@ def timeout_handler(signum, frame):
 if __name__ == "__main__":
     # Prepare for timeout
     signal.signal(signal.SIGALRM, timeout_handler)
-    timeout_duration = 3600  # 3600 seconds or 1 hour
+    timeout_duration = 1800  # 1800 seconds or 30 minutes
     signal.alarm(timeout_duration)  # Start the timer
 
     conn = create_ssh_tunnel_and_connect()
