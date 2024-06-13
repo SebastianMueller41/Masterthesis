@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Path to your CSV file with filenames
-FILENAME_LIST="data/SRS/Dataset_A/sig3_5_15.csv"
+FILENAME_LIST="data/SRS/Dataset_A/sig3_5_15/sig3_5_15.csv"
 
 # Path to your Python script
 PYTHON_SCRIPT="main.py"
