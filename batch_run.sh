@@ -2,11 +2,11 @@
 
 # Array of CSV files with filenames
 FILENAME_LISTS=(
-    "data/SRS/sig3_5_15.csv"
-    "data/SRS/sig5_15_25.csv"
-    #"data/SRS/sig10_15_15.csv"
-    #"data/SRS/sig15_15_25.csv"
-    #"data/SRS/sig15_25_50_v2.csv"
+    #"data/SRS/sig3_5_15.csv"
+    #"data/SRS/sig5_15_25.csv"
+    "data/SRS/sig10_15_25.csv"
+    #"data/SRS/sig15_25_50.csv"
+    "data/SRS/sig20_25_50.csv"
 )
 
 # Path to your Python script
