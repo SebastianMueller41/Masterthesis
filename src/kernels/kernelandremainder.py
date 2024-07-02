@@ -1,6 +1,6 @@
 import logging
 import subprocess
-from src.parse import CNFConverter
+from src.CNFconverter.parse import CNFConverter
 from src.structs.dataset import DataSet
 
 # Configure logging to file

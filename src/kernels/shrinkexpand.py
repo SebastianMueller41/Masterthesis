@@ -1,7 +1,7 @@
 import logging
 import subprocess
 from .kernelstrategy import KernelStrategy
-from src.parse import CNFConverter
+from src.CNFconverter.parse import CNFConverter
 from src.structs.dataset import DataSet
 
 # Configure logging to file
