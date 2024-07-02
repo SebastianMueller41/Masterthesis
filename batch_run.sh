@@ -2,26 +2,26 @@
 
 # Array of CSV files with filenames
 FILENAME_LISTS=(
-    #"data/SRS/sig3_5_15.csv"
+    "data/SRS/sig3_5_15.csv"
     #"data/SRS/sig5_15_25.csv"
-    "data/SRS/sig10_15_25.csv"
+    #"data/SRS/sig10_15_25.csv"
     #"data/SRS/sig15_25_50.csv"
-    "data/SRS/sig20_25_50.csv"
+    #"data/SRS/sig20_25_50.csv"
 )
 
 # Path to your Python script
 PYTHON_SCRIPT="main.py"
 
 # Array of strategy parameters
-#STRATEGY_PARAMS=(0 1 2 4)
-STRATEGY_PARAMS=(0)
+#STRATEGY_PARAMS=(0 1 2 3)
+STRATEGY_PARAMS=(3)
 
 # Array of parameter sets
 PARAMETER_SETS=(
     "--alpha A0&&!A0 --log-db"
-    #"--alpha A0&&!A0 --log-db -dc"
-    #"--alpha A0&&!A0 --log-db -dc --sw-size 5"
-    #"--alpha A0&&!A0 --log-db -dc --sw-size 10"
+    "--alpha A0&&!A0 --log-db -dc"
+    "--alpha A0&&!A0 --log-db -dc --sw-size 5"
+    "--alpha A0&&!A0 --log-db -dc --sw-size 10"
 )
 
 # Loop through each CSV file
