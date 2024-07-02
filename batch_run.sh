@@ -13,12 +13,12 @@ FILENAME_LISTS=(
 PYTHON_SCRIPT="main.py"
 
 # Array of strategy parameters
-STRATEGY_PARAMS=(1 2)
+STRATEGY_PARAMS=(0 3)
 #STRATEGY_PARAMS=(0)
 
 # Array of parameter sets
 PARAMETER_SETS=(
-    "--alpha A0&&!A0 --log-db"
+    #"--alpha A0&&!A0 --log-db"
     #"--alpha A0&&!A0 --log-db -dc"
     "--alpha A0&&!A0 --log-db --sw-size 5"
     #"--alpha A0&&!A0 --log-db -dc --sw-size 5"
