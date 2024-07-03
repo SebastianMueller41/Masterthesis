@@ -65,7 +65,7 @@ def call_sat_solver(script_path, temp_filepath, option='c'):
     raise ValueError("Failed to obtain inconsistency measure from SAT solver.")
 
 
-def calculate_values(filepath, filename, script_path='sat4im/src/sat4im.py'):
+def calculate_values(filepath, script_path='sat4im/src/sat4im.py'):
     initial_inconsistency_measure = call_sat_solver(script_path, filepath)
 
     with open(filepath, 'r') as file:
@@ -97,7 +97,7 @@ def calculate_values(filepath, filename, script_path='sat4im/src/sat4im.py'):
 
 
 def list_files_excluding_db(root_folder):
-    for dirpath, dirnames, filenames in os.walk(root_folder):
+    for dirpath, filenames in os.walk(root_folder):
         if dirpath == "data/SRS" or dirpath == "data/Test_Datasets":
             continue
         print(dirpath)
