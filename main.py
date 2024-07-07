@@ -16,6 +16,7 @@ import resource
 import signal
 import logging
 from src.search.hybrid import HybridSearch
+from src.search.priority import PrioritySearch
 from src.search.bfs import BFS
 from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
@@ -55,7 +56,9 @@ if __name__ == "__main__":
 
     dataset = DataSet(conn, input_file_path=args.dataset_name, strategy_param=args.strategy_param)
     if not 1 <= args.sw_size <= dataset.size():
-        sys.exit(f"--sw-size/--sliding-window must be between 1 and the length of the dataset ({dataset.size()}).")
+        adjusted_sw_size = min(args.sw_size, dataset.size())
+        logging.warning(f"--sw-size/--sliding-window must be between 1 and the length of the dataset ({dataset.size()}). Adjusting sw_size to {adjusted_sw_size}.")
+        args.sw_size = adjusted_sw_size
     if args.alpha:
         logging.info(f"Alpha: {args.alpha}")
 
@@ -65,7 +68,7 @@ if __name__ == "__main__":
             if args.strategy_param == 0:
                 hitting_set_tree = KernelSolver(BFS(ExpandShrink(args.sw_size, args.divide_conquer), dataset, args.alpha)).solve()
             elif 0 < args.strategy_param < 4:
-                hitting_set_tree = KernelSolver(HybridSearch(ExpandShrink(args.sw_size, args.divide_conquer), dataset, args.alpha, args.strategy_param)).solve()
+                hitting_set_tree = KernelSolver(PrioritySearch(ExpandShrink(args.sw_size, args.divide_conquer), dataset, args.alpha, args.strategy_param)).solve()
             else:
                 logging.error("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
                 sys.exit(1)
@@ -73,7 +76,7 @@ if __name__ == "__main__":
             if args.strategy_param == 0:
                 hitting_set_tree = KernelSolver(BFS(ShrinkExpand(args.sw_size, args.divide_conquer), dataset, args.alpha)).solve()
             elif 0 < args.strategy_param < 4:
-                hitting_set_tree = KernelSolver(HybridSearch(ShrinkExpand(args.sw_size, args.divide_conquer), dataset, args.alpha, args.strategy_param)).solve()
+                hitting_set_tree = KernelSolver(PrioritySearch(ShrinkExpand(args.sw_size, args.divide_conquer), dataset, args.alpha, args.strategy_param)).solve()
             else:
                 logging.error("WRONG STRATEGY PARAM! MUST BE 0 = no B&B, 1 = Cardinality, 2 = Random, 3 = Inconsistency")
                 sys.exit(1)
