@@ -1,5 +1,4 @@
 file_name,dataset,div_conq,sw_size,strategy_param,dataset_length
-data/SRS/Dataset_A/sig5_15_25/srs_1.txt,srs_1.txt,0,1,3,24
 data/SRS/Dataset_A/sig5_15_25/srs_1.txt,srs_1.txt,0,5,3,24
 data/SRS/Dataset_A/sig5_15_25/srs_1.txt,srs_1.txt,0,10,3,24
 data/SRS/Dataset_A/sig5_15_25/srs_1.txt,srs_1.txt,1,1,3,24
@@ -32,7 +31,6 @@ data/SRS/Dataset_A/sig5_15_25/srs_134.txt,srs_134.txt,0,5,2,24
 data/SRS/Dataset_A/sig5_15_25/srs_134.txt,srs_134.txt,0,5,3,24
 data/SRS/Dataset_A/sig5_15_25/srs_134.txt,srs_134.txt,0,10,2,24
 data/SRS/Dataset_A/sig5_15_25/srs_134.txt,srs_134.txt,0,10,3,24
-data/SRS/Dataset_A/sig5_15_25/srs_134.txt,srs_134.txt,1,1,2,24
 data/SRS/Dataset_A/sig5_15_25/srs_134.txt,srs_134.txt,1,1,3,24
 data/SRS/Dataset_A/sig5_15_25/srs_134.txt,srs_134.txt,1,5,2,24
 data/SRS/Dataset_A/sig5_15_25/srs_134.txt,srs_134.txt,1,5,3,24
@@ -92,7 +90,6 @@ data/SRS/Dataset_A/sig5_15_25/srs_171.txt,srs_171.txt,1,1,3,22
 data/SRS/Dataset_A/sig5_15_25/srs_171.txt,srs_171.txt,1,5,3,22
 data/SRS/Dataset_A/sig5_15_25/srs_171.txt,srs_171.txt,1,10,3,22
 data/SRS/Dataset_A/sig5_15_25/srs_174.txt,srs_174.txt,0,10,3,18
-data/SRS/Dataset_A/sig5_15_25/srs_175.txt,srs_175.txt,0,1,3,21
 data/SRS/Dataset_A/sig5_15_25/srs_176.txt,srs_176.txt,0,1,3,22
 data/SRS/Dataset_A/sig5_15_25/srs_176.txt,srs_176.txt,0,5,3,22
 data/SRS/Dataset_A/sig5_15_25/srs_176.txt,srs_176.txt,0,10,3,22
@@ -140,7 +137,6 @@ data/SRS/Dataset_A/sig5_15_25/srs_71.txt,srs_71.txt,0,5,3,22
 data/SRS/Dataset_A/sig5_15_25/srs_71.txt,srs_71.txt,0,10,3,22
 data/SRS/Dataset_A/sig5_15_25/srs_71.txt,srs_71.txt,1,5,3,22
 data/SRS/Dataset_A/sig5_15_25/srs_71.txt,srs_71.txt,1,10,3,22
-data/SRS/Dataset_A/sig5_15_25/srs_76.txt,srs_76.txt,0,1,0,20
 data/SRS/Dataset_A/sig5_15_25/srs_83.txt,srs_83.txt,0,5,3,21
 data/SRS/Dataset_A/sig5_15_25/srs_83.txt,srs_83.txt,0,10,3,21
 data/SRS/Dataset_A/sig5_15_25/srs_83.txt,srs_83.txt,1,5,3,21
@@ -152,18 +148,3 @@ data/SRS/Dataset_A/sig5_15_25/srs_94.txt,srs_94.txt,1,1,3,23
 data/SRS/Dataset_A/sig5_15_25/srs_94.txt,srs_94.txt,1,5,3,23
 data/SRS/Dataset_A/sig5_15_25/srs_94.txt,srs_94.txt,1,10,3,23
 data/SRS/Dataset_A/sig5_15_25/srs_96.txt,srs_96.txt,0,10,3,24
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,1,0,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,1,1,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,1,2,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,1,3,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,5,0,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,5,1,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,5,2,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,5,3,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,10,0,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,10,1,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,10,2,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,0,10,3,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,1,1,3,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,1,5,3,17
-data/SRS/Dataset_A/sig5_15_25/srs_99.txt,srs_99.txt,1,10,3,17
