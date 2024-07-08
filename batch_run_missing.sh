@@ -5,8 +5,8 @@ PYTHON_SCRIPT="main.py"
 
 # Array of missing combinations CSV files
 MISSING_COMBINATIONS_FILES=(
-    "data/SRS/missing_combinations_3_5_15.csv"
-    "data/SRS/missing_combinations_5_15_25.csv"
+    #"data/SRS/missing_combinations_3_5_15.csv"
+    #"data/SRS/missing_combinations_5_15_25.csv"
     "data/SRS/missing_combinations_10_15_25.csv"
 )
 
