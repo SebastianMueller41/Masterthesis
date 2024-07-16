@@ -1,26 +1,49 @@
 #!/bin/bash
+set -x
 
-# Set CSV file path (modify if needed)
-csv_file="missing_combinatoins_ARG.csv"
+# Path to your Python script
+PYTHON_SCRIPT="main.py"
 
-# Check if CSV file exists
-if [ ! -f "$csv_file" ]; then
-  echo "Error: CSV file '$csv_file' not found!"
-  exit 1
-fi
+# Array of missing combinations CSV files
+MISSING_COMBINATIONS_FILES=(
+    "data/missing_combinations_ARG.csv"
+)
 
-# Loop through each line in the CSV file
-while IFS=, read -r dataset div_conq sw_size strategy_param dataset_length; do
-  # Skip header row (if present)
-  if [[ $dataset == "dataset" ]]; then
+# Loop through each missing combinations CSV file
+for MISSING_COMBINATIONS_FILE in "${MISSING_COMBINATIONS_FILES[@]}"
+do
+  # Check if the file exists
+  if [ ! -f "$MISSING_COMBINATIONS_FILE" ]; then
+    echo "File not found: $MISSING_COMBINATIONS_FILE"
     continue
   fi
 
-  # Execute main.py with the parameters from the CSV line and alpha
-  python main.py "$dataset" $div_conq $sw_size $strategy_param --alpha 'arg_0&&!arg_0' --log-db &> /dev/null
+  # Read each line in the missing combinations file, ignore additional columns
+  # Skip the first line (header)
+  tail -n +2 "$MISSING_COMBINATIONS_FILE" | while IFS=, read -r FILE_NAME DIV_CONQ SW_SIZE STRATEGY_PARAM _REST
+  do
+    # Construct the parameter set
+    PARAM_SET="--alpha 'arg_0&&!arg_0' -log-db --ss P -path-db"  # Changed --log-db to -log-db and added --ss P and -path-db as default
+    if [ "$DIV_CONQ" -eq 1 ]; then
+      PARAM_SET="$PARAM_SET -dc"
+    fi
+    PARAM_SET="$PARAM_SET --sw-size $SW_SIZE"
 
-  # Print a message indicating completion of the current run
-  echo "Finished running with: dataset=$dataset, div_conq=$div_conq, sw_size=$sw_size, strategy_param=$strategy_param, alpha='arg_0&&!arg_0'"
-done < "$csv_file"
+    echo "Processing $FILE_NAME with strategy $STRATEGY_PARAM and params $PARAM_SET"
+    
+    # Full command
+    COMMAND="python3 $PYTHON_SCRIPT $FILE_NAME --sp $STRATEGY_PARAM -k $PARAM_SET"
+    echo "Executing: $COMMAND"
+    
+    # Execute the command and capture the output and error
+    OUTPUT=$($COMMAND 2>&1)
+    EXIT_CODE=$?
 
-echo "All runs completed!"
+    echo "Output: $OUTPUT"
+    if [ $EXIT_CODE -ne 0 ]; then
+      echo "Error: Command failed with exit code $EXIT_CODE"
+      echo "Full command: $COMMAND"
+      exit $EXIT_CODE
+    fi
+  done
+done

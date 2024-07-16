@@ -54,24 +54,24 @@ if __name__ == "__main__":
     timeout_duration = 1800  # 1800 seconds or 30 minutes
     signal.alarm(timeout_duration)  # Start the timer
 
-    conn = create_ssh_tunnel_and_connect()
-
-    start_time = time.time()
-
-    dataset = DataSet(conn, input_file_path=args.filepath, strategy_param=args.sp,db=args.path_db)
-
-    if dataset.size() == 0:
-        sys.exit("No Dataset found, please use a dataset from DB or change code to use files.")
-
-    if not 1 <= args.sw_size <= dataset.size():
-        adjusted_sw_size = min(args.sw_size, dataset.size())
-        logging.warning(f"--sw-size/--sliding-window must be between 1 and the length of the dataset ({dataset.size()}). Adjusting sw_size to {adjusted_sw_size}.")
-        args.sw_size = adjusted_sw_size
-    if args.alpha:
-        logging.info(f"Alpha: {args.alpha}")
-
-    hitting_set_tree = None
     try:
+        conn = create_ssh_tunnel_and_connect()
+        start_time = time.time()
+        dataset = DataSet(conn, input_file_path=args.filepath, strategy_param=args.sp, db=args.path_db)
+
+        if dataset.size() == 0:
+            logging.error("No Dataset found, please use a dataset from DB or change code to use files.")
+            sys.exit(1)
+
+        if not 1 <= args.sw_size <= dataset.size():
+            adjusted_sw_size = min(args.sw_size, dataset.size())
+            logging.warning(f"--sw-size/--sliding-window must be between 1 and the length of the dataset ({dataset.size()}). Adjusting sw_size to {adjusted_sw_size}.")
+            args.sw_size = adjusted_sw_size
+
+        if args.alpha:
+            logging.info(f"Alpha: {args.alpha}")
+
+        hitting_set_tree = None
         if args.method == 'kernel':
             kernel_strategy = ExpandShrink(args.sw_size, args.divide_conquer)
         elif args.method == 'remainder':
