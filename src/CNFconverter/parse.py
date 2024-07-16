@@ -5,6 +5,12 @@ arguments, along with an optional flag to control console output verbosity.
 """
 
 import sys
+import os
+import tempfile
+
+# Add the project root directory to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
 from src.CNFconverter.core import KnowledgeBase
 
 class CNFConverter:
@@ -64,7 +70,6 @@ class CNFConverter:
 
         if self.verbose:
             print(f"CNF format saved to {output_filename}")
-
 
 # Check for proper command line arguments and initialize CNFConverter
 if __name__ == "__main__":

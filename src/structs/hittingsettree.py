@@ -127,11 +127,17 @@ class HittingSetTree:
     def calculate_path_bbvalue_up_to_root(self, node, dataset):
         cumulative_bbvalue = 0.0
         current_node = node
-        while current_node is not None and current_node.parent is not None:  # Assuming each node has a 'parent' reference.
-            inconsistency_value = dataset.element_values.get(current_node.edge, 0)
-            cumulative_bbvalue += 1 / inconsistency_value if inconsistency_value != 0 else 0
+        while current_node is not None and current_node.edge is not None:
+            # Retrieve the value for the current edge/formula
+            edge_value = dataset.element_values.get(current_node.edge, None)
+            
+            if edge_value is None:
+                edge_value = 0
+            
+            cumulative_bbvalue += 1 / float(edge_value) if edge_value != 0 else 0
             current_node = current_node.parent
         return cumulative_bbvalue
+
     
     def get_hitting_set_for_leaf(self, leaf_node):
         """

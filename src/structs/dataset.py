@@ -9,9 +9,6 @@ import logging
 import sys
 from mysql.connector import Error
 
-# Configure logging and clear the log file before logging
-logging.basicConfig(filename='log/dataset.log', filemode='w', level=logging.CRITICAL, format='%(asctime)s %(levelname)s:%(message)s')
-
 class DataSet:
     """
     A class to manage a collection of elements.
@@ -22,7 +19,7 @@ class DataSet:
         elements (list): A list of elements representing the dataset.
     """
     
-    def __init__(self, conn=None, input_file_path=None, strategy_param=None, elements=None, strategy=None):
+    def __init__(self, conn=None, input_file_path=None, strategy_param=0, elements=None, db=False):
         """
         Initialize a new DataSet instance, optionally loading elements from a file and applying a value assignment strategy.
 
@@ -36,9 +33,14 @@ class DataSet:
         self.elements = elements if elements is not None else []
         self.element_values = {}  # Initialize the mapping of elements to values
         self.strategy_param = strategy_param
+        
         if input_file_path:
-            self.load_elements_from_db(input_file_path)
-        if strategy_param:
+            if db:
+                self.load_elements_from_db(input_file_path)
+            else:
+                self.load_elements_from_file(input_file_path)
+        
+        if strategy_param is not None:
             self.apply_value_assignment_strategy(strategy_param)
 
     def load_elements_from_file(self, file_path):
@@ -202,12 +204,19 @@ class DataSet:
 
         Args:
             strategy_param (int): The parameter defining the value assignment strategy.
-        """        
-        if strategy_param == 1:
+        """
+        if strategy_param == 0:
+            for element in self.elements:
+                self.element_values[element] = 0
+        elif strategy_param == 1:
             for element in self.elements:
                 self.element_values[element] = 1
-        elif strategy_param == 2 or strategy_param == 3:
+        elif strategy_param in {2, 3}:
             # Values already assigned during load_elements_from_db
             for element in self.elements:
                 if element not in self.element_values:
-                    self.element_values[element] = None
+                    self.element_values[element] = 0  # Default to 0 instead of None
+        # Ensure all elements have values assigned
+        for element in self.elements:
+            if element not in self.element_values:
+                self.element_values[element] = 0

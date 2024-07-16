@@ -1,5 +1,5 @@
 -- Set the variable
-SET @pattern = '%sig5_15_25/srs_%';
+SET @pattern = '%ARG/%';
 
 -- Use the variable in the query
 WITH AllCombinations AS (
@@ -12,9 +12,9 @@ WITH AllCombinations AS (
 ExistingResults AS (
     SELECT 
         file_name,
-        SUBSTRING(file_name, POSITION('srs_' IN file_name), LENGTH(file_name)) AS dataset,
+        SUBSTRING(file_name, LENGTH(file_name)) AS dataset,
         div_conq, sw_size, strategy_param
-    FROM EXE_RESULTS.RESULTS
+    FROM EXE_RESULTS.RESULTS_OLD
     WHERE file_name LIKE @pattern
 ),
 
@@ -26,16 +26,15 @@ DatasetCombinations AS (
 
 DatasetLengths AS (
     SELECT 
-        SUBSTRING(filename, POSITION('srs_' IN filename), LENGTH(filename)) AS dataset,
+        SUBSTRING(filename, LENGTH(filename)) AS dataset,
         COUNT(id) AS dataset_length
     FROM EXE_RESULTS.DATA_ENTRY
     WHERE filename LIKE @pattern
-    GROUP BY SUBSTRING(filename, POSITION('srs_' IN filename), LENGTH(filename))
+    GROUP BY SUBSTRING(filename, LENGTH(filename))
 )
 
 SELECT 
     dc.file_name,
-    dc.dataset, 
     dc.div_conq, 
     dc.sw_size, 
     dc.strategy_param,
@@ -49,5 +48,5 @@ AND dc.strategy_param = er.strategy_param
 LEFT JOIN DatasetLengths dl
 ON dc.dataset = dl.dataset
 WHERE er.dataset IS NULL
-AND dl.dataset_length > 5
+AND dl.dataset_length > dc.sw_size
 ORDER BY dc.dataset, dc.div_conq, dc.sw_size, dc.strategy_param;

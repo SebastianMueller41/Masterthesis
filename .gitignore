@@ -3,7 +3,6 @@ tmp/
 pyenv/
 src/database
 .DS_Store
-log/
 NOHUP
 dataset.log
 NOHUP

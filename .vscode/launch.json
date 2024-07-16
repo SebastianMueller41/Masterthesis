@@ -1,22 +1,23 @@
 {
-    // Verwendet IntelliSense zum Ermitteln möglicher Attribute.
-    // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
-    // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python-Debugger: Aktuelle Datei mit Argumenten",
-            "type": "debugpy",
+            "name": "Python: Debug main.py",
+            "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
+            "program": "${workspaceFolder}/main.py",
             "args": [
-                "data/Test_Datasets/test_UNSAT2.txt",
-                "3",
-                "-k",
-                "--alpha",
-                "A0&&!A0"
-            ]
+                "data/ARG/Small-result-b2.tgf.pl",
+                    "--sp",
+                    "3",
+                    "-r",
+                    "--alpha",
+                    "arg_a2_0",,
+                    "--ss",
+                    "P",
+                    "-path-db"
+            ],
+            "console": "integratedTerminal"
         }
     ]
 }

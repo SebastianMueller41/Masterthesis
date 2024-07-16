@@ -1,61 +1,47 @@
-import sys
-from src.structs.dataset import DataSet
-from src.structs.hittingsettree import HSTreeNode, HittingSetTree
-from src.kernels.kernelstrategy import KernelStrategy
-from src.remainders.remainderstrategy import RemainderStrategy
-from .strategy import Strategy
+from collections import deque
+from src.search.strategy import Strategy
+from src.search.search import Search
+from src.structs.hittingsettree import HSTreeNode
+import logging
 
-class BFS(Strategy):
-    
-    def __init__(self, kernelStrategy: KernelStrategy, dataset: DataSet, alpha):
-        self.kernelStrategy = kernelStrategy
-        self.dataset = dataset
-        self.alpha = alpha
-    
+class BFS(Strategy, Search):
+    def __init__(self, kernelStrategy, dataset, alpha, strategy_param):
+        Search.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
+
     def find_kernels(self) -> None:
-        self.tree = HittingSetTree()
-        self.span_tree_with_kernels(self.dataset, self.alpha)
-        
-        ## print afterwards
+        self.bfs(self.dataset, self.alpha)
         self.tree.print_tree()
-        self.tree.print_tree_to_file()    
-            
-    def span_tree_with_kernels(self, dataset, alpha, parent=None, removed=None):
+        self.log_tree()
+
+    def bfs(self, dataset, alpha):
+        queue = deque()
         result = self.kernelStrategy.find_kernel(dataset, alpha)
         if result is not None:
-            found_kernel = result.get_elements()
-            if not found_kernel:
-                # If found_kernel is empty, we've hit a leaf node
-                child_node = HSTreeNode(kernel="LEAF")
-                self.tree.add_leaf_node(child_node)
-                parent.add_child(child_node)
-                return
-            
-            if parent is None:
-                # set root to first kernel
-                self.tree.root.set_kernel(found_kernel)
-                parent = self.tree.root
-            else: 
-                child_node = HSTreeNode(kernel=found_kernel, edge=removed)
-                parent.add_child(child_node)
-                parent = child_node
-            
-            #logging
-            self.tree.print_tree_to_file()    
-            self.tree.print_newline()
+            self.tree.root = HSTreeNode(kernel=result.get_elements(), dataset=dataset, bbvalue=0, parent=None)
+            queue.append(self.tree.root)
 
+        while queue:
+            current_node = queue.popleft()
+            if self.should_prune(current_node):
+                current_node.kernel = "PRUNED"
+                current_node.set_pruned()
+                continue
 
-            for element in found_kernel:
-                # Create a copy of dataset without the current element
-                reduced_dataset = dataset.clone()
-                reduced_dataset.remove_element(element)                
+            for element in current_node.get_kernel():
+                reduced_dataset = current_node.get_dataset().clone()
+                reduced_dataset.remove_element(element)
 
-                # Recursively span the tree
-                self.span_tree_with_kernels(reduced_dataset, alpha, parent, element)
-        else:
-            child_node = HSTreeNode(kernel="LEAF", edge=removed)
-            self.tree.add_leaf_node(child_node)
-            parent.add_child(child_node)
-            #logging
-            self.tree.print_tree_to_file()    
-            self.tree.print_newline()
+                bbvalue = self.calculate_bbvalue(current_node, element, reduced_dataset)
+                child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=current_node.level + 1, bbvalue=bbvalue, parent=current_node)
+                current_node.add_child(child_node)
+
+                result = self.kernelStrategy.find_kernel(reduced_dataset, alpha)
+                if result is not None:
+                    child_node.set_kernel(result.get_elements())
+                    queue.append(child_node)
+                else:
+                    child_node.set_kernel("LEAF")
+                    self.tree.add_leaf_node(child_node)
+                    self.update_boundary_with_leaf(child_node)
+
+        self.log_tree()

@@ -1,38 +1,26 @@
 #!/bin/bash
 
-# Path to your Python script
-PYTHON_SCRIPT="main.py"
+# Set CSV file path (modify if needed)
+csv_file="missing_combinatoins_ARG.csv"
 
-# Array of missing combinations CSV files
-MISSING_COMBINATIONS_FILES=(
-    #"data/SRS/missing_combinations_3_5_15.csv"
-    #"data/SRS/missing_combinations_5_15_25.csv"
-    "data/SRS/missing_combinations_10_15_25.csv"
-)
+# Check if CSV file exists
+if [ ! -f "$csv_file" ]; then
+  echo "Error: CSV file '$csv_file' not found!"
+  exit 1
+fi
 
-# Loop through each missing combinations CSV file
-for MISSING_COMBINATIONS_FILE in "${MISSING_COMBINATIONS_FILES[@]}"
-do
-  # Check if the file exists
-  if [ ! -f "$MISSING_COMBINATIONS_FILE" ]; then
-    echo "File not found: $MISSING_COMBINATIONS_FILE"
+# Loop through each line in the CSV file
+while IFS=, read -r dataset div_conq sw_size strategy_param dataset_length; do
+  # Skip header row (if present)
+  if [[ $dataset == "dataset" ]]; then
     continue
   fi
 
-  # Read each line in the missing combinations file, ignore additional columns
-  while IFS=, read -r FILE_NAME DATASET DIV_CONQ SW_SIZE STRATEGY_PARAM _REST
-  do
-    # Skip the header line
-    if [ "$FILE_NAME" != "file_name" ]; then
-      # Construct the parameter set
-      PARAM_SET="--alpha A0&&!A0 --log-db"
-      if [ "$DIV_CONQ" -eq 1 ]; then
-        PARAM_SET="$PARAM_SET -dc"
-      fi
-      PARAM_SET="$PARAM_SET --sw-size $SW_SIZE"
+  # Execute main.py with the parameters from the CSV line and alpha
+  python main.py "$dataset" $div_conq $sw_size $strategy_param --alpha 'arg_0&&!arg_0' --log-db &> /dev/null
 
-      echo "Processing $FILE_NAME with strategy $STRATEGY_PARAM and params $PARAM_SET"
-      python "$PYTHON_SCRIPT" "$FILE_NAME" "$STRATEGY_PARAM" -k $PARAM_SET
-    fi
-  done < "$MISSING_COMBINATIONS_FILE"
-done
+  # Print a message indicating completion of the current run
+  echo "Finished running with: dataset=$dataset, div_conq=$div_conq, sw_size=$sw_size, strategy_param=$strategy_param, alpha='arg_0&&!arg_0'"
+done < "$csv_file"
+
+echo "All runs completed!"

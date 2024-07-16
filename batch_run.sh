@@ -2,9 +2,9 @@
 
 # Array of CSV files with filenames
 FILENAME_LISTS=(
-    #"data/SRS/sig3_5_15.csv"
+    "data/SRS/sig3_5_15.csv"
     #"data/SRS/sig5_15_25.csv"
-    "data/SRS/sig10_15_25.csv"
+    #"data/SRS/sig10_15_25.csv"
     #"data/SRS/sig15_25_50.csv"
     #"data/SRS/sig20_25_50.csv"
 )
@@ -16,17 +16,18 @@ PYTHON_SCRIPT="main.py"
 STRATEGY_PARAMS=(3)
 #STRATEGY_PARAMS=(1 2 3)
 
+# Array of search strategies
+SEARCH_STRATEGIES=("BFS" "DFS" "H" "P")
+
 # Array of parameter sets
 PARAMETER_SETS=(
-    #"--alpha A0&&!A0 --log-db"
+    "--alpha A0&&!A0 -r --log-db"
     #"--alpha A0&&!A0 --log-db -dc"
     #"--alpha A0&&!A0 --log-db --sw-size 5"
     #"--alpha A0&&!A0 --log-db -dc --sw-size 5"
-    "--alpha A0&&!A0 --log-db --sw-size 10"
+    #"--alpha A0&&!A0 --log-db --sw-size 10"
     #"--alpha A0&&!A0 --log-db -dc --sw-size 10"
 )
-
-#after that strat = 0, sw_size =5 & 10
 
 # Loop through each CSV file
 for FILENAME_LIST in "${FILENAME_LISTS[@]}"
@@ -45,10 +46,13 @@ do
       # Run the Python script with the current filename, strategy parameters, and each set of additional parameters
       for STRATEGY_PARAM in "${STRATEGY_PARAMS[@]}"
       do
-        for PARAM_SET in "${PARAMETER_SETS[@]}"
+        for SEARCH_STRATEGY in "${SEARCH_STRATEGIES[@]}"
         do
-          echo "Processing $FILENAME with strategy $STRATEGY_PARAM and params $PARAM_SET from $FILENAME_LIST"
-          python "$PYTHON_SCRIPT" "$FILENAME" "$STRATEGY_PARAM" -k $PARAM_SET
+          for PARAM_SET in "${PARAMETER_SETS[@]}"
+          do
+            echo "Processing $FILENAME with strategy $STRATEGY_PARAM, search strategy $SEARCH_STRATEGY and params $PARAM_SET from $FILENAME_LIST"
+            python "$PYTHON_SCRIPT" "$FILENAME" "$STRATEGY_PARAM" --ss "$SEARCH_STRATEGY" $PARAM_SET
+          done
         done
       done
     fi

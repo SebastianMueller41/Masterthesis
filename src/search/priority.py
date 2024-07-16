@@ -1,30 +1,27 @@
 import heapq
 import logging
-from src.kernels.kernelstrategy import KernelStrategy
-from src.structs.dataset import DataSet
-from src.structs.hittingsettree import HSTreeNode, HittingSetTree
-from .strategy import Strategy
+from src.search.strategy import Strategy
+from src.search.search import Search
+from src.structs.hittingsettree import HSTreeNode
 
-# Configure logging
-logging.basicConfig(filename='log/priority_search.log',filemode='w', level=logging.CRITICAL, format='%(asctime)s %(levelname)s:%(message)s')
-
-class PrioritySearch(Strategy):
-    def __init__(self, kernelStrategy: KernelStrategy, dataset: DataSet, alpha, strategy_param):
-        self.kernelStrategy = kernelStrategy
-        self.dataset = dataset
-        self.alpha = alpha
-        self.strategy_param = strategy_param
-        self.tree = HittingSetTree(dataset=dataset)
+class PrioritySearch(Strategy, Search):
+    def __init__(self, kernelStrategy, dataset, alpha, strategy_param):
+        Search.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
         self.tree.boundary = float('inf')
 
     def find_kernels(self) -> None:
         initial_node = self.create_initial_node(self.dataset, self.alpha)
+        if initial_node is None:
+            logging.info("Initial kernel is None, no need to span the tree.")
+            return
         self.priority_search(initial_node)
         self.tree.print_tree()
         self.log_tree()
 
     def create_initial_node(self, dataset, alpha):
         result = self.kernelStrategy.find_kernel(dataset, alpha)
+        if result is None:
+            return None
         initial_node = HSTreeNode(kernel=result.get_elements(), dataset=dataset, bbvalue=0, parent=None)
         self.tree.root = initial_node
         return initial_node
@@ -35,10 +32,8 @@ class PrioritySearch(Strategy):
 
         while priority_queue:
             _, current_node = heapq.heappop(priority_queue)
-            logging.debug(f"Expanding node with bbvalue: {current_node.bbvalue}, edge: {current_node.edge}, from queue: {priority_queue}")
 
             if self.should_prune(current_node):
-                logging.debug(f"Pruning node with bbvalue: {current_node.bbvalue}, edge: {current_node.edge}")
                 current_node.kernel = "PRUNED"
                 current_node.set_pruned()
                 continue
@@ -70,41 +65,38 @@ class PrioritySearch(Strategy):
             priority = self.dataset.element_values.get(element, 0)
             children.append((priority, child_node))
 
-        # Sort children by priority (highest first) and add them to the priority queue
         children.sort(reverse=True, key=lambda x: x[0])
         for priority, child_node in children:
             self.add_to_priority_queue(priority_queue, child_node, priority)
 
     def add_to_priority_queue(self, queue, node, priority):
-        logging.debug(f"Adding node to priority queue with priority: {-priority}, edge: {node.edge}")
         heapq.heappush(queue, (-priority, node))
 
     def calculate_bbvalue(self, current_node, element, dataset):
-        assigned_value = dataset.element_values.get(element, 1)  # Default value to 1 if not found
+        assigned_value = dataset.element_values.get(element, 1)
         transformed_value = 1 / assigned_value if assigned_value != 0 else 0
         new_bbvalue = current_node.bbvalue + transformed_value
-        logging.debug(f"Calculating bbvalue: current_node bbvalue = {current_node.bbvalue}, element = {element}, assigned_value = {assigned_value}, transformed_value = {transformed_value}, new_bbvalue = {new_bbvalue}")
         return new_bbvalue
 
     def update_boundary_with_leaf(self, leaf_node):
         leaf_path_measure = self.calculate_path_bbvalue_up_to_root(leaf_node, self.dataset)
-        if leaf_path_measure < self.tree.boundary:  # Ensure boundary is updated correctly
+        if leaf_path_measure < self.tree.boundary:
             self.tree.boundary = leaf_path_measure
-            logging.debug(f"Updated boundary: {self.tree.boundary}")
 
     def calculate_path_bbvalue_up_to_root(self, node, dataset):
         cumulative_bbvalue = 0.0
         current_node = node
         while current_node is not None and current_node.edge is not None:
-            element_value = dataset.element_values.get(current_node.edge, 1)  # Default value to 1 if not found
+            element_value = dataset.element_values.get(current_node.edge, 1)
             cumulative_bbvalue += 1 / element_value if element_value != 0 else 0
             current_node = current_node.parent
         return cumulative_bbvalue
 
     def should_prune(self, node):
         hitting_set_value = self.calculate_path_bbvalue_up_to_root(node, self.dataset)
-        logging.debug(f"Checking pruning: node bbvalue = {node.bbvalue}, hitting_set_value = {hitting_set_value}, boundary = {self.tree.boundary}")
-        return hitting_set_value >= self.tree.boundary  # Prune if greater than or equal to boundary
+        if self.tree.boundary == 0:
+            return False
+        return hitting_set_value >= self.tree.boundary
 
     def log_tree(self):
         self.tree.print_tree_to_file(dataset=self.dataset)

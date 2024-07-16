@@ -1,14 +1,7 @@
 import logging
-import subprocess
 from .kernelstrategy import KernelStrategy
-from src.CNFconverter.parse import CNFConverter
 from src.structs.dataset import DataSet
-
-# Configure logging to file
-logging.basicConfig(filename='log/remainder_operations.log', # Log file name
-                    filemode='w', # Overwrite the log file on each run
-                    format='%(asctime)s - %(levelname)s - %(message)s',
-                    level=logging.CRITICAL)
+from src.kernels.kernel_utils import cn  # Import the cn function
 
 class ShrinkExpand(KernelStrategy):
     def __init__(self, window_size=1, divide_and_conquer=False):  
@@ -19,7 +12,7 @@ class ShrinkExpand(KernelStrategy):
     def find_kernel(self, dataset, alpha):
         # Make a clone of the dataset to ensure the original is not altered
         dataset_clone = dataset.clone()  # Ensure your dataset object supports cloning
-        if self.cn(dataset_clone, alpha):
+        if cn(dataset_clone, alpha):  # Use the imported cn function
             remainder = self.find_remainder(dataset_clone, alpha)
             logging.info(f"Found remainder {len(remainder.get_elements())} elements: {remainder.get_elements()}")
             
@@ -40,82 +33,80 @@ class ShrinkExpand(KernelStrategy):
             return None
 
     def find_remainder(self, dataset, alpha):
-        remainder_dataset = self.shrink(dataset, alpha)
+        remainder_dataset, removed_elements = self.shrink(dataset, alpha)
         logging.info(f"After shrink: {remainder_dataset.get_elements()}")
-        return remainder_dataset
+        if self.div_conq:
+            return self.divide_and_conquer(remainder_dataset, removed_elements, alpha)
+        else:
+            return self.expand(remainder_dataset, removed_elements, alpha)
 
     def shrink(self, B_dataset, alpha):
         """ Shrinks the dataset using a sliding window until alpha is no longer a consequence. """
-        # This is the core function for finding the kernel using either a normal approach or divide and conquer
-        i = 0
         removed_elements = DataSet()
-        while i < len(B_dataset.get_elements()):
-            #B_prime = B_dataset.clone()
-            element = B_dataset.get_elements()[i]
-            B_dataset.remove_element(element)
-            removed_elements.add_element(element)
-            logging.debug(f"Checking and removing: {element} with index: {i}, B_prime with {len(B_dataset.get_elements())} elements = {B_dataset.get_elements()}")  # Debug log for current dataset state
+        elements = B_dataset.get_elements()
 
-            if self.cn(B_dataset, alpha):
-                logging.info(f"SHRINK: CN = TRUE, {element} removed, B_dataset = {B_dataset.get_elements()}, removed elements: {removed_elements.get_elements()}")  # Info log for dataset shrink action
+        # Process the dataset in windows
+        for start in range(0, len(elements), self.window_size):
+            window_elements = elements[start:start + self.window_size]
+            B_prime = B_dataset.clone()
+            for element in window_elements:
+                B_prime.remove_element(element)
+            logging.debug(f"Checking and removing elements: {window_elements}, B_prime now with {len(B_prime.get_elements())} elements = {B_prime.get_elements()}")
+
+            if cn(B_prime, alpha):  # Use the imported cn function
+                logging.info(f"SHRINK: CN = TRUE for window elements {window_elements}, B_dataset = {B_prime.get_elements()}, removed elements: {removed_elements.get_elements()}")
+                B_dataset = B_prime
+                removed_elements.add_element(element)
             else:
-                logging.info(f"FINISHED SHRINK, CN = FALSE, Remainder output with {len(B_dataset.get_elements())} elements: {B_dataset.get_elements()}, removed elements: {removed_elements.get_elements()}")  # Logs the final kernel output
-                logging.debug(f"CONTINUE WITH EXPAND, B = {B_dataset.get_elements()}")
-                return self.expand(B_dataset, removed_elements, alpha)
+                logging.info(f"FINISHED SHRINK, CN = FALSE for window elements {window_elements}, Remainder output with {len(B_prime.get_elements())} elements: {B_prime.get_elements()}, removed elements: {removed_elements.get_elements()}")
+                return B_dataset, removed_elements
+
+        logging.info(f"Remainder after sliding window shrink with {len(B_dataset.get_elements())} elements: {B_dataset.get_elements()}")
+        return B_dataset, removed_elements
 
     def expand(self, B_dataset, removed_elements, alpha):
         """ Expands the dataset to ensure maximality while alpha is not entailed. """
-        for element in list(reversed(removed_elements.get_elements())):
-            B_dataset.add_element_at_start(element)
+        logging.info(f"Starting expanding B {B_dataset.get_elements()} with removed elements: {removed_elements.get_elements()}")
+        for element in removed_elements.get_elements():
             logging.debug(f"EXPAND: Checking element {element} with B = {B_dataset.get_elements()}")
-            if self.cn(B_dataset, alpha):
-                B_dataset.remove_element(element)  # Remove it if it causes entailment
+            if not cn(B_dataset, alpha):  # Use the imported cn function
+                B_dataset.add_element(element)
                 logging.debug(f"EXPAND: CN = TRUE, removing element {element} with B = {B_dataset.get_elements()}")
         
         logging.debug(f"FINAL REMAINDER WITH {len(B_dataset.get_elements())} elements: {B_dataset.get_elements()}")
         return B_dataset
 
-    def cn(self, B_dataset, alpha):
-        """
-        Check if alpha is a consequence of the dataset using MiniSat.
-        
-        Clones the given dataset, adds the negation of alpha, and transforms it into CNF.
-        Then calls MiniSat to solve the CNF. Interprets the output to determine if alpha
-        is a consequence of the dataset.
+    def divide_and_conquer(self, B_dataset, removed_elements, alpha):
+        """ Divide-and-conquer expansion method. """
+        if removed_elements.size() <= 1:
+            return self.expand(B_dataset, removed_elements, alpha)
 
-        Args:
-            B_dataset (DataSet): The dataset containing elements to check against.
-            alpha (str): The element to check.
+        logging.info(f"DC_EXPAND: Splitting removed elements: {removed_elements.get_elements()}")
+        left_removed, right_removed = removed_elements.split()
 
-        Returns:
-            bool: True if alpha is a consequence of the dataset, False otherwise.
-        """
-        temp_file="tmp/temp_dimacs.cnf"
+        left_expanded = B_dataset.combine(left_removed)
+        cn_left = cn(left_expanded, alpha)
+        right_expanded = B_dataset.combine(right_removed)
+        cn_right = cn(right_expanded, alpha)
 
-        # Clone B and add !alpha to check for entailment
-        B_copy = B_dataset.clone()
-        B_copy.add_element("!("+alpha+")")
-        #logging.debug(f"Checking with B_copy = {B_copy.get_elements()}")
+        logging.info(f"DC_EXPAND: Left half: {left_removed.get_elements()}, Right half: {right_removed.get_elements()}")
 
-        # Call parse.py to transform B_copy into CNF
-        B_copy.to_file(temp_file)
-        converter = CNFConverter(verbose=False)
-        converter.convert_to_cnf(temp_file, temp_file)
-
-        # Call miniSat and interpret the output
-        result = subprocess.run(['minisat', temp_file], capture_output=True, text=True)
-        output = result.stdout
-
-        # Extract the last line to check for the "SAT" or "UNSAT" result
-        last_line = output.splitlines()[-1]
-
-        # Process the output
-        if "UNSAT" in last_line:
-            logging.debug(f"MiniSat result: UNSAT. Therefore, {alpha} is in Cn({B_dataset.get_elements()})")
-            return True
-        elif "SAT" in last_line:
-            logging.debug(f"MiniSat result: SAT. Therefore, {alpha} is not in Cn({B_dataset.get_elements()})")
-            return False
+        if not cn_left:
+            B_dataset = left_expanded
+            removed_elements = right_removed
+            logging.info(f"D&C: Left halve added to B, call D&C again with right halve!")
+            self.divide_and_conquer(B_dataset, removed_elements, alpha)
         else:
-            logging.debug("MiniSat output was unexpected.")
-            return None
+            if not cn_right:
+                B_dataset = right_expanded
+                removed_elements = left_removed
+                logging.info(f"D&C: Right halve added to B, call D&C again with left halve!")
+                self.divide_and_conquer(B_dataset, removed_elements, alpha)
+            else:
+                left_removed, right_removed = removed_elements.split()
+                B_dataset = B_dataset.combine(self.divide_and_conquer(B_dataset, left_removed, alpha))
+                return self.divide_and_conquer(B_dataset, right_removed, alpha)
+
+        logging.info(f"CRX: END DIVANDCONQ with removed_elements: {removed_elements.get_elements()}")
+        # If neither half is conflict-free, apply regular expand
+        return self.expand(B_dataset, removed_elements, alpha)
