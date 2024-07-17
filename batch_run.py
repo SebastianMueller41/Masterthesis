@@ -5,7 +5,8 @@ import subprocess
 PYTHON_SCRIPT = "main.py"
 
 # Path to the CSV file containing missing combinations
-MISSING_COMBINATIONS_FILE = "data/missing_combinations_ARG.csv"
+MISSING_COMBINATIONS_FILE = 'data/SRS/sig3_5_15.csv'
+#"data/missing_combinations_ARG.csv"
 
 # Function to execute the command
 def execute_command(command):
@@ -22,12 +23,8 @@ with open(MISSING_COMBINATIONS_FILE, mode='r') as file:
     next(reader)  # Skip the header row
 
     for row in reader:
-        FILE_NAME, DIV_CONQ, SW_SIZE, STRATEGY_PARAM, *_ = row
-        PARAM_SET = "-res-db --ss P -path-db --alpha '(arg_0_0&&!arg_0_0)'"
-        if int(DIV_CONQ) == 1:
-            PARAM_SET += " -dc"
-        PARAM_SET += f" --sw-size {SW_SIZE}"
+        FILE_NAME, *_ = row
 
-        command = f"python3 {PYTHON_SCRIPT} {FILE_NAME} --sp {STRATEGY_PARAM} -k {PARAM_SET}"
+        command = f"python3 {PYTHON_SCRIPT} {FILE_NAME} --sp 3 -r -res-db --ss P -path-db --alpha 'A0&&!0)'"
         print(f"Executing: {command}")
         execute_command(command)
