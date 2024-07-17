@@ -6,7 +6,7 @@ PYTHON_SCRIPT = "main.py"
 
 # Path to the CSV file containing missing combinations
 MISSING_COMBINATIONS_FILE = 'data/SRS/sig3_5_15.csv'
-#"data/missing_combinations_ARG.csv"
+# "data/missing_combinations_ARG.csv"
 
 # Function to execute the command
 def execute_command(command):
@@ -25,6 +25,6 @@ with open(MISSING_COMBINATIONS_FILE, mode='r') as file:
     for row in reader:
         FILE_NAME, *_ = row
 
-        command = f"python3 {PYTHON_SCRIPT} {FILE_NAME} --sp 3 -r -res-db --ss P -path-db --alpha 'A0&&!0)'"
+        command = f"python3 {PYTHON_SCRIPT} '{FILE_NAME}' --sp 3 -r --res-db --ss P -path-db --alpha 'A0&&!A0'"
         print(f"Executing: {command}")
         execute_command(command)

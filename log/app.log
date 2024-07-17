@@ -1,135 +1,41 @@
-2024-07-17 11:35:50,055 DEBUG:Starting main script
-2024-07-17 11:35:50,267 DEBUG:starting thread (client mode): 0x6e390a0
-2024-07-17 11:35:50,267 DEBUG:Local version/idstring: SSH-2.0-paramiko_3.4.0
-2024-07-17 11:35:50,315 DEBUG:Remote version/idstring: SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11
-2024-07-17 11:35:50,315 INFO:Connected (version 2.0, client OpenSSH_8.2p1)
-2024-07-17 11:35:50,346 DEBUG:=== Key exchange possibilities ===
-2024-07-17 11:35:50,346 DEBUG:kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group-exchange-sha256, diffie-hellman-group16-sha512, diffie-hellman-group18-sha512, diffie-hellman-group14-sha256, kex-strict-s-v00@openssh.com
-2024-07-17 11:35:50,346 DEBUG:server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa, ecdsa-sha2-nistp256, ssh-ed25519
-2024-07-17 11:35:50,346 DEBUG:client encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
-2024-07-17 11:35:50,346 DEBUG:server encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
-2024-07-17 11:35:50,346 DEBUG:client mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
-2024-07-17 11:35:50,346 DEBUG:server mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
-2024-07-17 11:35:50,347 DEBUG:client compress: none, zlib@openssh.com
-2024-07-17 11:35:50,347 DEBUG:server compress: none, zlib@openssh.com
-2024-07-17 11:35:50,347 DEBUG:client lang: <none>
-2024-07-17 11:35:50,347 DEBUG:server lang: <none>
-2024-07-17 11:35:50,347 DEBUG:kex follows: False
-2024-07-17 11:35:50,347 DEBUG:=== Key exchange agreements ===
-2024-07-17 11:35:50,347 DEBUG:Strict kex mode: True
-2024-07-17 11:35:50,347 DEBUG:Kex: curve25519-sha256@libssh.org
-2024-07-17 11:35:50,347 DEBUG:HostKey: ssh-ed25519
-2024-07-17 11:35:50,347 DEBUG:Cipher: aes128-ctr
-2024-07-17 11:35:50,347 DEBUG:MAC: hmac-sha2-256
-2024-07-17 11:35:50,347 DEBUG:Compression: none
-2024-07-17 11:35:50,347 DEBUG:=== End of kex handshake ===
-2024-07-17 11:35:50,395 DEBUG:Resetting outbound seqno after NEWKEYS due to strict mode
-2024-07-17 11:35:50,395 DEBUG:kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
-2024-07-17 11:35:50,395 DEBUG:Switch to new keys ...
-2024-07-17 11:35:50,396 DEBUG:Resetting inbound seqno after NEWKEYS due to strict mode
-2024-07-17 11:35:50,396 DEBUG:Attempting public-key auth...
-2024-07-17 11:35:50,396 DEBUG:Got EXT_INFO: {'server-sig-algs': b'ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com'}
-2024-07-17 11:35:50,452 DEBUG:userauth is OK
-2024-07-17 11:35:50,453 DEBUG:Finalizing pubkey algorithm for key of type 'ssh-rsa'
-2024-07-17 11:35:50,453 DEBUG:Our pubkey algorithm list: ['rsa-sha2-512', 'rsa-sha2-256', 'ssh-rsa']
-2024-07-17 11:35:50,453 DEBUG:Server-side algorithm list: ['ssh-ed25519', 'sk-ssh-ed25519@openssh.com', 'ssh-rsa', 'rsa-sha2-256', 'rsa-sha2-512', 'ssh-dss', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'sk-ecdsa-sha2-nistp256@openssh.com']
-2024-07-17 11:35:50,453 DEBUG:Agreed upon 'rsa-sha2-512' pubkey algorithm
-2024-07-17 11:35:50,567 INFO:Authentication (publickey) successful!
-2024-07-17 11:35:50,576 DEBUG:[chan 0] Max packet in: 32768 bytes
-2024-07-17 11:35:51,062 DEBUG:Received global request "hostkeys-00@openssh.com"
-2024-07-17 11:35:51,062 DEBUG:Rejecting "hostkeys-00@openssh.com" global request from server.
-2024-07-17 11:35:51,062 DEBUG:Debug msg: b'/home/smueller/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding'
-2024-07-17 11:35:51,089 DEBUG:[chan 0] Max packet out: 32768 bytes
-2024-07-17 11:35:51,089 DEBUG:Secsh channel 0 opened.
-2024-07-17 11:35:51,090 DEBUG:Building SSL context
-2024-07-17 11:35:51,101 DEBUG:Switching to SSL
-2024-07-17 11:35:51,209 DEBUG:SSL has been enabled
-2024-07-17 11:35:51,209 DEBUG:Starting authorization phase
-2024-07-17 11:35:51,209 DEBUG:The provided initial strategy is caching_sha2_password
-2024-07-17 11:35:51,209 INFO:package: mysql.connector.plugins
-2024-07-17 11:35:51,209 INFO:plugin_name: caching_sha2_password
-2024-07-17 11:35:51,209 INFO:AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
-2024-07-17 11:35:51,263 DEBUG:Exchanging further packets
-2024-07-17 11:35:51,297 DEBUG:caching_sha2_password completed succesfully
-2024-07-17 11:35:51,587 DEBUG:Random Value: 12, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)
-2024-07-17 11:35:51,587 DEBUG:Random Value: 8, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: arg_1
-2024-07-17 11:35:51,587 DEBUG:Random Value: 20, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_8<=>!arg_12)
-2024-07-17 11:35:51,587 DEBUG:Random Value: 9, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)
-2024-07-17 11:35:51,587 DEBUG:Random Value: 13, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)
-2024-07-17 11:35:51,587 DEBUG:Random Value: 14, Inconsistency Value: 1, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: arg_17
-2024-07-17 11:35:51,587 DEBUG:Random Value: 18, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: arg_18
-2024-07-17 11:35:51,587 DEBUG:Random Value: 10, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: arg_12
-2024-07-17 11:35:51,587 DEBUG:Random Value: 11, Inconsistency Value: 1, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: arg_13
-2024-07-17 11:35:51,588 DEBUG:Random Value: 7, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: arg_14
-2024-07-17 11:35:51,588 DEBUG:Random Value: 1, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)
-2024-07-17 11:35:51,588 DEBUG:Random Value: 15, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: arg_11
-2024-07-17 11:35:51,588 DEBUG:Random Value: 23, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)
-2024-07-17 11:35:51,588 DEBUG:Random Value: 22, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)
-2024-07-17 11:35:51,588 DEBUG:Random Value: 27, Inconsistency Value: 1, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)
-2024-07-17 11:35:51,588 DEBUG:Random Value: 5, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: arg_9
-2024-07-17 11:35:51,588 DEBUG:Random Value: 17, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_2<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)
-2024-07-17 11:35:51,588 DEBUG:Random Value: 4, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_24<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_9&&!arg_10)
-2024-07-17 11:35:51,588 DEBUG:Random Value: 6, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: arg_25
-2024-07-17 11:35:51,588 DEBUG:Random Value: 3, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_6<=>!arg_11&&!arg_23&&!arg_14)
-2024-07-17 11:35:51,588 DEBUG:Random Value: 26, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_3<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)
-2024-07-17 11:35:51,589 DEBUG:Random Value: 24, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: arg_22
-2024-07-17 11:35:51,589 DEBUG:Random Value: 19, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_10<=>!arg_11&&!arg_23&&!arg_14)
-2024-07-17 11:35:51,589 DEBUG:Random Value: 21, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_4<=>!arg_5&&!arg_9&&!arg_10)
-2024-07-17 11:35:51,589 DEBUG:Random Value: 25, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_7<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)
-2024-07-17 11:35:51,589 DEBUG:Random Value: 16, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_5<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)
-2024-07-17 11:35:51,589 DEBUG:Random Value: 2, Inconsistency Value: 0, Filename: data/ARG/A-1-afinput_exp_acyclic_indvary1_step5_batch_yyy04.tgf.pl, Value: (arg_21<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5&&!arg_9&&!arg_10)
-2024-07-17 11:35:51,589 INFO:Alpha: (arg_0_0&&!arg_0_0)
-2024-07-17 11:35:51,650 DEBUG:MiniSat result: UNSAT. Therefore, (arg_0_0&&!arg_0_0) is in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', 'arg_9', '(arg_2<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_24<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_9&&!arg_10)', 'arg_25', '(arg_6<=>!arg_11&&!arg_23&&!arg_14)', '(arg_3<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_22', '(arg_10<=>!arg_11&&!arg_23&&!arg_14)', '(arg_4<=>!arg_5&&!arg_9&&!arg_10)', '(arg_7<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', '(arg_5<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', '(arg_21<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5&&!arg_9&&!arg_10)'])
-2024-07-17 11:35:51,650 DEBUG:Finding kernel for 27 elements of dataset = ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', 'arg_9', '(arg_2<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_24<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_9&&!arg_10)', 'arg_25', '(arg_6<=>!arg_11&&!arg_23&&!arg_14)', '(arg_3<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_22', '(arg_10<=>!arg_11&&!arg_23&&!arg_14)', '(arg_4<=>!arg_5&&!arg_9&&!arg_10)', '(arg_7<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', '(arg_5<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', '(arg_21<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5&&!arg_9&&!arg_10)']
-2024-07-17 11:35:51,650 INFO:27 ELEMENTS: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', 'arg_9', '(arg_2<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_24<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_9&&!arg_10)', 'arg_25', '(arg_6<=>!arg_11&&!arg_23&&!arg_14)', '(arg_3<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_22', '(arg_10<=>!arg_11&&!arg_23&&!arg_14)', '(arg_4<=>!arg_5&&!arg_9&&!arg_10)', '(arg_7<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', '(arg_5<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', '(arg_21<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5&&!arg_9&&!arg_10)']
-2024-07-17 11:35:51,650 DEBUG:B_PRIME with 1 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)']
-2024-07-17 11:35:51,673 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)'])
-2024-07-17 11:35:51,673 DEBUG:B_PRIME with 2 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1']
-2024-07-17 11:35:51,692 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1'])
-2024-07-17 11:35:51,693 DEBUG:B_PRIME with 3 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)']
-2024-07-17 11:35:51,710 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)'])
-2024-07-17 11:35:51,710 DEBUG:B_PRIME with 4 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)']
-2024-07-17 11:35:51,728 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)'])
-2024-07-17 11:35:51,728 DEBUG:B_PRIME with 5 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)']
-2024-07-17 11:35:51,745 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)'])
-2024-07-17 11:35:51,745 DEBUG:B_PRIME with 6 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17']
-2024-07-17 11:35:51,767 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17'])
-2024-07-17 11:35:51,767 DEBUG:B_PRIME with 7 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18']
-2024-07-17 11:35:51,784 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18'])
-2024-07-17 11:35:51,785 DEBUG:B_PRIME with 8 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12']
-2024-07-17 11:35:51,802 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12'])
-2024-07-17 11:35:51,802 DEBUG:B_PRIME with 9 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13']
-2024-07-17 11:35:51,820 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13'])
-2024-07-17 11:35:51,820 DEBUG:B_PRIME with 10 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14']
-2024-07-17 11:35:51,837 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14'])
-2024-07-17 11:35:51,837 DEBUG:B_PRIME with 11 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)']
-2024-07-17 11:35:51,855 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)'])
-2024-07-17 11:35:51,855 DEBUG:B_PRIME with 12 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11']
-2024-07-17 11:35:51,872 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11'])
-2024-07-17 11:35:51,872 DEBUG:B_PRIME with 13 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)']
-2024-07-17 11:35:51,890 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)'])
-2024-07-17 11:35:51,890 DEBUG:B_PRIME with 14 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)']
-2024-07-17 11:35:51,909 DEBUG:MiniSat result: SAT. Therefore, (arg_0_0&&!arg_0_0) is not in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)'])
-2024-07-17 11:35:51,909 DEBUG:B_PRIME with 15 elements: ['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)']
-2024-07-17 11:35:51,927 DEBUG:MiniSat result: UNSAT. Therefore, (arg_0_0&&!arg_0_0) is in Cn(['(arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', 'arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)'])
-2024-07-17 11:35:51,927 INFO:Checking line: (arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5) with index: 0
-2024-07-17 11:35:51,927 DEBUG:Removing element: (arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)
-2024-07-17 11:35:51,927 DEBUG:B with 14 elements = ['arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)']
-2024-07-17 11:35:51,946 DEBUG:MiniSat result: UNSAT. Therefore, (arg_0_0&&!arg_0_0) is in Cn(['arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)'])
-2024-07-17 11:35:51,946 INFO:SHRINK: CN = TRUE, removing: (arg_0<=>!arg_0&&!arg_11&&!arg_12&&!arg_23&&!arg_13&&!arg_24&&!arg_3&&!arg_14&&!arg_4&&!arg_5)
-2024-07-17 11:35:51,946 DEBUG:CONTINUE SHRINKING WITH 14 elements : ['arg_1', '(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)']
-2024-07-17 11:35:51,946 INFO:Checking line: arg_1 with index: 0
-2024-07-17 11:35:51,946 DEBUG:Removing element: arg_1
-2024-07-17 11:35:51,946 DEBUG:B with 13 elements = ['(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)']
-2024-07-17 11:35:51,966 DEBUG:MiniSat result: UNSAT. Therefore, (arg_0_0&&!arg_0_0) is in Cn(['(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)'])
-2024-07-17 11:35:51,967 INFO:SHRINK: CN = TRUE, removing: arg_1
-2024-07-17 11:35:51,967 DEBUG:CONTINUE SHRINKING WITH 13 elements : ['(arg_8<=>!arg_12)', '(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)']
-2024-07-17 11:35:51,967 INFO:Checking line: (arg_8<=>!arg_12) with index: 0
-2024-07-17 11:35:51,967 DEBUG:Removing element: (arg_8<=>!arg_12)
-2024-07-17 11:35:51,967 DEBUG:B with 12 elements = ['(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)']
-2024-07-17 11:35:51,987 DEBUG:MiniSat result: UNSAT. Therefore, (arg_0_0&&!arg_0_0) is in Cn(['(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)'])
-2024-07-17 11:35:51,988 INFO:SHRINK: CN = TRUE, removing: (arg_8<=>!arg_12)
-2024-07-17 11:35:51,988 DEBUG:CONTINUE SHRINKING WITH 12 elements : ['(arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)']
-2024-07-17 11:35:51,988 INFO:Checking line: (arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5) with index: 0
-2024-07-17 11:35:51,988 DEBUG:Removing element: (arg_20<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)
-2024-07-17 11:35:51,988 DEBUG:B with 11 elements = ['(arg_16<=>!arg_11&&!arg_24&&!arg_14&&!arg_4)', 'arg_17', 'arg_18', 'arg_12', 'arg_13', 'arg_14', '(arg_19<=>!arg_11&&!arg_23&&!arg_14&&!arg_5&&!arg_10)', 'arg_11', '(arg_23<=>!arg_0&&!arg_11&&!arg_23&&!arg_24&&!arg_13&&!arg_3&&!arg_14&&!arg_4&&!arg_5)', '(arg_15<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)', '(arg_17<=>!arg_0&&!arg_23&&!arg_13&&!arg_3&&!arg_5)']
+2024-07-17 15:07:53,962 DEBUG:Starting main script
+2024-07-17 15:07:54,302 DEBUG:starting thread (client mode): 0x313d0a0
+2024-07-17 15:07:54,302 DEBUG:Local version/idstring: SSH-2.0-paramiko_3.4.0
+2024-07-17 15:07:54,357 DEBUG:Remote version/idstring: SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11
+2024-07-17 15:07:54,358 INFO:Connected (version 2.0, client OpenSSH_8.2p1)
+2024-07-17 15:07:54,415 DEBUG:=== Key exchange possibilities ===
+2024-07-17 15:07:54,415 DEBUG:kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group-exchange-sha256, diffie-hellman-group16-sha512, diffie-hellman-group18-sha512, diffie-hellman-group14-sha256, kex-strict-s-v00@openssh.com
+2024-07-17 15:07:54,415 DEBUG:server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa, ecdsa-sha2-nistp256, ssh-ed25519
+2024-07-17 15:07:54,416 DEBUG:client encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
+2024-07-17 15:07:54,416 DEBUG:server encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
+2024-07-17 15:07:54,416 DEBUG:client mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
+2024-07-17 15:07:54,416 DEBUG:server mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
+2024-07-17 15:07:54,416 DEBUG:client compress: none, zlib@openssh.com
+2024-07-17 15:07:54,416 DEBUG:server compress: none, zlib@openssh.com
+2024-07-17 15:07:54,416 DEBUG:client lang: <none>
+2024-07-17 15:07:54,416 DEBUG:server lang: <none>
+2024-07-17 15:07:54,416 DEBUG:kex follows: False
+2024-07-17 15:07:54,416 DEBUG:=== Key exchange agreements ===
+2024-07-17 15:07:54,416 DEBUG:Strict kex mode: True
+2024-07-17 15:07:54,416 DEBUG:Kex: curve25519-sha256@libssh.org
+2024-07-17 15:07:54,416 DEBUG:HostKey: ssh-ed25519
+2024-07-17 15:07:54,416 DEBUG:Cipher: aes128-ctr
+2024-07-17 15:07:54,416 DEBUG:MAC: hmac-sha2-256
+2024-07-17 15:07:54,416 DEBUG:Compression: none
+2024-07-17 15:07:54,416 DEBUG:=== End of kex handshake ===
+2024-07-17 15:07:54,509 DEBUG:Resetting outbound seqno after NEWKEYS due to strict mode
+2024-07-17 15:07:54,510 DEBUG:kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
+2024-07-17 15:07:54,510 DEBUG:Switch to new keys ...
+2024-07-17 15:07:54,511 DEBUG:Resetting inbound seqno after NEWKEYS due to strict mode
+2024-07-17 15:07:54,511 DEBUG:Attempting public-key auth...
+2024-07-17 15:07:54,511 DEBUG:Got EXT_INFO: {'server-sig-algs': b'ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com'}
+2024-07-17 15:07:54,584 DEBUG:userauth is OK
+2024-07-17 15:07:54,585 DEBUG:Finalizing pubkey algorithm for key of type 'ssh-rsa'
+2024-07-17 15:07:54,585 DEBUG:Our pubkey algorithm list: ['rsa-sha2-512', 'rsa-sha2-256', 'ssh-rsa']
+2024-07-17 15:07:54,585 DEBUG:Server-side algorithm list: ['ssh-ed25519', 'sk-ssh-ed25519@openssh.com', 'ssh-rsa', 'rsa-sha2-256', 'rsa-sha2-512', 'ssh-dss', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'sk-ecdsa-sha2-nistp256@openssh.com']
+2024-07-17 15:07:54,585 DEBUG:Agreed upon 'rsa-sha2-512' pubkey algorithm
+2024-07-17 15:07:54,707 INFO:Authentication (publickey) successful!
+2024-07-17 15:07:54,719 DEBUG:[chan 0] Max packet in: 32768 bytes
+2024-07-17 15:07:55,232 DEBUG:Received global request "hostkeys-00@openssh.com"
+2024-07-17 15:07:55,233 DEBUG:Rejecting "hostkeys-00@openssh.com" global request from server.
+2024-07-17 15:07:55,234 DEBUG:Debug msg: b'/home/smueller/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding'
