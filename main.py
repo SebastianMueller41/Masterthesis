@@ -28,11 +28,11 @@ logging.basicConfig(
 parser = argparse.ArgumentParser(description='Run the kernelization process with optional database logging.')
 parser.add_argument('filepath', type=str, help='Path to the dataset file')
 parser.add_argument('--sp', type=int, choices=range(0, 4), required=True, help='Strategy parameter value (0-3)')
-parser.add_argument('--ss', '--search-strategy', type=str, choices=['BFS', 'DFS', 'H', 'P'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
+parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'H', 'P'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
 parser.add_argument('--sw-size', '--sliding-window', type=int, default=1, help='Define the window size for the sliding-window technique (default: 1)')
 parser.add_argument('-dc', '--divide-conquer', action='store_true', help='Activate the divide and conquer technique')
-parser.add_argument('-log-db', action='store_true', help='Enable logging to database')
-parser.add_argument('--alpha', type=str, help='A string value to be used as alpha')
+parser.add_argument('-res-db', action='store_true', help='Save results to database')
+parser.add_argument('--alpha', type=str, required=True, help='A string value to be used as alpha')
 parser.add_argument('-no-log', action='store_true', help='Disable logging')
 parser.add_argument('-path-db', action='store_true', help='Indicate that the dataset should be called from the database')
 group = parser.add_mutually_exclusive_group(required=True)
@@ -98,7 +98,7 @@ if __name__ == "__main__":
         logging.error(f"Timeout occurred: {e}")
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
-        if args.log_db and conn is not None:
+        if args.res_db and conn is not None:
             log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, None, args.filepath, None, args.divide_conquer, args.sw_size, args.method, args.alpha)
             conn.close()
         sys.exit(1)
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernel_Remainder: {args.method}, Sliding Window size: {args.sw_size}, Divide and conquer: {args.divide_conquer}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}")
     print(f"Optimal hitting set: {optimal_hitting_set}, Alpha: {args.alpha}")
 
-    if args.log_db:
+    if args.res_db:
         if conn is not None:
             log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, boundary, args.filepath, optimal_hitting_set, args.divide_conquer, args.sw_size, args.method, args.alpha, args.ss)
             conn.close()

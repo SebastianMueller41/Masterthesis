@@ -103,10 +103,5 @@ class ShrinkExpand(KernelStrategy):
                 logging.info(f"D&C: Right halve added to B, call D&C again with left halve!")
                 self.divide_and_conquer(B_dataset, removed_elements, alpha)
             else:
-                left_removed, right_removed = removed_elements.split()
                 B_dataset = B_dataset.combine(self.divide_and_conquer(B_dataset, left_removed, alpha))
                 return self.divide_and_conquer(B_dataset, right_removed, alpha)
-
-        logging.info(f"CRX: END DIVANDCONQ with removed_elements: {removed_elements.get_elements()}")
-        # If neither half is conflict-free, apply regular expand
-        return self.expand(B_dataset, removed_elements, alpha)
