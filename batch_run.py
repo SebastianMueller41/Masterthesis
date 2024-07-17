@@ -23,7 +23,7 @@ with open(MISSING_COMBINATIONS_FILE, mode='r') as file:
 
     for row in reader:
         FILE_NAME, DIV_CONQ, SW_SIZE, STRATEGY_PARAM, *_ = row
-        PARAM_SET = "--alpha '(arg_0_0&&!arg_0_0)' -log-db --ss P -path-db"
+        PARAM_SET = "-res-db --ss P -path-db --alpha '(arg_0_0&&!arg_0_0)'"
         if int(DIV_CONQ) == 1:
             PARAM_SET += " -dc"
         PARAM_SET += f" --sw-size {SW_SIZE}"
