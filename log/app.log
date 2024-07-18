@@ -1,41 +1,101 @@
-2024-07-17 15:07:53,962 DEBUG:Starting main script
-2024-07-17 15:07:54,302 DEBUG:starting thread (client mode): 0x313d0a0
-2024-07-17 15:07:54,302 DEBUG:Local version/idstring: SSH-2.0-paramiko_3.4.0
-2024-07-17 15:07:54,357 DEBUG:Remote version/idstring: SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11
-2024-07-17 15:07:54,358 INFO:Connected (version 2.0, client OpenSSH_8.2p1)
-2024-07-17 15:07:54,415 DEBUG:=== Key exchange possibilities ===
-2024-07-17 15:07:54,415 DEBUG:kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group-exchange-sha256, diffie-hellman-group16-sha512, diffie-hellman-group18-sha512, diffie-hellman-group14-sha256, kex-strict-s-v00@openssh.com
-2024-07-17 15:07:54,415 DEBUG:server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa, ecdsa-sha2-nistp256, ssh-ed25519
-2024-07-17 15:07:54,416 DEBUG:client encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
-2024-07-17 15:07:54,416 DEBUG:server encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
-2024-07-17 15:07:54,416 DEBUG:client mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
-2024-07-17 15:07:54,416 DEBUG:server mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
-2024-07-17 15:07:54,416 DEBUG:client compress: none, zlib@openssh.com
-2024-07-17 15:07:54,416 DEBUG:server compress: none, zlib@openssh.com
-2024-07-17 15:07:54,416 DEBUG:client lang: <none>
-2024-07-17 15:07:54,416 DEBUG:server lang: <none>
-2024-07-17 15:07:54,416 DEBUG:kex follows: False
-2024-07-17 15:07:54,416 DEBUG:=== Key exchange agreements ===
-2024-07-17 15:07:54,416 DEBUG:Strict kex mode: True
-2024-07-17 15:07:54,416 DEBUG:Kex: curve25519-sha256@libssh.org
-2024-07-17 15:07:54,416 DEBUG:HostKey: ssh-ed25519
-2024-07-17 15:07:54,416 DEBUG:Cipher: aes128-ctr
-2024-07-17 15:07:54,416 DEBUG:MAC: hmac-sha2-256
-2024-07-17 15:07:54,416 DEBUG:Compression: none
-2024-07-17 15:07:54,416 DEBUG:=== End of kex handshake ===
-2024-07-17 15:07:54,509 DEBUG:Resetting outbound seqno after NEWKEYS due to strict mode
-2024-07-17 15:07:54,510 DEBUG:kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
-2024-07-17 15:07:54,510 DEBUG:Switch to new keys ...
-2024-07-17 15:07:54,511 DEBUG:Resetting inbound seqno after NEWKEYS due to strict mode
-2024-07-17 15:07:54,511 DEBUG:Attempting public-key auth...
-2024-07-17 15:07:54,511 DEBUG:Got EXT_INFO: {'server-sig-algs': b'ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com'}
-2024-07-17 15:07:54,584 DEBUG:userauth is OK
-2024-07-17 15:07:54,585 DEBUG:Finalizing pubkey algorithm for key of type 'ssh-rsa'
-2024-07-17 15:07:54,585 DEBUG:Our pubkey algorithm list: ['rsa-sha2-512', 'rsa-sha2-256', 'ssh-rsa']
-2024-07-17 15:07:54,585 DEBUG:Server-side algorithm list: ['ssh-ed25519', 'sk-ssh-ed25519@openssh.com', 'ssh-rsa', 'rsa-sha2-256', 'rsa-sha2-512', 'ssh-dss', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'sk-ecdsa-sha2-nistp256@openssh.com']
-2024-07-17 15:07:54,585 DEBUG:Agreed upon 'rsa-sha2-512' pubkey algorithm
-2024-07-17 15:07:54,707 INFO:Authentication (publickey) successful!
-2024-07-17 15:07:54,719 DEBUG:[chan 0] Max packet in: 32768 bytes
-2024-07-17 15:07:55,232 DEBUG:Received global request "hostkeys-00@openssh.com"
-2024-07-17 15:07:55,233 DEBUG:Rejecting "hostkeys-00@openssh.com" global request from server.
-2024-07-17 15:07:55,234 DEBUG:Debug msg: b'/home/smueller/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding'
+2024-07-18 17:40:13,072 DEBUG:Starting main script
+2024-07-18 17:40:13,391 DEBUG:starting thread (client mode): 0x4d930a0
+2024-07-18 17:40:13,392 DEBUG:Local version/idstring: SSH-2.0-paramiko_3.4.0
+2024-07-18 17:40:13,434 DEBUG:Remote version/idstring: SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11
+2024-07-18 17:40:13,434 INFO:Connected (version 2.0, client OpenSSH_8.2p1)
+2024-07-18 17:40:13,463 DEBUG:=== Key exchange possibilities ===
+2024-07-18 17:40:13,463 DEBUG:kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group-exchange-sha256, diffie-hellman-group16-sha512, diffie-hellman-group18-sha512, diffie-hellman-group14-sha256, kex-strict-s-v00@openssh.com
+2024-07-18 17:40:13,463 DEBUG:server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa, ecdsa-sha2-nistp256, ssh-ed25519
+2024-07-18 17:40:13,463 DEBUG:client encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
+2024-07-18 17:40:13,463 DEBUG:server encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
+2024-07-18 17:40:13,463 DEBUG:client mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
+2024-07-18 17:40:13,463 DEBUG:server mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
+2024-07-18 17:40:13,463 DEBUG:client compress: none, zlib@openssh.com
+2024-07-18 17:40:13,463 DEBUG:server compress: none, zlib@openssh.com
+2024-07-18 17:40:13,463 DEBUG:client lang: <none>
+2024-07-18 17:40:13,463 DEBUG:server lang: <none>
+2024-07-18 17:40:13,463 DEBUG:kex follows: False
+2024-07-18 17:40:13,463 DEBUG:=== Key exchange agreements ===
+2024-07-18 17:40:13,463 DEBUG:Strict kex mode: True
+2024-07-18 17:40:13,463 DEBUG:Kex: curve25519-sha256@libssh.org
+2024-07-18 17:40:13,463 DEBUG:HostKey: ssh-ed25519
+2024-07-18 17:40:13,463 DEBUG:Cipher: aes128-ctr
+2024-07-18 17:40:13,464 DEBUG:MAC: hmac-sha2-256
+2024-07-18 17:40:13,464 DEBUG:Compression: none
+2024-07-18 17:40:13,464 DEBUG:=== End of kex handshake ===
+2024-07-18 17:40:13,509 DEBUG:Resetting outbound seqno after NEWKEYS due to strict mode
+2024-07-18 17:40:13,509 DEBUG:kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
+2024-07-18 17:40:13,509 DEBUG:Switch to new keys ...
+2024-07-18 17:40:13,510 DEBUG:Resetting inbound seqno after NEWKEYS due to strict mode
+2024-07-18 17:40:13,510 DEBUG:Attempting public-key auth...
+2024-07-18 17:40:13,510 DEBUG:Got EXT_INFO: {'server-sig-algs': b'ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com'}
+2024-07-18 17:40:13,567 DEBUG:userauth is OK
+2024-07-18 17:40:13,568 DEBUG:Finalizing pubkey algorithm for key of type 'ssh-rsa'
+2024-07-18 17:40:13,568 DEBUG:Our pubkey algorithm list: ['rsa-sha2-512', 'rsa-sha2-256', 'ssh-rsa']
+2024-07-18 17:40:13,568 DEBUG:Server-side algorithm list: ['ssh-ed25519', 'sk-ssh-ed25519@openssh.com', 'ssh-rsa', 'rsa-sha2-256', 'rsa-sha2-512', 'ssh-dss', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'sk-ecdsa-sha2-nistp256@openssh.com']
+2024-07-18 17:40:13,568 DEBUG:Agreed upon 'rsa-sha2-512' pubkey algorithm
+2024-07-18 17:40:13,632 INFO:Authentication (publickey) successful!
+2024-07-18 17:40:13,641 DEBUG:[chan 0] Max packet in: 32768 bytes
+2024-07-18 17:40:14,211 DEBUG:Received global request "hostkeys-00@openssh.com"
+2024-07-18 17:40:14,212 DEBUG:Rejecting "hostkeys-00@openssh.com" global request from server.
+2024-07-18 17:40:14,213 DEBUG:Debug msg: b'/home/smueller/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding'
+2024-07-18 17:40:14,250 DEBUG:[chan 0] Max packet out: 32768 bytes
+2024-07-18 17:40:14,250 DEBUG:Secsh channel 0 opened.
+2024-07-18 17:40:14,253 DEBUG:Building SSL context
+2024-07-18 17:40:14,277 DEBUG:Switching to SSL
+2024-07-18 17:40:14,394 DEBUG:SSL has been enabled
+2024-07-18 17:40:14,394 DEBUG:Starting authorization phase
+2024-07-18 17:40:14,394 DEBUG:The provided initial strategy is caching_sha2_password
+2024-07-18 17:40:14,395 INFO:package: mysql.connector.plugins
+2024-07-18 17:40:14,395 INFO:plugin_name: caching_sha2_password
+2024-07-18 17:40:14,395 INFO:AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
+2024-07-18 17:40:14,431 DEBUG:Exchanging further packets
+2024-07-18 17:40:14,458 DEBUG:caching_sha2_password completed succesfully
+2024-07-18 17:40:14,735 DEBUG:Random Value: 3, Inconsistency Value: 1, Filename: data/SRS/Dataset_A/sig3_5_15/srs_1.txt, Value: A1&&A2
+2024-07-18 17:40:14,735 DEBUG:Random Value: 5, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_1.txt, Value: A0
+2024-07-18 17:40:14,736 DEBUG:Random Value: 1, Inconsistency Value: 1, Filename: data/SRS/Dataset_A/sig3_5_15/srs_1.txt, Value: !A2&&(A1&&A0)
+2024-07-18 17:40:14,736 DEBUG:Random Value: 2, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_1.txt, Value: A2||!A1
+2024-07-18 17:40:14,736 DEBUG:Random Value: 4, Inconsistency Value: 1, Filename: data/SRS/Dataset_A/sig3_5_15/srs_1.txt, Value: !(A1&&A0)
+2024-07-18 17:40:14,736 INFO:Alpha: A0&&!A0
+2024-07-18 17:40:14,802 DEBUG:MiniSat result: UNSAT. Therefore, A0&&!A0 is in Cn(['A1&&A2', 'A0', '!A2&&(A1&&A0)', 'A2||!A1', '!(A1&&A0)'])
+2024-07-18 17:40:14,802 DEBUG:Finding kernel for 5 elements of dataset = ['A1&&A2', 'A0', '!A2&&(A1&&A0)', 'A2||!A1', '!(A1&&A0)']
+2024-07-18 17:40:14,802 INFO:5 ELEMENTS: ['A1&&A2', 'A0', '!A2&&(A1&&A0)', 'A2||!A1', '!(A1&&A0)']
+2024-07-18 17:40:14,802 DEBUG:B_PRIME with 1 elements: ['A1&&A2']
+2024-07-18 17:40:14,829 DEBUG:MiniSat result: SAT. Therefore, A0&&!A0 is not in Cn(['A1&&A2'])
+2024-07-18 17:40:14,829 DEBUG:B_PRIME with 2 elements: ['A1&&A2', 'A0']
+2024-07-18 17:40:14,856 DEBUG:MiniSat result: UNSAT. Therefore, A0&&!A0 is in Cn(['A1&&A2', 'A0'])
+2024-07-18 17:40:14,856 INFO:Checking line: A1&&A2 with index: 0
+2024-07-18 17:40:14,856 DEBUG:Removing element: A1&&A2
+2024-07-18 17:40:14,856 DEBUG:B with 1 elements = ['A0']
+2024-07-18 17:40:14,882 DEBUG:MiniSat result: UNSAT. Therefore, A0&&!A0 is in Cn(['A0'])
+2024-07-18 17:40:14,883 INFO:SHRINK: CN = TRUE, removing: A1&&A2
+2024-07-18 17:40:14,883 DEBUG:CONTINUE SHRINKING WITH 1 elements : ['A0']
+2024-07-18 17:40:14,883 INFO:Checking line: A0 with index: 0
+2024-07-18 17:40:14,883 DEBUG:Removing element: A0
+2024-07-18 17:40:14,883 DEBUG:B with 0 elements = []
+2024-07-18 17:40:14,909 DEBUG:MiniSat result: SAT. Therefore, A0&&!A0 is not in Cn([])
+2024-07-18 17:40:14,909 INFO:Kernel output with 1 elements: ['A0']
+2024-07-18 17:40:14,909 INFO:KERNEL BLACKBOX FINISHED
+2024-07-18 17:40:14,936 DEBUG:MiniSat result: UNSAT. Therefore, A0&&!A0 is in Cn(['A1&&A2', '!A2&&(A1&&A0)', 'A2||!A1', '!(A1&&A0)'])
+2024-07-18 17:40:14,936 DEBUG:Finding kernel for 4 elements of dataset = ['A1&&A2', '!A2&&(A1&&A0)', 'A2||!A1', '!(A1&&A0)']
+2024-07-18 17:40:14,936 INFO:4 ELEMENTS: ['A1&&A2', '!A2&&(A1&&A0)', 'A2||!A1', '!(A1&&A0)']
+2024-07-18 17:40:14,936 DEBUG:B_PRIME with 1 elements: ['A1&&A2']
+2024-07-18 17:40:14,962 DEBUG:MiniSat result: SAT. Therefore, A0&&!A0 is not in Cn(['A1&&A2'])
+2024-07-18 17:40:14,963 DEBUG:B_PRIME with 2 elements: ['A1&&A2', '!A2&&(A1&&A0)']
+2024-07-18 17:40:14,996 DEBUG:MiniSat result: UNSAT. Therefore, A0&&!A0 is in Cn(['A1&&A2', '!A2&&(A1&&A0)'])
+2024-07-18 17:40:14,996 INFO:Checking line: A1&&A2 with index: 0
+2024-07-18 17:40:14,996 DEBUG:Removing element: A1&&A2
+2024-07-18 17:40:14,996 DEBUG:B with 1 elements = ['!A2&&(A1&&A0)']
+2024-07-18 17:40:15,022 DEBUG:MiniSat result: UNSAT. Therefore, A0&&!A0 is in Cn(['!A2&&(A1&&A0)'])
+2024-07-18 17:40:15,023 INFO:SHRINK: CN = TRUE, removing: A1&&A2
+2024-07-18 17:40:15,023 DEBUG:CONTINUE SHRINKING WITH 1 elements : ['!A2&&(A1&&A0)']
+2024-07-18 17:40:15,023 INFO:Checking line: !A2&&(A1&&A0) with index: 0
+2024-07-18 17:40:15,023 DEBUG:Removing element: !A2&&(A1&&A0)
+2024-07-18 17:40:15,023 DEBUG:B with 0 elements = []
+2024-07-18 17:40:15,049 DEBUG:MiniSat result: SAT. Therefore, A0&&!A0 is not in Cn([])
+2024-07-18 17:40:15,049 INFO:Kernel output with 1 elements: ['!A2&&(A1&&A0)']
+2024-07-18 17:40:15,049 INFO:KERNEL BLACKBOX FINISHED
+2024-07-18 17:40:15,076 DEBUG:MiniSat result: SAT. Therefore, A0&&!A0 is not in Cn(['A1&&A2', 'A2||!A1', '!(A1&&A0)'])
+2024-07-18 17:40:15,076 DEBUG:Dataset does not entail A0&&!A0, kernel = empty
+2024-07-18 17:40:15,077 INFO:Execution time: 0.527411937713623s, Memory Used: 37306368 KB, Strategy: 3, Kernel_Remainder: kernel, Sliding Window size: 1, Divide and conquer: False, Kernels: 0, Branches: 0, Tree depth: 0, Pruned branches: 0, Boundary: inf, Search strategy: H
+2024-07-18 17:40:15,077 INFO:Optimal hitting set: None, Alpha: A0&&!A0

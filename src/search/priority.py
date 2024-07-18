@@ -71,33 +71,3 @@ class PrioritySearch(Strategy, Search):
 
     def add_to_priority_queue(self, queue, node, priority):
         heapq.heappush(queue, (-priority, node))
-
-    def calculate_bbvalue(self, current_node, element, dataset):
-        assigned_value = dataset.element_values.get(element, 1)
-        transformed_value = 1 / assigned_value if assigned_value != 0 else 0
-        new_bbvalue = current_node.bbvalue + transformed_value
-        return new_bbvalue
-
-    def update_boundary_with_leaf(self, leaf_node):
-        leaf_path_measure = self.calculate_path_bbvalue_up_to_root(leaf_node, self.dataset)
-        if leaf_path_measure < self.tree.boundary:
-            self.tree.boundary = leaf_path_measure
-
-    def calculate_path_bbvalue_up_to_root(self, node, dataset):
-        cumulative_bbvalue = 0.0
-        current_node = node
-        while current_node is not None and current_node.edge is not None:
-            element_value = dataset.element_values.get(current_node.edge, 1)
-            cumulative_bbvalue += 1 / element_value if element_value != 0 else 0
-            current_node = current_node.parent
-        return cumulative_bbvalue
-
-    def should_prune(self, node):
-        hitting_set_value = self.calculate_path_bbvalue_up_to_root(node, self.dataset)
-        if self.tree.boundary == 0:
-            return False
-        return hitting_set_value >= self.tree.boundary
-
-    def log_tree(self):
-        self.tree.print_tree_to_file(dataset=self.dataset)
-        self.tree.print_newline()
