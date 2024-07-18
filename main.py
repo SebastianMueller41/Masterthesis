@@ -29,16 +29,24 @@ parser = argparse.ArgumentParser(description='Run the kernelization process with
 parser.add_argument('filepath', type=str, help='Path to the dataset file')
 parser.add_argument('--sp', type=int, choices=range(0, 4), required=True, help='Strategy parameter value (0-3)')
 parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'H', 'P'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
-parser.add_argument('--sw-size', '--sliding-window', type=int, default=1, help='Define the window size for the sliding-window technique (default: 1)')
-parser.add_argument('-dc', '--divide-conquer', action='store_true', help='Activate the divide and conquer technique')
-parser.add_argument('-res-db', action='store_true', help='Save results to database')
 parser.add_argument('--alpha', type=str, required=True, help='A string value to be used as alpha')
+
+# Expand group
+expand_group = parser.add_argument_group('expand')
+expand_group.add_argument('--expand-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for expand')
+expand_group.add_argument('--expand-sw-size', type=int, default=1, help='Window size for the sliding-window technique during expand')
+
+# Shrink group
+shrink_group = parser.add_argument_group('shrink')
+shrink_group.add_argument('--shrink-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for shrink')
+shrink_group.add_argument('--shrink-sw-size', type=int, default=1, help='Window size for the sliding-window technique during shrink')
+
+parser.add_argument('-res-db', action='store_true', help='Save results to database')
 parser.add_argument('-no-log', action='store_true', help='Disable logging')
 parser.add_argument('-path-db', action='store_true', help='Indicate that the dataset should be called from the database')
-group = parser.add_mutually_exclusive_group(required=True)
-group.add_argument('-k', '--kernel', action='store_const', const='kernel', dest='method', help='Use the kernel method')
-group.add_argument('-r', '--remainder', action='store_const', const='remainder', dest='method', help='Use the remainder method')
+
 args = parser.parse_args()
+
 
 # Function to handle timeout
 def timeout_handler(signum, frame):
@@ -63,22 +71,18 @@ if __name__ == "__main__":
             logging.error("No Dataset found, please use a dataset from DB or change code to use files.")
             sys.exit(1)
 
-        if not 1 <= args.sw_size <= dataset.size():
-            adjusted_sw_size = min(args.sw_size, dataset.size())
-            logging.warning(f"--sw-size/--sliding-window must be between 1 and the length of the dataset ({dataset.size()}). Adjusting sw_size to {adjusted_sw_size}.")
-            args.sw_size = adjusted_sw_size
+        if not 1 <= args.shrink_sw_size <= dataset.size() or not 1 <= args.expand_sw_size <= dataset.size():
+            adjusted_shrink_sw_size = min(args.shrink_sw_size, dataset.size())
+            adjusted_expand_sw_size = min(args.expand_sw_size, dataset.size())
+            logging.warning(f"--shrink-sw-size/--expand-sw-size must be between 1 and the length of the dataset ({dataset.size()}). Adjusting shrink_sw_size to {adjusted_shrink_sw_size} and expand_sw_size to {adjusted_expand_sw_size}.")
+            args.shrink_sw_size = adjusted_shrink_sw_size
+            args.expand_sw_size = adjusted_expand_sw_size
 
         if args.alpha:
             logging.info(f"Alpha: {args.alpha}")
 
         hitting_set_tree = None
-        if args.method == 'kernel':
-            kernel_strategy = ExpandShrink(args.sw_size, args.divide_conquer)
-        elif args.method == 'remainder':
-            kernel_strategy = ShrinkExpand(args.sw_size, args.divide_conquer)
-        else:
-            logging.error("No valid method specified")
-            sys.exit(1)
+        kernel_strategy = ExpandShrink(args.expand_sw_size, args.shrink_sw_size, args.shrink_div_conq, args.expand_div_conq)
 
         if args.ss == 'BFS':
             search_strategy = BFS(kernel_strategy, dataset, args.alpha, args.sp)
@@ -99,7 +103,7 @@ if __name__ == "__main__":
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
         if args.res_db and conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, None, args.filepath, None, args.divide_conquer, args.sw_size, args.method, args.alpha)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None)
             conn.close()
         sys.exit(1)
     except Exception as e:
@@ -115,30 +119,32 @@ if __name__ == "__main__":
         tree_depth = hitting_set_tree.tree_depth()
         boundary = hitting_set_tree.boundary
         optimal_hitting_set = hitting_set_tree.get_hitting_set_for_optimal_solution()
+        optimal_value = optimal_hitting_set.sum_values() if optimal_hitting_set else None
     else:
         num_kernels = num_branches = pruned_branches_count = 0
         tree_depth = boundary = None
         optimal_hitting_set = None
+        optimal_value = None
 
     resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
-    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernel_Remainder: {args.method}, Sliding Window size: {args.sw_size}, Divide and conquer: {args.divide_conquer}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}")
-    print(f"Optimal hitting set: {optimal_hitting_set}, Alpha: {args.alpha}")
+    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
+    print(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}")
 
     if args.res_db:
         if conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, boundary, args.filepath, optimal_hitting_set, args.divide_conquer, args.sw_size, args.method, args.alpha, args.ss)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set.get_elements(), args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size)
             conn.close()
         else:
             print("Connection to MySQL database failed")
 
-    logging.info(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Kernel_Remainder: {args.method}, Sliding Window size: {args.sw_size}, Divide and conquer: {args.divide_conquer}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Search strategy: {args.ss}")
-    logging.info(f"Optimal hitting set: {optimal_hitting_set}, Alpha: {args.alpha}")
+    logging.info(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
+    logging.info(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}")
 
     file_repair = "log/Repaired_Dataset.cnf"
 
     if optimal_hitting_set is not None:
-        for element in optimal_hitting_set:
+        for element in optimal_hitting_set.get_elements():
             dataset.remove_element(element)
         dataset.to_file(file_repair)
         cnf_converter = CNFConverter(verbose=False)

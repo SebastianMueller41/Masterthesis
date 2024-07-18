@@ -100,6 +100,18 @@ class DataSet:
             list of tuples: Each tuple contains an element and its corresponding value.
         """
         return [(element, self.element_values[element]) for element in self.elements]
+    
+    def get_element_value(self, element):
+        """
+        Retrieve the value assigned to the specified element.
+
+        Args:
+            element (str): The element for which to retrieve the value.
+
+        Returns:
+            The value assigned to the element, or None if the element is not found.
+        """
+        return self.element_values.get(element, None)
 
     def get_values(self):
         """
@@ -109,16 +121,33 @@ class DataSet:
             list: A list of values assigned to the elements.
         """
         return list(self.element_values.values())
-
-    def add_element(self, element):
+    
+    def sum_values(self):
         """
-        Add an element to the dataset if it is not already present.
+        Calculate the sum of the values of all elements in the dataset.
 
-        Args:
-            element (str): The element to add to the dataset.
+        Returns:
+            int: The sum of the values of the elements.
         """
-        if element not in self.elements:
-            self.elements.append(element)
+        return sum(self.element_values[element] for element in self.elements)
+
+    def add_element(self, element, value=None):
+            """
+            Add an element to the dataset if it is not already present.
+            Optionally, add a value for the element.
+
+            Args:
+                element (str): The element to add to the dataset.
+                value (int, optional): The value to associate with the element.
+            """
+            if element not in self.elements:
+                self.elements.append(element)
+                if value is not None:
+                    self.element_values[element] = value
+                elif element in self.element_values:
+                    self.element_values[element] = self.element_values[element]  # Preserve existing value
+                else:
+                    self.element_values[element] = 0  # Default value
     
     def add_element_at_start(self, element):
         """

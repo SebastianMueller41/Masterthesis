@@ -25,6 +25,6 @@ with open(MISSING_COMBINATIONS_FILE, mode='r') as file:
     for row in reader:
         FILE_NAME, *_ = row
 
-        command = f"python3 {PYTHON_SCRIPT} '{FILE_NAME}' --sp 3 -r -res-db --ss P -path-db --alpha 'A0&&!A0'"
+        command = f"python3 {PYTHON_SCRIPT} '{FILE_NAME}' --sp 3 -res-db --ss P -path-db --alpha 'A0&&!A0'"
         print(f"Executing: {command}")
         execute_command(command)
