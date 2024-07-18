@@ -1,239 +1,197 @@
-2024-07-19 01:12:01,949 DEBUG:Starting main script
-2024-07-19 01:12:02,231 DEBUG:starting thread (client mode): 0x2a7a2e0
-2024-07-19 01:12:02,231 DEBUG:Local version/idstring: SSH-2.0-paramiko_3.4.0
-2024-07-19 01:12:02,279 DEBUG:Remote version/idstring: SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11
-2024-07-19 01:12:02,279 INFO:Connected (version 2.0, client OpenSSH_8.2p1)
-2024-07-19 01:12:02,308 DEBUG:=== Key exchange possibilities ===
-2024-07-19 01:12:02,308 DEBUG:kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group-exchange-sha256, diffie-hellman-group16-sha512, diffie-hellman-group18-sha512, diffie-hellman-group14-sha256, kex-strict-s-v00@openssh.com
-2024-07-19 01:12:02,308 DEBUG:server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa, ecdsa-sha2-nistp256, ssh-ed25519
-2024-07-19 01:12:02,308 DEBUG:client encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
-2024-07-19 01:12:02,308 DEBUG:server encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
-2024-07-19 01:12:02,308 DEBUG:client mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
-2024-07-19 01:12:02,308 DEBUG:server mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
-2024-07-19 01:12:02,308 DEBUG:client compress: none, zlib@openssh.com
-2024-07-19 01:12:02,308 DEBUG:server compress: none, zlib@openssh.com
-2024-07-19 01:12:02,308 DEBUG:client lang: <none>
-2024-07-19 01:12:02,308 DEBUG:server lang: <none>
-2024-07-19 01:12:02,308 DEBUG:kex follows: False
-2024-07-19 01:12:02,308 DEBUG:=== Key exchange agreements ===
-2024-07-19 01:12:02,308 DEBUG:Strict kex mode: True
-2024-07-19 01:12:02,308 DEBUG:Kex: curve25519-sha256@libssh.org
-2024-07-19 01:12:02,308 DEBUG:HostKey: ssh-ed25519
-2024-07-19 01:12:02,308 DEBUG:Cipher: aes128-ctr
-2024-07-19 01:12:02,308 DEBUG:MAC: hmac-sha2-256
-2024-07-19 01:12:02,308 DEBUG:Compression: none
-2024-07-19 01:12:02,308 DEBUG:=== End of kex handshake ===
-2024-07-19 01:12:02,360 DEBUG:Resetting outbound seqno after NEWKEYS due to strict mode
-2024-07-19 01:12:02,360 DEBUG:kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
-2024-07-19 01:12:02,360 DEBUG:Switch to new keys ...
-2024-07-19 01:12:02,360 DEBUG:Resetting inbound seqno after NEWKEYS due to strict mode
-2024-07-19 01:12:02,360 DEBUG:Attempting public-key auth...
-2024-07-19 01:12:02,360 DEBUG:Got EXT_INFO: {'server-sig-algs': b'ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com'}
-2024-07-19 01:12:02,420 DEBUG:userauth is OK
-2024-07-19 01:12:02,420 DEBUG:Finalizing pubkey algorithm for key of type 'ssh-rsa'
-2024-07-19 01:12:02,420 DEBUG:Our pubkey algorithm list: ['rsa-sha2-512', 'rsa-sha2-256', 'ssh-rsa']
-2024-07-19 01:12:02,420 DEBUG:Server-side algorithm list: ['ssh-ed25519', 'sk-ssh-ed25519@openssh.com', 'ssh-rsa', 'rsa-sha2-256', 'rsa-sha2-512', 'ssh-dss', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'sk-ecdsa-sha2-nistp256@openssh.com']
-2024-07-19 01:12:02,420 DEBUG:Agreed upon 'rsa-sha2-512' pubkey algorithm
-2024-07-19 01:12:02,473 INFO:Authentication (publickey) successful!
-2024-07-19 01:12:02,483 DEBUG:[chan 0] Max packet in: 32768 bytes
-2024-07-19 01:12:02,998 DEBUG:Received global request "hostkeys-00@openssh.com"
-2024-07-19 01:12:02,999 DEBUG:Rejecting "hostkeys-00@openssh.com" global request from server.
-2024-07-19 01:12:03,000 DEBUG:Debug msg: b'/home/smueller/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding'
-2024-07-19 01:12:03,027 DEBUG:[chan 0] Max packet out: 32768 bytes
-2024-07-19 01:12:03,028 DEBUG:Secsh channel 0 opened.
-2024-07-19 01:12:03,030 DEBUG:Building SSL context
-2024-07-19 01:12:03,058 DEBUG:Switching to SSL
-2024-07-19 01:12:03,169 DEBUG:SSL has been enabled
-2024-07-19 01:12:03,169 DEBUG:Starting authorization phase
-2024-07-19 01:12:03,169 DEBUG:The provided initial strategy is caching_sha2_password
-2024-07-19 01:12:03,169 INFO:package: mysql.connector.plugins
-2024-07-19 01:12:03,169 INFO:plugin_name: caching_sha2_password
-2024-07-19 01:12:03,169 INFO:AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
-2024-07-19 01:12:03,202 DEBUG:Exchanging further packets
-2024-07-19 01:12:03,234 DEBUG:caching_sha2_password completed succesfully
-2024-07-19 01:12:03,517 DEBUG:Random Value: 4, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_105.txt, Value: (A0&&A0)||(A0&&A2)
-2024-07-19 01:12:03,518 DEBUG:Random Value: 3, Inconsistency Value: 1, Filename: data/SRS/Dataset_A/sig3_5_15/srs_105.txt, Value: !A2
-2024-07-19 01:12:03,518 DEBUG:Random Value: 2, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_105.txt, Value: !A1&&(A2&&A2)
-2024-07-19 01:12:03,518 DEBUG:Random Value: 5, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_105.txt, Value: A0||(A1&&A0)
-2024-07-19 01:12:03,518 DEBUG:Random Value: 1, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_105.txt, Value: A2||!A0
-2024-07-19 01:12:03,518 INFO:Alpha: (A0&&!A0)
-2024-07-19 01:12:04,065 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0'])
-2024-07-19 01:12:04,065 DEBUG:Finding kernel for dataset with 5 elements: ['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0']
-2024-07-19 01:12:04,065 INFO:DC_EXPAND: Splitting B: ['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0']
-2024-07-19 01:12:04,085 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A2'])
-2024-07-19 01:12:04,102 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0'])
-2024-07-19 01:12:04,103 INFO:DC_EXP: Left half ['(A0&&A0)||(A0&&A2)', '!A2'],cn(alpha):False 
-2024-07-19 01:12:04,103 INFO:DC_EXP: Right half ['!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0'],cn(alpha):False
-2024-07-19 01:12:04,103 INFO:B1 and B2 does not entail alpha, returning B: ['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,103 INFO:5 ELEMENTS: ['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,103 DEBUG:B_PRIME with 1 elements: ['!A1&&(A2&&A2)']
-2024-07-19 01:12:04,119 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)'])
-2024-07-19 01:12:04,120 DEBUG:B_PRIME with 2 elements: ['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)']
-2024-07-19 01:12:04,137 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)'])
-2024-07-19 01:12:04,137 DEBUG:B_PRIME with 3 elements: ['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)', 'A2||!A0']
-2024-07-19 01:12:04,154 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)', 'A2||!A0'])
-2024-07-19 01:12:04,154 DEBUG:B_PRIME with 4 elements: ['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)']
-2024-07-19 01:12:04,171 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)'])
-2024-07-19 01:12:04,172 DEBUG:B_PRIME with 5 elements: ['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,194 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2'])
-2024-07-19 01:12:04,194 DEBUG:Dataset expanded using divide-and-conquer: ['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,194 INFO:DC splitting Dataset: ['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,211 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)', '(A0&&A0)||(A0&&A2)'])
-2024-07-19 01:12:04,228 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['A2||!A0', 'A0||(A1&&A0)', '!A2'])
-2024-07-19 01:12:04,228 DEBUG:DC Check entailment, cn_B1 = False, cn_B2 = True
-2024-07-19 01:12:04,228 INFO:DC: B2 does not entail alpha, calling DC recursively on B1
-2024-07-19 01:12:04,228 INFO:DC splitting Dataset: ['A2||!A0', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,245 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0'])
-2024-07-19 01:12:04,263 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0||(A1&&A0)', '!A2'])
-2024-07-19 01:12:04,263 DEBUG:DC Check entailment, cn_B1 = False, cn_B2 = False
-2024-07-19 01:12:04,263 INFO:DC: Both halves entail alpha, merging and shrinking with ['A2||!A0', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,263 INFO:Checking line: A2||!A0 with index: 0
-2024-07-19 01:12:04,263 DEBUG:Removing element: A2||!A0
-2024-07-19 01:12:04,263 DEBUG:B with 2 elements = ['A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,280 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0||(A1&&A0)', '!A2'])
-2024-07-19 01:12:04,280 INFO:Checking line: A0||(A1&&A0) with index: 1
-2024-07-19 01:12:04,280 DEBUG:Removing element: A0||(A1&&A0)
-2024-07-19 01:12:04,280 DEBUG:B with 2 elements = ['A2||!A0', '!A2']
-2024-07-19 01:12:04,298 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0', '!A2'])
-2024-07-19 01:12:04,298 INFO:Checking line: !A2 with index: 2
-2024-07-19 01:12:04,298 DEBUG:Removing element: !A2
-2024-07-19 01:12:04,298 DEBUG:B with 2 elements = ['A2||!A0', 'A0||(A1&&A0)']
-2024-07-19 01:12:04,315 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0', 'A0||(A1&&A0)'])
-2024-07-19 01:12:04,315 INFO:Kernel output with 3 elements: ['A2||!A0', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,315 INFO:KERNEL BLACKBOX FINISHED
-2024-07-19 01:12:04,315 DEBUG:Dataset shrunk using divide-and-conquer: ['A2||!A0', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,333 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0'])
-2024-07-19 01:12:04,333 DEBUG:Alpha is not a consequence of the dataset. Returning None.
-2024-07-19 01:12:04,352 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A0||(A1&&A0)'])
-2024-07-19 01:12:04,352 DEBUG:Finding kernel for dataset with 4 elements: ['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A0||(A1&&A0)']
-2024-07-19 01:12:04,352 INFO:DC_EXPAND: Splitting B: ['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A0||(A1&&A0)']
-2024-07-19 01:12:04,370 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A2'])
-2024-07-19 01:12:04,387 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)', 'A0||(A1&&A0)'])
-2024-07-19 01:12:04,387 INFO:DC_EXP: Left half ['(A0&&A0)||(A0&&A2)', '!A2'],cn(alpha):False 
-2024-07-19 01:12:04,387 INFO:DC_EXP: Right half ['!A1&&(A2&&A2)', 'A0||(A1&&A0)'],cn(alpha):False
-2024-07-19 01:12:04,387 INFO:B1 and B2 does not entail alpha, returning B: ['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,387 INFO:4 ELEMENTS: ['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,387 DEBUG:B_PRIME with 1 elements: ['(A0&&A0)||(A0&&A2)']
-2024-07-19 01:12:04,404 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)'])
-2024-07-19 01:12:04,404 DEBUG:B_PRIME with 2 elements: ['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)']
-2024-07-19 01:12:04,422 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)'])
-2024-07-19 01:12:04,422 DEBUG:B_PRIME with 3 elements: ['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)']
-2024-07-19 01:12:04,440 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)'])
-2024-07-19 01:12:04,441 DEBUG:B_PRIME with 4 elements: ['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,458 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2'])
-2024-07-19 01:12:04,458 DEBUG:Dataset expanded using divide-and-conquer: ['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,458 INFO:DC splitting Dataset: ['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,475 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)'])
-2024-07-19 01:12:04,492 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0||(A1&&A0)', '!A2'])
-2024-07-19 01:12:04,492 DEBUG:DC Check entailment, cn_B1 = False, cn_B2 = False
-2024-07-19 01:12:04,493 INFO:DC: Both halves entail alpha, merging and shrinking with ['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,493 INFO:Checking line: (A0&&A0)||(A0&&A2) with index: 0
-2024-07-19 01:12:04,493 DEBUG:Removing element: (A0&&A0)||(A0&&A2)
-2024-07-19 01:12:04,493 DEBUG:B with 3 elements = ['!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,510 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2'])
-2024-07-19 01:12:04,510 INFO:SHRINK: CN = TRUE, removing: (A0&&A0)||(A0&&A2)
-2024-07-19 01:12:04,510 DEBUG:CONTINUE SHRINKING WITH 3 elements : ['!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,510 INFO:Checking line: !A1&&(A2&&A2) with index: 0
-2024-07-19 01:12:04,510 DEBUG:Removing element: !A1&&(A2&&A2)
-2024-07-19 01:12:04,510 DEBUG:B with 2 elements = ['A0||(A1&&A0)', '!A2']
-2024-07-19 01:12:04,527 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0||(A1&&A0)', '!A2'])
-2024-07-19 01:12:04,527 INFO:Checking line: A0||(A1&&A0) with index: 1
-2024-07-19 01:12:04,527 DEBUG:Removing element: A0||(A1&&A0)
-2024-07-19 01:12:04,527 DEBUG:B with 2 elements = ['!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,544 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&(A2&&A2)', '!A2'])
-2024-07-19 01:12:04,544 INFO:SHRINK: CN = TRUE, removing: A0||(A1&&A0)
-2024-07-19 01:12:04,544 DEBUG:CONTINUE SHRINKING WITH 2 elements : ['!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,544 INFO:Checking line: !A2 with index: 1
-2024-07-19 01:12:04,544 DEBUG:Removing element: !A2
-2024-07-19 01:12:04,544 DEBUG:B with 1 elements = ['!A1&&(A2&&A2)']
-2024-07-19 01:12:04,560 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)'])
-2024-07-19 01:12:04,561 INFO:Kernel output with 2 elements: ['!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,561 INFO:KERNEL BLACKBOX FINISHED
-2024-07-19 01:12:04,561 DEBUG:Dataset shrunk using divide-and-conquer: ['!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,578 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A2||!A0'])
-2024-07-19 01:12:04,578 DEBUG:Finding kernel for dataset with 4 elements: ['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A2||!A0']
-2024-07-19 01:12:04,578 INFO:DC_EXPAND: Splitting B: ['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A2||!A0']
-2024-07-19 01:12:04,597 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A2'])
-2024-07-19 01:12:04,621 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)', 'A2||!A0'])
-2024-07-19 01:12:04,621 INFO:DC_EXP: Left half ['(A0&&A0)||(A0&&A2)', '!A2'],cn(alpha):False 
-2024-07-19 01:12:04,621 INFO:DC_EXP: Right half ['!A1&&(A2&&A2)', 'A2||!A0'],cn(alpha):False
-2024-07-19 01:12:04,621 INFO:B1 and B2 does not entail alpha, returning B: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,621 INFO:4 ELEMENTS: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,621 DEBUG:B_PRIME with 1 elements: ['(A0&&A0)||(A0&&A2)']
-2024-07-19 01:12:04,638 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)'])
-2024-07-19 01:12:04,638 DEBUG:B_PRIME with 2 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0']
-2024-07-19 01:12:04,655 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0'])
-2024-07-19 01:12:04,656 DEBUG:B_PRIME with 3 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A1&&(A2&&A2)']
-2024-07-19 01:12:04,672 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A1&&(A2&&A2)'])
-2024-07-19 01:12:04,673 DEBUG:B_PRIME with 4 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,689 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A1&&(A2&&A2)', '!A2'])
-2024-07-19 01:12:04,690 DEBUG:Dataset expanded using divide-and-conquer: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,690 INFO:DC splitting Dataset: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,706 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0'])
-2024-07-19 01:12:04,723 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&(A2&&A2)', '!A2'])
-2024-07-19 01:12:04,723 DEBUG:DC Check entailment, cn_B1 = False, cn_B2 = True
-2024-07-19 01:12:04,723 INFO:DC: B2 does not entail alpha, calling DC recursively on B1
-2024-07-19 01:12:04,723 INFO:DC splitting Dataset: ['!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,740 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)'])
-2024-07-19 01:12:04,757 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A2'])
-2024-07-19 01:12:04,758 DEBUG:DC Check entailment, cn_B1 = False, cn_B2 = False
-2024-07-19 01:12:04,758 INFO:DC: Both halves entail alpha, merging and shrinking with ['!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,758 INFO:Checking line: !A1&&(A2&&A2) with index: 0
-2024-07-19 01:12:04,758 DEBUG:Removing element: !A1&&(A2&&A2)
-2024-07-19 01:12:04,758 DEBUG:B with 1 elements = ['!A2']
-2024-07-19 01:12:04,774 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A2'])
-2024-07-19 01:12:04,774 INFO:Checking line: !A2 with index: 1
-2024-07-19 01:12:04,774 DEBUG:Removing element: !A2
-2024-07-19 01:12:04,775 DEBUG:B with 1 elements = ['!A1&&(A2&&A2)']
-2024-07-19 01:12:04,791 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)'])
-2024-07-19 01:12:04,792 INFO:Kernel output with 2 elements: ['!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,792 INFO:KERNEL BLACKBOX FINISHED
-2024-07-19 01:12:04,792 DEBUG:Dataset shrunk using divide-and-conquer: ['!A1&&(A2&&A2)', '!A2']
-2024-07-19 01:12:04,809 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A2', 'A0||(A1&&A0)'])
-2024-07-19 01:12:04,809 DEBUG:Alpha is not a consequence of the dataset. Returning None.
-2024-07-19 01:12:04,827 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', '!A2', 'A2||!A0'])
-2024-07-19 01:12:04,827 DEBUG:Finding kernel for dataset with 3 elements: ['(A0&&A0)||(A0&&A2)', '!A2', 'A2||!A0']
-2024-07-19 01:12:04,827 INFO:DC_EXPAND: Splitting B: ['(A0&&A0)||(A0&&A2)', '!A2', 'A2||!A0']
-2024-07-19 01:12:04,845 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)'])
-2024-07-19 01:12:04,862 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A2', 'A2||!A0'])
-2024-07-19 01:12:04,862 INFO:DC_EXP: Left half ['(A0&&A0)||(A0&&A2)'],cn(alpha):False 
-2024-07-19 01:12:04,862 INFO:DC_EXP: Right half ['!A2', 'A2||!A0'],cn(alpha):False
-2024-07-19 01:12:04,862 INFO:B1 and B2 does not entail alpha, returning B: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
-2024-07-19 01:12:04,862 INFO:3 ELEMENTS: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
-2024-07-19 01:12:04,862 DEBUG:B_PRIME with 1 elements: ['(A0&&A0)||(A0&&A2)']
-2024-07-19 01:12:04,879 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)'])
-2024-07-19 01:12:04,880 DEBUG:B_PRIME with 2 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0']
-2024-07-19 01:12:04,896 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0'])
-2024-07-19 01:12:04,897 DEBUG:B_PRIME with 3 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
-2024-07-19 01:12:04,914 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2'])
-2024-07-19 01:12:04,914 DEBUG:Dataset expanded using divide-and-conquer: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
-2024-07-19 01:12:04,914 INFO:DC splitting Dataset: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
-2024-07-19 01:12:04,931 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)'])
-2024-07-19 01:12:04,953 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0', '!A2'])
-2024-07-19 01:12:04,953 DEBUG:DC Check entailment, cn_B1 = False, cn_B2 = False
-2024-07-19 01:12:04,953 INFO:DC: Both halves entail alpha, merging and shrinking with ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
-2024-07-19 01:12:04,953 INFO:Checking line: (A0&&A0)||(A0&&A2) with index: 0
-2024-07-19 01:12:04,953 DEBUG:Removing element: (A0&&A0)||(A0&&A2)
-2024-07-19 01:12:04,953 DEBUG:B with 2 elements = ['A2||!A0', '!A2']
-2024-07-19 01:12:04,973 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0', '!A2'])
-2024-07-19 01:12:04,973 INFO:Checking line: A2||!A0 with index: 1
-2024-07-19 01:12:04,973 DEBUG:Removing element: A2||!A0
-2024-07-19 01:12:04,973 DEBUG:B with 2 elements = ['(A0&&A0)||(A0&&A2)', '!A2']
-2024-07-19 01:12:04,991 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A2'])
-2024-07-19 01:12:04,991 INFO:Checking line: !A2 with index: 2
-2024-07-19 01:12:04,991 DEBUG:Removing element: !A2
-2024-07-19 01:12:04,991 DEBUG:B with 2 elements = ['(A0&&A0)||(A0&&A2)', 'A2||!A0']
-2024-07-19 01:12:05,013 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0'])
-2024-07-19 01:12:05,013 INFO:Kernel output with 3 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
-2024-07-19 01:12:05,013 INFO:KERNEL BLACKBOX FINISHED
-2024-07-19 01:12:05,013 DEBUG:Dataset shrunk using divide-and-conquer: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
-2024-07-19 01:12:05,030 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0'])
-2024-07-19 01:12:05,030 DEBUG:Alpha is not a consequence of the dataset. Returning None.
-2024-07-19 01:12:05,048 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A2', 'A2||!A0'])
-2024-07-19 01:12:05,048 DEBUG:Alpha is not a consequence of the dataset. Returning None.
-2024-07-19 01:12:05,065 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A2'])
-2024-07-19 01:12:05,065 DEBUG:Alpha is not a consequence of the dataset. Returning None.
-2024-07-19 01:12:05,303 INFO:Execution time: 1.7372100353240967s, Memory Used: 35635200 KB, Strategy: 3, Search Strategy: P, Kernels: 9, Branches: 10, Tree depth: 3, Pruned branches: 2, Boundary: 0.0,Shrink Sliding Window size: 1, Expand Sliding Window size: 1, Shrink Divide and Conquer: True, Expand Divide and Conquer: True
-2024-07-19 01:12:05,304 INFO:Optimal hitting set: ['!A2'] with value: 1, Alpha: (A0&&!A0), Optimal Value: 1
-2024-07-19 01:12:05,304 DEBUG:[chan 0] EOF sent (0)
-2024-07-19 01:12:05,336 DEBUG:[chan 0] EOF received (0)
+2024-07-19 01:45:41,452 DEBUG:Starting main script
+2024-07-19 01:45:41,776 DEBUG:starting thread (client mode): 0x6891520
+2024-07-19 01:45:41,776 DEBUG:Local version/idstring: SSH-2.0-paramiko_3.4.0
+2024-07-19 01:45:41,824 DEBUG:Remote version/idstring: SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11
+2024-07-19 01:45:41,824 INFO:Connected (version 2.0, client OpenSSH_8.2p1)
+2024-07-19 01:45:41,854 DEBUG:=== Key exchange possibilities ===
+2024-07-19 01:45:41,854 DEBUG:kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group-exchange-sha256, diffie-hellman-group16-sha512, diffie-hellman-group18-sha512, diffie-hellman-group14-sha256, kex-strict-s-v00@openssh.com
+2024-07-19 01:45:41,854 DEBUG:server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa, ecdsa-sha2-nistp256, ssh-ed25519
+2024-07-19 01:45:41,854 DEBUG:client encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
+2024-07-19 01:45:41,854 DEBUG:server encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
+2024-07-19 01:45:41,854 DEBUG:client mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
+2024-07-19 01:45:41,854 DEBUG:server mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
+2024-07-19 01:45:41,854 DEBUG:client compress: none, zlib@openssh.com
+2024-07-19 01:45:41,854 DEBUG:server compress: none, zlib@openssh.com
+2024-07-19 01:45:41,854 DEBUG:client lang: <none>
+2024-07-19 01:45:41,854 DEBUG:server lang: <none>
+2024-07-19 01:45:41,854 DEBUG:kex follows: False
+2024-07-19 01:45:41,854 DEBUG:=== Key exchange agreements ===
+2024-07-19 01:45:41,854 DEBUG:Strict kex mode: True
+2024-07-19 01:45:41,854 DEBUG:Kex: curve25519-sha256@libssh.org
+2024-07-19 01:45:41,854 DEBUG:HostKey: ssh-ed25519
+2024-07-19 01:45:41,854 DEBUG:Cipher: aes128-ctr
+2024-07-19 01:45:41,854 DEBUG:MAC: hmac-sha2-256
+2024-07-19 01:45:41,854 DEBUG:Compression: none
+2024-07-19 01:45:41,854 DEBUG:=== End of kex handshake ===
+2024-07-19 01:45:41,902 DEBUG:Resetting outbound seqno after NEWKEYS due to strict mode
+2024-07-19 01:45:41,902 DEBUG:kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
+2024-07-19 01:45:41,903 DEBUG:Switch to new keys ...
+2024-07-19 01:45:41,903 DEBUG:Resetting inbound seqno after NEWKEYS due to strict mode
+2024-07-19 01:45:41,903 DEBUG:Attempting public-key auth...
+2024-07-19 01:45:41,903 DEBUG:Got EXT_INFO: {'server-sig-algs': b'ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com'}
+2024-07-19 01:45:41,963 DEBUG:userauth is OK
+2024-07-19 01:45:41,963 DEBUG:Finalizing pubkey algorithm for key of type 'ssh-rsa'
+2024-07-19 01:45:41,963 DEBUG:Our pubkey algorithm list: ['rsa-sha2-512', 'rsa-sha2-256', 'ssh-rsa']
+2024-07-19 01:45:41,963 DEBUG:Server-side algorithm list: ['ssh-ed25519', 'sk-ssh-ed25519@openssh.com', 'ssh-rsa', 'rsa-sha2-256', 'rsa-sha2-512', 'ssh-dss', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'sk-ecdsa-sha2-nistp256@openssh.com']
+2024-07-19 01:45:41,964 DEBUG:Agreed upon 'rsa-sha2-512' pubkey algorithm
+2024-07-19 01:45:42,026 INFO:Authentication (publickey) successful!
+2024-07-19 01:45:42,038 DEBUG:[chan 0] Max packet in: 32768 bytes
+2024-07-19 01:45:42,531 DEBUG:Received global request "hostkeys-00@openssh.com"
+2024-07-19 01:45:42,531 DEBUG:Rejecting "hostkeys-00@openssh.com" global request from server.
+2024-07-19 01:45:42,532 DEBUG:Debug msg: b'/home/smueller/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding'
+2024-07-19 01:45:42,567 DEBUG:[chan 0] Max packet out: 32768 bytes
+2024-07-19 01:45:42,567 DEBUG:Secsh channel 0 opened.
+2024-07-19 01:45:42,569 DEBUG:Building SSL context
+2024-07-19 01:45:42,590 DEBUG:Switching to SSL
+2024-07-19 01:45:42,728 DEBUG:SSL has been enabled
+2024-07-19 01:45:42,728 DEBUG:Starting authorization phase
+2024-07-19 01:45:42,728 DEBUG:The provided initial strategy is caching_sha2_password
+2024-07-19 01:45:42,728 INFO:package: mysql.connector.plugins
+2024-07-19 01:45:42,728 INFO:plugin_name: caching_sha2_password
+2024-07-19 01:45:42,728 INFO:AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
+2024-07-19 01:45:42,755 DEBUG:Exchanging further packets
+2024-07-19 01:45:42,756 DEBUG:caching_sha2_password completed succesfully
+2024-07-19 01:45:43,021 DEBUG:Random Value: 4, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_105.txt, Value: (A0&&A0)||(A0&&A2)
+2024-07-19 01:45:43,021 DEBUG:Random Value: 3, Inconsistency Value: 1, Filename: data/SRS/Dataset_A/sig3_5_15/srs_105.txt, Value: !A2
+2024-07-19 01:45:43,021 DEBUG:Random Value: 2, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_105.txt, Value: !A1&&(A2&&A2)
+2024-07-19 01:45:43,021 DEBUG:Random Value: 5, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_105.txt, Value: A0||(A1&&A0)
+2024-07-19 01:45:43,022 DEBUG:Random Value: 1, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_105.txt, Value: A2||!A0
+2024-07-19 01:45:43,022 INFO:Alpha: (A0&&!A0)
+2024-07-19 01:45:43,104 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0'])
+2024-07-19 01:45:43,104 DEBUG:Finding kernel for dataset with 5 elements: ['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0']
+2024-07-19 01:45:43,104 INFO:DC_EXPAND: Splitting B: ['(A0&&A0)||(A0&&A2)', '!A2', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0']
+2024-07-19 01:45:43,137 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A2'])
+2024-07-19 01:45:43,171 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0'])
+2024-07-19 01:45:43,172 INFO:DC_EXP: Left half ['(A0&&A0)||(A0&&A2)', '!A2'],cn(alpha):False 
+2024-07-19 01:45:43,172 INFO:DC_EXP: Right half ['!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0'],cn(alpha):False
+2024-07-19 01:45:43,172 INFO:B1 and B2 does not entail alpha, returning B: ['A2||!A0', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2', '(A0&&A0)||(A0&&A2)']
+2024-07-19 01:45:43,172 INFO:5 ELEMENTS: ['A2||!A0', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2', '(A0&&A0)||(A0&&A2)']
+2024-07-19 01:45:43,172 DEBUG:B_PRIME with 1 elements: ['A2||!A0']
+2024-07-19 01:45:43,200 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0'])
+2024-07-19 01:45:43,201 DEBUG:B_PRIME with 2 elements: ['A2||!A0', '!A1&&(A2&&A2)']
+2024-07-19 01:45:43,228 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0', '!A1&&(A2&&A2)'])
+2024-07-19 01:45:43,228 DEBUG:B_PRIME with 3 elements: ['A2||!A0', '!A1&&(A2&&A2)', 'A0||(A1&&A0)']
+2024-07-19 01:45:43,254 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0', '!A1&&(A2&&A2)', 'A0||(A1&&A0)'])
+2024-07-19 01:45:43,254 DEBUG:B_PRIME with 4 elements: ['A2||!A0', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,281 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['A2||!A0', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2'])
+2024-07-19 01:45:43,281 DEBUG:Dataset expanded using divide-and-conquer: ['A2||!A0', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,281 INFO:DC splitting Dataset: ['A2||!A0', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,314 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0', '!A1&&(A2&&A2)'])
+2024-07-19 01:45:43,341 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0||(A1&&A0)', '!A2'])
+2024-07-19 01:45:43,342 DEBUG:DC Check entailment, cn_B1 = False, cn_B2 = False
+2024-07-19 01:45:43,342 INFO:DC: Both halves entail alpha, merging and shrinking with ['A2||!A0', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,342 INFO:Checking line: A2||!A0 with index: 0
+2024-07-19 01:45:43,342 DEBUG:Removing element: A2||!A0
+2024-07-19 01:45:43,342 DEBUG:B with 3 elements = ['!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,369 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2'])
+2024-07-19 01:45:43,369 INFO:SHRINK: CN = TRUE, removing: A2||!A0
+2024-07-19 01:45:43,369 DEBUG:CONTINUE SHRINKING WITH 3 elements : ['!A1&&(A2&&A2)', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,369 INFO:Checking line: !A1&&(A2&&A2) with index: 0
+2024-07-19 01:45:43,369 DEBUG:Removing element: !A1&&(A2&&A2)
+2024-07-19 01:45:43,369 DEBUG:B with 2 elements = ['A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,395 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0||(A1&&A0)', '!A2'])
+2024-07-19 01:45:43,395 INFO:Checking line: A0||(A1&&A0) with index: 1
+2024-07-19 01:45:43,395 DEBUG:Removing element: A0||(A1&&A0)
+2024-07-19 01:45:43,395 DEBUG:B with 2 elements = ['!A1&&(A2&&A2)', '!A2']
+2024-07-19 01:45:43,424 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&(A2&&A2)', '!A2'])
+2024-07-19 01:45:43,424 INFO:SHRINK: CN = TRUE, removing: A0||(A1&&A0)
+2024-07-19 01:45:43,424 DEBUG:CONTINUE SHRINKING WITH 2 elements : ['!A1&&(A2&&A2)', '!A2']
+2024-07-19 01:45:43,424 INFO:Checking line: !A2 with index: 1
+2024-07-19 01:45:43,424 DEBUG:Removing element: !A2
+2024-07-19 01:45:43,424 DEBUG:B with 1 elements = ['!A1&&(A2&&A2)']
+2024-07-19 01:45:43,451 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&(A2&&A2)'])
+2024-07-19 01:45:43,451 INFO:Kernel output with 2 elements: ['!A1&&(A2&&A2)', '!A2']
+2024-07-19 01:45:43,451 INFO:KERNEL BLACKBOX FINISHED
+2024-07-19 01:45:43,451 DEBUG:Dataset shrunk using divide-and-conquer: ['!A1&&(A2&&A2)', '!A2']
+2024-07-19 01:45:43,478 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0'])
+2024-07-19 01:45:43,479 DEBUG:Alpha is not a consequence of the dataset. Returning None.
+2024-07-19 01:45:43,507 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', '!A2', 'A0||(A1&&A0)', 'A2||!A0'])
+2024-07-19 01:45:43,507 DEBUG:Finding kernel for dataset with 4 elements: ['(A0&&A0)||(A0&&A2)', '!A2', 'A0||(A1&&A0)', 'A2||!A0']
+2024-07-19 01:45:43,507 INFO:DC_EXPAND: Splitting B: ['(A0&&A0)||(A0&&A2)', '!A2', 'A0||(A1&&A0)', 'A2||!A0']
+2024-07-19 01:45:43,534 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A2'])
+2024-07-19 01:45:43,561 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0||(A1&&A0)', 'A2||!A0'])
+2024-07-19 01:45:43,561 INFO:DC_EXP: Left half ['(A0&&A0)||(A0&&A2)', '!A2'],cn(alpha):False 
+2024-07-19 01:45:43,561 INFO:DC_EXP: Right half ['A0||(A1&&A0)', 'A2||!A0'],cn(alpha):False
+2024-07-19 01:45:43,561 INFO:B1 and B2 does not entail alpha, returning B: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,561 INFO:4 ELEMENTS: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,561 DEBUG:B_PRIME with 1 elements: ['(A0&&A0)||(A0&&A2)']
+2024-07-19 01:45:43,588 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)'])
+2024-07-19 01:45:43,588 DEBUG:B_PRIME with 2 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0']
+2024-07-19 01:45:43,615 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0'])
+2024-07-19 01:45:43,615 DEBUG:B_PRIME with 3 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)']
+2024-07-19 01:45:43,642 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)'])
+2024-07-19 01:45:43,642 DEBUG:B_PRIME with 4 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,669 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2'])
+2024-07-19 01:45:43,669 DEBUG:Dataset expanded using divide-and-conquer: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,669 INFO:DC splitting Dataset: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,695 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0'])
+2024-07-19 01:45:43,721 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0||(A1&&A0)', '!A2'])
+2024-07-19 01:45:43,721 DEBUG:DC Check entailment, cn_B1 = False, cn_B2 = False
+2024-07-19 01:45:43,721 INFO:DC: Both halves entail alpha, merging and shrinking with ['(A0&&A0)||(A0&&A2)', 'A2||!A0', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,721 INFO:Checking line: (A0&&A0)||(A0&&A2) with index: 0
+2024-07-19 01:45:43,721 DEBUG:Removing element: (A0&&A0)||(A0&&A2)
+2024-07-19 01:45:43,721 DEBUG:B with 3 elements = ['A2||!A0', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,747 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['A2||!A0', 'A0||(A1&&A0)', '!A2'])
+2024-07-19 01:45:43,747 INFO:SHRINK: CN = TRUE, removing: (A0&&A0)||(A0&&A2)
+2024-07-19 01:45:43,748 DEBUG:CONTINUE SHRINKING WITH 3 elements : ['A2||!A0', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,748 INFO:Checking line: A2||!A0 with index: 0
+2024-07-19 01:45:43,748 DEBUG:Removing element: A2||!A0
+2024-07-19 01:45:43,748 DEBUG:B with 2 elements = ['A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,773 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0||(A1&&A0)', '!A2'])
+2024-07-19 01:45:43,774 INFO:Checking line: A0||(A1&&A0) with index: 1
+2024-07-19 01:45:43,774 DEBUG:Removing element: A0||(A1&&A0)
+2024-07-19 01:45:43,774 DEBUG:B with 2 elements = ['A2||!A0', '!A2']
+2024-07-19 01:45:43,800 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0', '!A2'])
+2024-07-19 01:45:43,800 INFO:Checking line: !A2 with index: 2
+2024-07-19 01:45:43,800 DEBUG:Removing element: !A2
+2024-07-19 01:45:43,800 DEBUG:B with 2 elements = ['A2||!A0', 'A0||(A1&&A0)']
+2024-07-19 01:45:43,826 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0', 'A0||(A1&&A0)'])
+2024-07-19 01:45:43,826 INFO:Kernel output with 3 elements: ['A2||!A0', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,826 INFO:KERNEL BLACKBOX FINISHED
+2024-07-19 01:45:43,826 DEBUG:Dataset shrunk using divide-and-conquer: ['A2||!A0', 'A0||(A1&&A0)', '!A2']
+2024-07-19 01:45:43,853 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A2', 'A0||(A1&&A0)'])
+2024-07-19 01:45:43,853 DEBUG:Alpha is not a consequence of the dataset. Returning None.
+2024-07-19 01:45:43,883 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', '!A2', 'A2||!A0'])
+2024-07-19 01:45:43,883 DEBUG:Finding kernel for dataset with 3 elements: ['(A0&&A0)||(A0&&A2)', '!A2', 'A2||!A0']
+2024-07-19 01:45:43,883 INFO:DC_EXPAND: Splitting B: ['(A0&&A0)||(A0&&A2)', '!A2', 'A2||!A0']
+2024-07-19 01:45:43,909 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)'])
+2024-07-19 01:45:43,936 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A2', 'A2||!A0'])
+2024-07-19 01:45:43,936 INFO:DC_EXP: Left half ['(A0&&A0)||(A0&&A2)'],cn(alpha):False 
+2024-07-19 01:45:43,936 INFO:DC_EXP: Right half ['!A2', 'A2||!A0'],cn(alpha):False
+2024-07-19 01:45:43,936 INFO:B1 and B2 does not entail alpha, returning B: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
+2024-07-19 01:45:43,936 INFO:3 ELEMENTS: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
+2024-07-19 01:45:43,936 DEBUG:B_PRIME with 1 elements: ['(A0&&A0)||(A0&&A2)']
+2024-07-19 01:45:43,969 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)'])
+2024-07-19 01:45:43,969 DEBUG:B_PRIME with 2 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0']
+2024-07-19 01:45:43,996 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0'])
+2024-07-19 01:45:43,996 DEBUG:B_PRIME with 3 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
+2024-07-19 01:45:44,023 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2'])
+2024-07-19 01:45:44,023 DEBUG:Dataset expanded using divide-and-conquer: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
+2024-07-19 01:45:44,024 INFO:DC splitting Dataset: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
+2024-07-19 01:45:44,050 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)'])
+2024-07-19 01:45:44,077 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0', '!A2'])
+2024-07-19 01:45:44,077 DEBUG:DC Check entailment, cn_B1 = False, cn_B2 = False
+2024-07-19 01:45:44,077 INFO:DC: Both halves entail alpha, merging and shrinking with ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
+2024-07-19 01:45:44,077 INFO:Checking line: (A0&&A0)||(A0&&A2) with index: 0
+2024-07-19 01:45:44,077 DEBUG:Removing element: (A0&&A0)||(A0&&A2)
+2024-07-19 01:45:44,077 DEBUG:B with 2 elements = ['A2||!A0', '!A2']
+2024-07-19 01:45:44,103 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A2||!A0', '!A2'])
+2024-07-19 01:45:44,103 INFO:Checking line: A2||!A0 with index: 1
+2024-07-19 01:45:44,103 DEBUG:Removing element: A2||!A0
+2024-07-19 01:45:44,103 DEBUG:B with 2 elements = ['(A0&&A0)||(A0&&A2)', '!A2']
+2024-07-19 01:45:44,129 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A2'])
+2024-07-19 01:45:44,129 INFO:Checking line: !A2 with index: 2
+2024-07-19 01:45:44,129 DEBUG:Removing element: !A2
+2024-07-19 01:45:44,130 DEBUG:B with 2 elements = ['(A0&&A0)||(A0&&A2)', 'A2||!A0']
+2024-07-19 01:45:44,159 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0'])
+2024-07-19 01:45:44,159 INFO:Kernel output with 3 elements: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
+2024-07-19 01:45:44,159 INFO:KERNEL BLACKBOX FINISHED
+2024-07-19 01:45:44,160 DEBUG:Dataset shrunk using divide-and-conquer: ['(A0&&A0)||(A0&&A2)', 'A2||!A0', '!A2']
+2024-07-19 01:45:44,196 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', 'A2||!A0'])
+2024-07-19 01:45:44,197 DEBUG:Alpha is not a consequence of the dataset. Returning None.
+2024-07-19 01:45:44,321 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A2', 'A2||!A0'])
+2024-07-19 01:45:44,321 DEBUG:Alpha is not a consequence of the dataset. Returning None.
+2024-07-19 01:45:44,486 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A0&&A0)||(A0&&A2)', '!A2'])
+2024-07-19 01:45:44,487 DEBUG:Alpha is not a consequence of the dataset. Returning None.
+2024-07-19 01:45:44,489 INFO:Execution time: 1.6399188041687012s, Memory Used: 36569088 KB, Strategy: 3, Search Strategy: P, Kernels: 8, Branches: 8, Tree depth: 3, Pruned branches: 1, Boundary: 0.0,Shrink Sliding Window size: 1, Expand Sliding Window size: 1, Shrink Divide and Conquer: True, Expand Divide and Conquer: True
+2024-07-19 01:45:44,489 INFO:Optimal hitting set: ['!A2'] with value: 1, Alpha: (A0&&!A0), Optimal Value: 1

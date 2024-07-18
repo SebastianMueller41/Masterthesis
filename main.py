@@ -31,15 +31,17 @@ parser.add_argument('--sp', type=int, choices=range(0, 4), required=True, help='
 parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'H', 'P'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
 parser.add_argument('--alpha', type=str, required=True, help='A string value to be used as alpha')
 
-# Expand group
+# Expand group with mutually exclusive options
 expand_group = parser.add_argument_group('expand')
-expand_group.add_argument('--expand-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for expand')
-expand_group.add_argument('--expand-sw-size', type=int, default=1, help='Window size for the sliding-window technique during expand')
+expand_me_group = expand_group.add_mutually_exclusive_group(required=False)
+expand_me_group.add_argument('--expand-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for expand')
+expand_me_group.add_argument('--expand-sw-size', type=int, default=1, help='Window size for the sliding-window technique during expand')
 
-# Shrink group
+# Shrink group with mutually exclusive options
 shrink_group = parser.add_argument_group('shrink')
-shrink_group.add_argument('--shrink-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for shrink')
-shrink_group.add_argument('--shrink-sw-size', type=int, default=1, help='Window size for the sliding-window technique during shrink')
+shrink_me_group = shrink_group.add_mutually_exclusive_group(required=False)
+shrink_me_group.add_argument('--shrink-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for shrink')
+shrink_me_group.add_argument('--shrink-sw-size', type=int, default=1, help='Window size for the sliding-window technique during shrink')
 
 parser.add_argument('-res-db', action='store_true', help='Save results to database')
 parser.add_argument('-no-log', action='store_true', help='Disable logging')
