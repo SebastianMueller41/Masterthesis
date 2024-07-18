@@ -20,11 +20,11 @@ def execute_command(command):
 # Read the CSV file and process each row
 with open(MISSING_COMBINATIONS_FILE, mode='r') as file:
     reader = csv.reader(file)
-    next(reader)  # Skip the header row
+    #next(reader)  # Skip the header row
 
     for row in reader:
         FILE_NAME, *_ = row
 
-        command = f"python3 {PYTHON_SCRIPT} '{FILE_NAME}' --sp 3 -r --res-db --ss P -path-db --alpha 'A0&&!A0'"
+        command = f"python3 {PYTHON_SCRIPT} '{FILE_NAME}' --sp 3 -r -res-db --ss P -path-db --alpha 'A0&&!A0'"
         print(f"Executing: {command}")
         execute_command(command)
