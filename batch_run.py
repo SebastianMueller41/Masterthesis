@@ -5,7 +5,7 @@ import subprocess
 PYTHON_SCRIPT = "main.py"
 
 # Path to the CSV file containing missing combinations
-MISSING_COMBINATIONS_FILE = 'data/SRS/sig3_5_15.csv'
+MISSING_COMBINATIONS_FILE = 'data/SRS/sig20_25_50.csv'
 # "data/missing_combinations_ARG.csv"
 
 # Function to execute the command
