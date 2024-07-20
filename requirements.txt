@@ -135,5 +135,5 @@ wcwidth==0.2.13
 webcolors==24.6.0
 webencodings==0.5.1
 websocket-client==1.8.0
-xarray==2024.2.0
+xarray>=2022.3.0,<2024.0.0
 zipp==3.17.0
