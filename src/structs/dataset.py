@@ -130,6 +130,13 @@ class DataSet:
             int: The sum of the values of the elements.
         """
         return sum(self.element_values[element] for element in self.elements)
+    
+    def sort_desc(self):
+        """
+        Sort the elements of the dataset in descending order based on their values.
+        """
+        self.elements.sort(key=lambda element: self.element_values.get(element, 0), reverse=True)
+
 
     def add_element(self, element, value=None):
             """

@@ -31,7 +31,8 @@ class ExpandShrink(KernelStrategy):
         """
         if cn(dataset, alpha):
             logging.debug(f"Finding kernel for dataset with {len(dataset.get_elements())} elements: {dataset.get_elements()}")
-
+            #if dataset.strategy_param > 1: # Sort elements for strategies that assign values > 1 to faster find kernels with high values
+            #    dataset.sort_desc()
             # Expand phase
             if self.div_conq_expand:
                 expanded_dataset = expand_divide_and_conquer(dataset, alpha)

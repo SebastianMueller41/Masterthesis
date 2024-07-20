@@ -1,31 +1,20 @@
-p cnf 11 28
--4 5 6 0
-4 -5 0
-4 -6 0
-5 -1 -1 0
+p cnf 5 9
+-4 3 -2 0
+4 -3 0
+4 2 0
+5 -2 -1 0
+-5 2 0
 -5 1 0
--5 1 0
-6 -1 -3 0
--6 1 0
--6 3 0
-7 2 -8 0
--7 -2 0
--7 8 0
-8 -3 -3 0
--8 3 0
--8 3 0
--9 1 10 0
-9 -1 0
-9 -10 0
-10 -2 -1 0
--10 2 0
--10 1 0
--11 3 -1 0
-11 -3 0
-11 1 0
+1 0
 4 0
-7 0
-9 0
-11 0
+-5 0
 
-Repaired dataset: ['(A0&&A0)||(A0&&A2)', '!A1&&(A2&&A2)', 'A0||(A1&&A0)', 'A2||!A0']
+File: data/SRS/Dataset_A/sig3_5_15/srs_1.txt
+Optimal solution: ['!A2&&(A1&&A0)', 'A1&&A2']
+Optimal value: 2
+Repaired dataset: ['A0', 'A2||!A1', '!(A1&&A0)']
+
+All explored hitting sets: 
+(Path value, hitting set)
+20.0, Hitting Set: [('!A2&&(A1&&A0)', 1), ('A1&&A2', 1)]
+10.0, Hitting Set: [('A0', 0), ('!A2&&(A1&&A0)', 1)]

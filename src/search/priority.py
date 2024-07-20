@@ -62,12 +62,18 @@ class PrioritySearch(Strategy, Search):
             child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=current_node.level + 1, bbvalue=bbvalue, parent=current_node)
             current_node.add_child(child_node)
 
-            priority = self.dataset.element_values.get(element, 0)
+            priority = self.tree.calculate_path_bbvalue_up_to_root(current_node)
+            if priority == 0:
+                priority = float('inf')  # Assign a very low priority for 0 values
             children.append((priority, child_node))
 
-        children.sort(reverse=True, key=lambda x: x[0])
+        # Sort children by priority in ascending order
+        children.sort(key=lambda x: x[0])
         for priority, child_node in children:
             self.add_to_priority_queue(priority_queue, child_node, priority)
 
     def add_to_priority_queue(self, queue, node, priority):
-        heapq.heappush(queue, (-priority, node))
+        heapq.heappush(queue, (priority, node))
+
+
+

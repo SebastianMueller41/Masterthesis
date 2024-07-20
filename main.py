@@ -10,9 +10,9 @@ from src.search.hybrid import HybridSearch
 from src.search.priority import PrioritySearch
 from src.search.bfs import BFS
 from src.search.dfs import DFS
+from src.search.verification import VerificationSearch
 from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
-from src.kernels.shrinkexpand import ShrinkExpand
 from src.structs.dataset import DataSet
 from src.database.database import create_ssh_tunnel_and_connect, log_execution_data
 
@@ -28,7 +28,7 @@ logging.basicConfig(
 parser = argparse.ArgumentParser(description='Run the kernelization process with optional database logging.')
 parser.add_argument('filepath', type=str, help='Path to the dataset file')
 parser.add_argument('--sp', type=int, choices=range(0, 4), required=True, help='Strategy parameter value (0-3)')
-parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'H', 'P'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
+parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'H', 'P', 'V'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
 parser.add_argument('--alpha', type=str, required=True, help='A string value to be used as alpha')
 
 # Expand group with mutually exclusive options
@@ -94,6 +94,8 @@ if __name__ == "__main__":
             search_strategy = HybridSearch(kernel_strategy, dataset, args.alpha, args.sp)
         elif args.ss == 'P':
             search_strategy = PrioritySearch(kernel_strategy, dataset, args.alpha, args.sp)
+        elif args.ss == 'V':
+            search_strategy = VerificationSearch(kernel_strategy, dataset, args.alpha, args.sp)
         else:
             logging.error("Invalid search strategy")
             sys.exit(1)
@@ -143,7 +145,7 @@ if __name__ == "__main__":
     logging.info(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
     logging.info(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}")
 
-    file_repair = "log/Repaired_Dataset.cnf"
+    file_repair = "log/Results.out"
 
     if optimal_hitting_set is not None:
         for element in optimal_hitting_set.get_elements():
@@ -160,6 +162,12 @@ if __name__ == "__main__":
         dataset_elements = "No solution found."
 
     with open(file_repair, 'a') as file:
-        file.write(f"\nRepaired dataset: {dataset_elements}")
+        file.write(f"\nFile: {args.filepath}")
+        file.write(f"\nOptimal solution: {optimal_hitting_set.get_elements()}")
+        file.write(f"\nOptimal value: {optimal_value}")
+        file.write(f"\nRepaired dataset: {dataset_elements}\n")
+        file.write(f"\nAll explored hitting sets: \n(Path value, hitting set)\n")
+    
+    hitting_set_tree.print_all_hitting_sets_to_file(file_repair)
 
     print(f"Repaired dataset in CNF saved to {file_repair}")

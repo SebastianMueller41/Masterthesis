@@ -2,7 +2,6 @@ from collections import deque
 from src.search.strategy import Strategy
 from src.search.search import Search
 from src.structs.hittingsettree import HSTreeNode
-import logging
 
 class BFS(Strategy, Search):
     def __init__(self, kernelStrategy, dataset, alpha, strategy_param):

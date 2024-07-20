@@ -17,6 +17,8 @@ class HybridSearch(Strategy, Search):
             self.tree = self.dfs_search.tree
             self.bfs_search.tree = self.tree
             self.bfs_search.find_kernels()
+            self.tree = self.dfs_search.tree
         else:
             self.dfs_search.find_kernels()
-            self.first_leaf_found = self.dfs_search.tree.leaf_nodes
+            self.tree = self.dfs_search.tree
+

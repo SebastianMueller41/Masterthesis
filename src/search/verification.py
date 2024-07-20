@@ -2,13 +2,11 @@ import heapq
 import logging
 from src.kernels.kernelstrategy import KernelStrategy
 from src.search.strategy import Strategy
-from src.search.priority import PrioritySearch
 from src.structs.dataset import DataSet
 from src.structs.hittingsettree import HSTreeNode, HittingSetTree
 
-class VerificationSearch(Strategy, PrioritySearch): 
+class VerificationSearch(Strategy): 
     def __init__(self, kernelStrategy: KernelStrategy, dataset: DataSet, alpha, strategy_param):
-        PrioritySearch.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
         self.kernelStrategy = kernelStrategy
         self.dataset = dataset
         self.alpha = alpha
@@ -40,7 +38,7 @@ class VerificationSearch(Strategy, PrioritySearch):
         while priority_queue:
             _, current_node = heapq.heappop(priority_queue)
 
-            if self.should_prune(current_node):
+            if self.should_prune():
                 current_node.kernel = "PRUNED"
                 current_node.set_pruned()
                 continue
@@ -85,11 +83,15 @@ class VerificationSearch(Strategy, PrioritySearch):
 
     def update_boundary_with_leaf(self, leaf_node):
         leaf_path_measure = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
-        if 0 < leaf_path_measure == self.tree.tree_sum:
+        if leaf_path_measure == self.tree.tree_sum:
             self.optimal_reached = True
             print(f"Optimal reached: {self.optimal_reached}")
 
-    def should_prune(self, node):
+    def should_prune(self):
         if self.tree.boundary == 0:
             return False
         return self.optimal_reached
+    
+    def log_tree(self):
+        self.tree.print_tree_to_file()
+        self.tree.print_newline()

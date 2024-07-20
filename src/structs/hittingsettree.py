@@ -47,6 +47,7 @@ class HittingSetTree:
         self.dataset = dataset
         self.leaf_nodes = []
         self.output_file = output_file
+        self.tree_sum = dataset.sum_values()
 
         with open(self.output_file, 'w') as file:
             file.truncate()
@@ -63,7 +64,7 @@ class HittingSetTree:
     
     def add_leaf_node(self, leaf_node):
         bbvalue = self.calculate_path_bbvalue_up_to_root(leaf_node)
-        heapq.heappush(self.leaf_nodes, (-bbvalue, leaf_node))
+        heapq.heappush(self.leaf_nodes, (bbvalue, leaf_node))
 
     def calculate_path_bbvalue_up_to_root(self, node):
         cumulative_bbvalue = 0.0
@@ -72,7 +73,7 @@ class HittingSetTree:
             edge_value = self.dataset.element_values.get(current_node.edge, None)
             if edge_value is None:
                 edge_value = 0
-            cumulative_bbvalue += 1 / float(edge_value) if edge_value != 0 else 0
+            cumulative_bbvalue += 1 / (float(edge_value)) if edge_value != 0 else 0
             current_node = current_node.parent
         return cumulative_bbvalue
 
@@ -88,7 +89,9 @@ class HittingSetTree:
 
     def get_hitting_set_for_optimal_solution(self):
         if self.leaf_nodes:
-            _, best_leaf = heapq.heappop(self.leaf_nodes)
+            # Ensure leaf_nodes is sorted in descending order based on bbvalue
+            sorted_leaf_nodes = sorted(self.leaf_nodes, key=lambda x: x[0], reverse=True)
+            _, best_leaf = sorted_leaf_nodes[0]  # Peek at the highest priority leaf
             return self.get_hitting_set_for_leaf(best_leaf)
         else:
             return None
@@ -157,3 +160,12 @@ class HittingSetTree:
     def print_newline(self, output_file="tmp/tree_output.txt"):    
         with open(output_file, "a") as file:
             file.write("\n\n")
+            
+    def print_all_hitting_sets_to_file(self, output_file="tmp/all_hitting_sets.txt"):
+        sorted_leaf_nodes = sorted(self.leaf_nodes, key=lambda x: (x[0], len(self.get_hitting_set_for_leaf(x[1]).get_elements())), reverse=True)
+        with open(output_file, 'a') as file:
+            for bbvalue, leaf_node in sorted_leaf_nodes:
+                hitting_set = self.get_hitting_set_for_leaf(leaf_node)
+                hitting_set_elements = hitting_set.get_elements_with_values()
+                file.write(f"{bbvalue*10}, Hitting Set: {hitting_set_elements}\n")
+
