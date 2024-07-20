@@ -1,0 +1,50 @@
+p cnf 14 38
+4 2 -3 0
+-4 -2 0
+-4 3 0
+-5 2 6 0
+5 -2 0
+5 -6 0
+6 -7 -2 0
+-6 7 0
+-6 2 0
+7 -3 -1 0
+-7 3 0
+-7 1 0
+-8 9 3 0
+8 -9 0
+8 -3 0
+-9 2 10 0
+9 -2 0
+9 -10 0
+10 -2 -1 0
+-10 2 0
+-10 1 0
+11 -2 -1 0
+-11 2 0
+-11 1 0
+12 -13 -14 0
+-12 13 0
+-12 14 0
+-13 2 2 0
+13 -2 0
+13 -2 0
+14 -3 -1 0
+-14 3 0
+-14 1 0
+-4 0
+5 0
+8 0
+11 0
+12 0
+
+File: data/SRS/Dataset_A/sig3_5_15/srs_0.txt
+Execution time: 14.434314966201782s, Memory Used: 37289984 KB, Strategy: 1, Search Strategy: P, Kernels: 69, Branches: 169, Tree depth: 6, Pruned branches: 101, Boundary: 5.0,Shrink Sliding Window size: 1, Expand Sliding Window size: 1, Shrink Divide and Conquer: False, Expand Divide and Conquer: False
+Optimal hitting set: ['!A0', '!A1&&(A2||A0)', '!A2', '!A1', '!(A0||A1)'] with value: 5, Alpha: (A0&&!A0), Optimal Value: 5
+Optimal solution: ['!A0', '!A1&&(A2||A0)', '!A2', '!A1', '!(A0||A1)']
+Optimal value: 5, Optimal cardinality: 5
+Repaired dataset: ['!(!A1&&A2)', 'A1||((A2&&A0)&&A1)', '(A1||(A1&&A0))||A2', 'A1&&A0', '(A1||A1)&&(A2&&A0)']
+
+All explored hitting sets: 
+(Value, Path Value, Cardinality, Hitting set)
+5, 5.0, 5, Hitting Set: [('!A0', 1), ('!A1&&(A2||A0)', 1), ('!A2', 1), ('!A1', 1), ('!(A0||A1)', 1)]
