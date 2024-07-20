@@ -1,10 +1,7 @@
 import heapq
 import logging
-from src.kernels.kernelstrategy import KernelStrategy
+from src.search.search import Search
 from src.search.strategy import Strategy
-from src.structs.dataset import DataSet
-from src.tree.basebrancher import BaseBrancher
-from src.pruner.basepruner import BasePruner
 from src.tree.hittingsettree import HSTreeNode, HittingSetTree
 from src.structs.logger import setup_logging
 
@@ -14,8 +11,9 @@ setup_logging()
 # Get the logger for this module
 ss_logger = logging.getLogger(__name__)
 
-class PrioritySearch(Strategy): 
-    def __init__(self, kernelStrategy: KernelStrategy, dataset: DataSet, brancher: BaseBrancher , pruner: BasePruner, alpha, strategy_param):
+class PrioritySearch(Strategy, Search): 
+    def __init__(self, kernelStrategy, dataset, brancher, pruner, alpha, strategy_param):
+        Search.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
         self.kernelStrategy = kernelStrategy
         self.dataset = dataset
         self.alpha = alpha
@@ -45,7 +43,7 @@ class PrioritySearch(Strategy):
     def priority_search(self, root: HSTreeNode):
         priority_queue = []
         self.brancher.add_to_priority_queue(priority_queue, root, 0)
-        ss_logger.info(f"Priority_queue: {priority_queue}")
+        ss_logger.info(f"Priority search started")
 
         while priority_queue:
             _, current_node = heapq.heappop(priority_queue)
@@ -68,7 +66,3 @@ class PrioritySearch(Strategy):
                 self.brancher.expand_children(current_node, priority_queue)
 
             self.log_tree()
-
-    def log_tree(self):
-        self.tree.print_tree_to_file()
-        self.tree.print_newline()

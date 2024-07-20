@@ -11,8 +11,10 @@ setup_logging()
 # Get the logger for this module
 ss_logger = logging.getLogger(__name__)
 class BFS(Strategy, Search):
-    def __init__(self, kernelStrategy, dataset, alpha, strategy_param):
+    def __init__(self, kernelStrategy, dataset, brancher, pruner, alpha, strategy_param):
         Search.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
+        self.pruner = pruner
+        self.brancher = brancher
 
     def find_kernels(self) -> None:
         self.bfs(self.dataset, self.alpha)
@@ -28,7 +30,7 @@ class BFS(Strategy, Search):
 
         while queue:
             current_node = queue.popleft()
-            if self.should_prune(current_node):
+            if self.pruner.should_prune(current_node):
                 current_node.kernel = "PRUNED"
                 current_node.set_pruned()
                 continue
@@ -37,7 +39,7 @@ class BFS(Strategy, Search):
                 reduced_dataset = current_node.get_dataset().clone()
                 reduced_dataset.remove_element(element)
 
-                bbvalue = self.calculate_bbvalue(current_node, element, reduced_dataset)
+                bbvalue = self.brancher.calculate_bbvalue(current_node, element, reduced_dataset)
                 child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=current_node.level + 1, bbvalue=bbvalue, parent=current_node)
                 current_node.add_child(child_node)
 
@@ -48,6 +50,6 @@ class BFS(Strategy, Search):
                 else:
                     child_node.set_kernel("LEAF")
                     self.tree.add_leaf_node(child_node)
-                    self.update_boundary_with_leaf(child_node)
+                    self.pruner.update_boundary_with_leaf(child_node)
 
         self.log_tree()

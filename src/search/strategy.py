@@ -1,6 +1,4 @@
 from abc import ABC, abstractmethod
-from src.kernels.kernelstrategy import KernelStrategy
-from src.structs.dataset import DataSet
 
 class Strategy(ABC):
     @abstractmethod

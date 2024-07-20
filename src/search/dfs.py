@@ -11,8 +11,10 @@ setup_logging()
 ss_logger = logging.getLogger(__name__)
 
 class DFS(Strategy, Search):
-    def __init__(self, kernelStrategy, dataset, alpha, strategy_param):
+    def __init__(self, kernelStrategy, dataset, brancher, pruner, alpha, strategy_param):
         Search.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
+        self.pruner = pruner
+        self.brancher = brancher
 
     def find_kernels(self) -> None:
         self.dfs(self.dataset, self.alpha)
@@ -28,7 +30,7 @@ class DFS(Strategy, Search):
             self.tree.root = HSTreeNode(kernel=result.get_elements(), dataset=dataset, bbvalue=0, parent=None)
             self.dfs(self.tree.root.dataset, alpha, self.tree.root)
         else:
-            if self.should_prune(parent):
+            if self.pruner.should_prune(parent):
                 parent.kernel = "PRUNED"
                 parent.set_pruned()
                 return
@@ -36,7 +38,7 @@ class DFS(Strategy, Search):
                 reduced_dataset = parent.get_dataset().clone()
                 reduced_dataset.remove_element(element)
 
-                bbvalue = self.calculate_bbvalue(parent, element, reduced_dataset)
+                bbvalue = self.brancher.calculate_bbvalue(parent, element, reduced_dataset)
                 child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=parent.level + 1, bbvalue=bbvalue, parent=parent)
                 parent.add_child(child_node)
 
@@ -47,5 +49,5 @@ class DFS(Strategy, Search):
                 else:
                     child_node.set_kernel("LEAF")
                     self.tree.add_leaf_node(child_node)
-                    self.update_boundary_with_leaf(child_node)
+                    self.pruner.update_boundary_with_leaf(child_node)
         self.log_tree()

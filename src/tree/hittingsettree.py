@@ -49,7 +49,7 @@ class HSTreeNode:
         return (self.dataset.element_values.get(self.edge, 0) if self.edge else 0) < (self.dataset.element_values.get(other.edge, 0) if other.edge else 0)
 
 class HittingSetTree:
-    def __init__(self, dataset=None, initial_kernel=None, output_file="tmp/tree_output.txt"):
+    def __init__(self, dataset=None, initial_kernel=None, output_file="Results/tree_output.txt"):
         self.root = HSTreeNode(kernel=initial_kernel)
         self.dataset = dataset
         self.leaf_nodes = []
@@ -153,7 +153,7 @@ class HittingSetTree:
         for child in node.children:
             self.print_tree(child, level + 1)
             
-    def print_tree_to_file(self, node=None, level=0, output_file="tmp/tree_output.txt"):
+    def print_tree_to_file(self, node=None, level=0, output_file="Results/tree_output.txt"):
         if node is None:
             node = self.root
 
@@ -168,11 +168,11 @@ class HittingSetTree:
         for child in node.children:
             self.print_tree_to_file(child, level + 1, output_file)
         
-    def print_newline(self, output_file="tmp/tree_output.txt"):    
+    def print_newline(self, output_file="log/tree_output.txt"):    
         with open(output_file, "a") as file:
             file.write("\n\n")
             
-    def print_all_hitting_sets_to_file(self, output_file="tmp/all_hitting_sets.txt"):
+    def print_all_hitting_sets_to_file(self, output_file="Results/all_hitting_sets.txt"):
         # Convert heap to list for sorting
         leaf_nodes_with_values = [
             (bbvalue, len(self.get_hitting_set_for_leaf(leaf_node).get_elements()), leaf_node)

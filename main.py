@@ -10,7 +10,6 @@ from src.search.hybrid import HybridSearch
 from src.search.priority import PrioritySearch
 from src.search.bfs import BFS
 from src.search.dfs import DFS
-from src.search.verification import VerificationSearch
 from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
 from src.structs.dataset import DataSet
@@ -111,15 +110,13 @@ if __name__ == "__main__":
             pruner = BasePruner(hitting_set_tree)
 
         if args.ss == 'BFS':
-            search_strategy = BFS(kernel_strategy, dataset, args.alpha, args.sp)
+            search_strategy = BFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
         elif args.ss == 'DFS':
-            search_strategy = DFS(kernel_strategy, dataset, args.alpha, args.sp)
+            search_strategy = DFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
         elif args.ss == 'Hybrid':
-            search_strategy = HybridSearch(kernel_strategy, dataset, args.alpha, args.sp)
+            search_strategy = HybridSearch(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
         elif args.ss == 'Priority':
-            search_strategy = PrioritySearch(kernel_strategy, dataset, args.alpha, args.sp)
-        elif args.ss == 'V':
-            search_strategy = VerificationSearch(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
+            search_strategy = PrioritySearch(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
         else:
             main_logger.error("Invalid search strategy")
             sys.exit(1)

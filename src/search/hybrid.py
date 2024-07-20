@@ -12,11 +12,11 @@ setup_logging()
 ss_logger = logging.getLogger(__name__)
 
 class HybridSearch(Strategy, Search):
-    def __init__(self, kernelStrategy, dataset, alpha, strategy_param):
+    def __init__(self, kernelStrategy, dataset, brancher, pruner, alpha, strategy_param):
         Search.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
         self.first_leaf_found = False
-        self.dfs_search = DFS(kernelStrategy, dataset, alpha, strategy_param)
-        self.bfs_search = BFS(kernelStrategy, dataset, alpha, strategy_param)
+        self.dfs_search = DFS(kernelStrategy, dataset, brancher, pruner, alpha, strategy_param)
+        self.bfs_search = BFS(kernelStrategy, dataset, brancher, pruner, alpha, strategy_param)
 
     def find_kernels(self) -> None:
         if self.first_leaf_found:
