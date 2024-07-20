@@ -112,7 +112,7 @@ if __name__ == "__main__":
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
         if args.res_db and conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, None)
             conn.close()
         sys.exit(1)
     except Exception as e:
@@ -128,27 +128,29 @@ if __name__ == "__main__":
         tree_depth = hitting_set_tree.tree_depth()
         boundary = hitting_set_tree.boundary
         optimal_hitting_set = hitting_set_tree.get_hitting_set_for_optimal_solution()
+        optimal_cardinality = len(optimal_hitting_set.get_elements()) if optimal_hitting_set else 0
         optimal_value = optimal_hitting_set.sum_values() if optimal_hitting_set else None
     else:
         num_kernels = num_branches = pruned_branches_count = 0
         tree_depth = boundary = None
         optimal_hitting_set = None
         optimal_value = None
+        optimal_cardinality = 0
 
     resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
     print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
-    print(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}")
+    print(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Cardinality: {optimal_cardinality}")
 
     if args.res_db:
         if conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set.get_elements(), args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set.get_elements(), args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size, optimal_cardinality)
             conn.close()
         else:
             print("Connection to MySQL database failed")
 
     logging.info(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
-    logging.info(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}")
+    logging.info(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Cardinality: {optimal_cardinality}")
 
     file_repair = "log/Results.out"
 
@@ -158,13 +160,11 @@ if __name__ == "__main__":
         dataset.to_file(file_repair)
         cnf_converter = CNFConverter(verbose=False)
         cnf_converter.convert_to_cnf(file_repair, file_repair)
-        optimal_cardinality = len(optimal_hitting_set.get_elements())
         if dataset.get_elements():
             dataset_elements = dataset.get_elements()
         else:
             dataset_elements = "Empty."
     else:
-        optimal_cardinality = 0
         dataset.to_file(file_repair)
         dataset_elements = "No solution found."
 

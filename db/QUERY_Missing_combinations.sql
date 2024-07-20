@@ -1,10 +1,10 @@
 -- Set the variable
-SET @pattern = '%ARG/%';
+SET @pattern = '%sig20_25_50/srs_%';
 
 -- Use the variable in the query
 WITH AllCombinations AS (
     SELECT dc.div_conq, sw.sw_size, sp.strategy_param
-    FROM (SELECT 0 AS div_conq UNION ALL SELECT 1) AS dc
+    FROM (SELECT 0 AS div_conq UNION ALL SELECT 1) AS dc 
     CROSS JOIN (SELECT 1 AS sw_size UNION ALL SELECT 5 UNION ALL SELECT 10) AS sw
     CROSS JOIN (SELECT 0 AS strategy_param UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS sp
 ),
@@ -12,7 +12,7 @@ WITH AllCombinations AS (
 ExistingResults AS (
     SELECT 
         file_name,
-        SUBSTRING(file_name, LENGTH(file_name)) AS dataset,
+        SUBSTRING(file_name, POSITION('srs_' IN file_name), LENGTH(file_name)) AS dataset,
         div_conq, sw_size, strategy_param
     FROM EXE_RESULTS.RESULTS_OLD
     WHERE file_name LIKE @pattern
@@ -26,15 +26,16 @@ DatasetCombinations AS (
 
 DatasetLengths AS (
     SELECT 
-        SUBSTRING(filename, LENGTH(filename)) AS dataset,
+        SUBSTRING(filename, POSITION('srs_' IN filename), LENGTH(filename)) AS dataset,
         COUNT(id) AS dataset_length
     FROM EXE_RESULTS.DATA_ENTRY
     WHERE filename LIKE @pattern
-    GROUP BY SUBSTRING(filename, LENGTH(filename))
+    GROUP BY SUBSTRING(filename, POSITION('srs_' IN filename), LENGTH(filename))
 )
 
 SELECT 
     dc.file_name,
+    dc.dataset, 
     dc.div_conq, 
     dc.sw_size, 
     dc.strategy_param,

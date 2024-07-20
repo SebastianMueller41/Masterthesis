@@ -158,7 +158,7 @@ def shrink_divide_and_conquer(B_dataset, alpha):
 def cn(B_dataset, alpha):
     temp_file = "tmp/temp_dimacs.cnf"
     B_copy = B_dataset.clone()
-    B_copy.add_element("!"+alpha)
+    B_copy.add_element("!("+alpha+")")
     B_copy.to_file(temp_file)
     converter = CNFConverter(verbose=False)
     converter.convert_to_cnf(temp_file, temp_file)
