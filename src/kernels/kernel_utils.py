@@ -1,5 +1,6 @@
 import logging
 import subprocess
+import sys
 from src.CNFconverter.parse import CNFConverter
 from src.structs.dataset import DataSet
 
@@ -172,4 +173,4 @@ def cn(B_dataset, alpha):
         return False
     else:
         logging.debug("MiniSat output was unexpected.")
-        return None
+        sys.exit(1)
