@@ -57,7 +57,7 @@ for MISSING_COMBINATIONS_FILE in MISSING_COMBINATION_FILES:
             FILE_NAME, *_ = row
             for strategy_param in STRATEGY_PARAMS:
                 if strategy_param == 3:
-                    search_strategies = ["P", "V"]
+                    search_strategies = ["V"]
                 else:
                     search_strategies = ["P"]
                 for search_strategy in search_strategies:

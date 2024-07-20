@@ -1,529 +1,70 @@
-2024-07-20 16:12:28,885 DEBUG:Starting main script
-2024-07-20 16:12:29,226 DEBUG:starting thread (client mode): 0x73201c0
-2024-07-20 16:12:29,227 DEBUG:Local version/idstring: SSH-2.0-paramiko_3.4.0
-2024-07-20 16:12:29,273 DEBUG:Remote version/idstring: SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11
-2024-07-20 16:12:29,273 INFO:Connected (version 2.0, client OpenSSH_8.2p1)
-2024-07-20 16:12:29,306 DEBUG:=== Key exchange possibilities ===
-2024-07-20 16:12:29,306 DEBUG:kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group-exchange-sha256, diffie-hellman-group16-sha512, diffie-hellman-group18-sha512, diffie-hellman-group14-sha256, kex-strict-s-v00@openssh.com
-2024-07-20 16:12:29,306 DEBUG:server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa, ecdsa-sha2-nistp256, ssh-ed25519
-2024-07-20 16:12:29,306 DEBUG:client encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
-2024-07-20 16:12:29,306 DEBUG:server encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
-2024-07-20 16:12:29,306 DEBUG:client mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
-2024-07-20 16:12:29,306 DEBUG:server mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
-2024-07-20 16:12:29,306 DEBUG:client compress: none, zlib@openssh.com
-2024-07-20 16:12:29,306 DEBUG:server compress: none, zlib@openssh.com
-2024-07-20 16:12:29,306 DEBUG:client lang: <none>
-2024-07-20 16:12:29,306 DEBUG:server lang: <none>
-2024-07-20 16:12:29,306 DEBUG:kex follows: False
-2024-07-20 16:12:29,306 DEBUG:=== Key exchange agreements ===
-2024-07-20 16:12:29,306 DEBUG:Strict kex mode: True
-2024-07-20 16:12:29,306 DEBUG:Kex: curve25519-sha256@libssh.org
-2024-07-20 16:12:29,306 DEBUG:HostKey: ssh-ed25519
-2024-07-20 16:12:29,306 DEBUG:Cipher: aes128-ctr
-2024-07-20 16:12:29,306 DEBUG:MAC: hmac-sha2-256
-2024-07-20 16:12:29,306 DEBUG:Compression: none
-2024-07-20 16:12:29,306 DEBUG:=== End of kex handshake ===
-2024-07-20 16:12:29,352 DEBUG:Resetting outbound seqno after NEWKEYS due to strict mode
-2024-07-20 16:12:29,352 DEBUG:kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
-2024-07-20 16:12:29,352 DEBUG:Switch to new keys ...
-2024-07-20 16:12:29,352 DEBUG:Resetting inbound seqno after NEWKEYS due to strict mode
-2024-07-20 16:12:29,352 DEBUG:Attempting public-key auth...
-2024-07-20 16:12:29,353 DEBUG:Got EXT_INFO: {'server-sig-algs': b'ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com'}
-2024-07-20 16:12:29,408 DEBUG:userauth is OK
-2024-07-20 16:12:29,408 DEBUG:Finalizing pubkey algorithm for key of type 'ssh-rsa'
-2024-07-20 16:12:29,408 DEBUG:Our pubkey algorithm list: ['rsa-sha2-512', 'rsa-sha2-256', 'ssh-rsa']
-2024-07-20 16:12:29,408 DEBUG:Server-side algorithm list: ['ssh-ed25519', 'sk-ssh-ed25519@openssh.com', 'ssh-rsa', 'rsa-sha2-256', 'rsa-sha2-512', 'ssh-dss', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'sk-ecdsa-sha2-nistp256@openssh.com']
-2024-07-20 16:12:29,408 DEBUG:Agreed upon 'rsa-sha2-512' pubkey algorithm
-2024-07-20 16:12:29,461 INFO:Authentication (publickey) successful!
-2024-07-20 16:12:29,469 DEBUG:[chan 0] Max packet in: 32768 bytes
-2024-07-20 16:12:29,918 DEBUG:Received global request "hostkeys-00@openssh.com"
-2024-07-20 16:12:29,918 DEBUG:Rejecting "hostkeys-00@openssh.com" global request from server.
-2024-07-20 16:12:29,918 DEBUG:Debug msg: b'/home/smueller/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding'
-2024-07-20 16:12:29,943 DEBUG:[chan 0] Max packet out: 32768 bytes
-2024-07-20 16:12:29,943 DEBUG:Secsh channel 0 opened.
-2024-07-20 16:12:29,944 DEBUG:Building SSL context
-2024-07-20 16:12:29,958 DEBUG:Switching to SSL
-2024-07-20 16:12:30,065 DEBUG:SSL has been enabled
-2024-07-20 16:12:30,066 DEBUG:Starting authorization phase
-2024-07-20 16:12:30,066 DEBUG:The provided initial strategy is caching_sha2_password
-2024-07-20 16:12:30,066 INFO:package: mysql.connector.plugins
-2024-07-20 16:12:30,066 INFO:plugin_name: caching_sha2_password
-2024-07-20 16:12:30,066 INFO:AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
-2024-07-20 16:12:30,102 DEBUG:Exchanging further packets
-2024-07-20 16:12:30,126 DEBUG:caching_sha2_password completed succesfully
-2024-07-20 16:12:30,392 DEBUG:Random Value: 3, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_106.txt, Value: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:30,392 DEBUG:Random Value: 7, Inconsistency Value: 1, Filename: data/SRS/Dataset_A/sig3_5_15/srs_106.txt, Value: !A0&&!A1
-2024-07-20 16:12:30,392 DEBUG:Random Value: 8, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_106.txt, Value: A0||!A1
-2024-07-20 16:12:30,392 DEBUG:Random Value: 4, Inconsistency Value: 2, Filename: data/SRS/Dataset_A/sig3_5_15/srs_106.txt, Value: !A2&&A1
-2024-07-20 16:12:30,392 DEBUG:Random Value: 5, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_106.txt, Value: !A1&&A2
-2024-07-20 16:12:30,392 DEBUG:Random Value: 1, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_106.txt, Value: ((A2&&A2)&&A1)||A0
-2024-07-20 16:12:30,392 DEBUG:Random Value: 10, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_106.txt, Value: !(!A2)
-2024-07-20 16:12:30,392 DEBUG:Random Value: 6, Inconsistency Value: 1, Filename: data/SRS/Dataset_A/sig3_5_15/srs_106.txt, Value: A0
-2024-07-20 16:12:30,392 DEBUG:Random Value: 9, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_106.txt, Value: !A1
-2024-07-20 16:12:30,392 DEBUG:Random Value: 2, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_106.txt, Value: !(A2&&A0)
-2024-07-20 16:12:30,393 INFO:Alpha: (A0&&!A0)
-2024-07-20 16:12:30,456 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A2&&A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:30,456 DEBUG:Finding kernel for dataset with 10 elements: ['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A2&&A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:30,456 INFO:10 ELEMENTS: ['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A2&&A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:30,456 DEBUG:B_PRIME with 1 elements: ['(A2||A0)&&(A2||A0)']
-2024-07-20 16:12:30,484 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)'])
-2024-07-20 16:12:30,484 DEBUG:B_PRIME with 2 elements: ['(A2||A0)&&(A2||A0)', '!A0&&!A1']
-2024-07-20 16:12:30,523 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', '!A0&&!A1'])
-2024-07-20 16:12:30,523 DEBUG:B_PRIME with 3 elements: ['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1']
-2024-07-20 16:12:30,552 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1'])
-2024-07-20 16:12:30,552 DEBUG:B_PRIME with 4 elements: ['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A2&&A1']
-2024-07-20 16:12:30,581 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A2&&A1'])
-2024-07-20 16:12:30,581 DEBUG:Dataset expanded using sliding window of size 1: ['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A2&&A1']
-2024-07-20 16:12:30,581 INFO:Checking line: (A2||A0)&&(A2||A0) with index: 0
-2024-07-20 16:12:30,581 DEBUG:Removing element: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:30,581 DEBUG:B with 3 elements = ['!A0&&!A1', 'A0||!A1', '!A2&&A1']
-2024-07-20 16:12:30,609 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A0&&!A1', 'A0||!A1', '!A2&&A1'])
-2024-07-20 16:12:30,609 INFO:SHRINK: CN = TRUE, removing: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:30,609 DEBUG:CONTINUE SHRINKING WITH 3 elements : ['!A0&&!A1', 'A0||!A1', '!A2&&A1']
-2024-07-20 16:12:30,609 INFO:Checking line: !A0&&!A1 with index: 0
-2024-07-20 16:12:30,609 DEBUG:Removing element: !A0&&!A1
-2024-07-20 16:12:30,609 DEBUG:B with 2 elements = ['A0||!A1', '!A2&&A1']
-2024-07-20 16:12:30,642 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0||!A1', '!A2&&A1'])
-2024-07-20 16:12:30,643 INFO:Checking line: A0||!A1 with index: 1
-2024-07-20 16:12:30,643 DEBUG:Removing element: A0||!A1
-2024-07-20 16:12:30,643 DEBUG:B with 2 elements = ['!A0&&!A1', '!A2&&A1']
-2024-07-20 16:12:30,679 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A0&&!A1', '!A2&&A1'])
-2024-07-20 16:12:30,680 INFO:SHRINK: CN = TRUE, removing: A0||!A1
-2024-07-20 16:12:30,680 DEBUG:CONTINUE SHRINKING WITH 2 elements : ['!A0&&!A1', '!A2&&A1']
-2024-07-20 16:12:30,680 INFO:Checking line: !A2&&A1 with index: 1
-2024-07-20 16:12:30,680 DEBUG:Removing element: !A2&&A1
-2024-07-20 16:12:30,680 DEBUG:B with 1 elements = ['!A0&&!A1']
-2024-07-20 16:12:30,709 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A0&&!A1'])
-2024-07-20 16:12:30,709 INFO:Kernel output with 2 elements: ['!A0&&!A1', '!A2&&A1']
-2024-07-20 16:12:30,709 INFO:KERNEL BLACKBOX FINISHED
-2024-07-20 16:12:30,709 DEBUG:Dataset shrunk using basic shrink: ['!A0&&!A1', '!A2&&A1']
-2024-07-20 16:12:30,741 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:30,741 DEBUG:Finding kernel for dataset with 9 elements: ['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:30,742 INFO:9 ELEMENTS: ['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:30,742 DEBUG:B_PRIME with 1 elements: ['(A2||A0)&&(A2||A0)']
-2024-07-20 16:12:30,772 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)'])
-2024-07-20 16:12:30,772 DEBUG:B_PRIME with 2 elements: ['(A2||A0)&&(A2||A0)', '!A0&&!A1']
-2024-07-20 16:12:30,800 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', '!A0&&!A1'])
-2024-07-20 16:12:30,801 DEBUG:B_PRIME with 3 elements: ['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1']
-2024-07-20 16:12:30,828 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1'])
-2024-07-20 16:12:30,828 DEBUG:B_PRIME with 4 elements: ['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A1&&A2']
-2024-07-20 16:12:30,856 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A1&&A2'])
-2024-07-20 16:12:30,857 DEBUG:B_PRIME with 5 elements: ['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:30,884 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:30,884 DEBUG:Dataset expanded using sliding window of size 1: ['(A2||A0)&&(A2||A0)', '!A0&&!A1', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:30,884 INFO:Checking line: (A2||A0)&&(A2||A0) with index: 0
-2024-07-20 16:12:30,884 DEBUG:Removing element: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:30,884 DEBUG:B with 4 elements = ['!A0&&!A1', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:30,912 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A0&&!A1', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:30,912 INFO:SHRINK: CN = TRUE, removing: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:30,912 DEBUG:CONTINUE SHRINKING WITH 4 elements : ['!A0&&!A1', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:30,912 INFO:Checking line: !A0&&!A1 with index: 0
-2024-07-20 16:12:30,912 DEBUG:Removing element: !A0&&!A1
-2024-07-20 16:12:30,912 DEBUG:B with 3 elements = ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:30,939 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:30,939 INFO:Checking line: A0||!A1 with index: 1
-2024-07-20 16:12:30,939 DEBUG:Removing element: A0||!A1
-2024-07-20 16:12:30,939 DEBUG:B with 3 elements = ['!A0&&!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:30,966 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A0&&!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:30,966 INFO:SHRINK: CN = TRUE, removing: A0||!A1
-2024-07-20 16:12:30,966 DEBUG:CONTINUE SHRINKING WITH 3 elements : ['!A0&&!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:30,967 INFO:Checking line: !A1&&A2 with index: 1
-2024-07-20 16:12:30,967 DEBUG:Removing element: !A1&&A2
-2024-07-20 16:12:30,967 DEBUG:B with 2 elements = ['!A0&&!A1', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:30,995 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A0&&!A1', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:30,995 INFO:SHRINK: CN = TRUE, removing: !A1&&A2
-2024-07-20 16:12:30,995 DEBUG:CONTINUE SHRINKING WITH 2 elements : ['!A0&&!A1', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:30,995 INFO:Checking line: ((A2&&A2)&&A1)||A0 with index: 1
-2024-07-20 16:12:30,995 DEBUG:Removing element: ((A2&&A2)&&A1)||A0
-2024-07-20 16:12:30,995 DEBUG:B with 1 elements = ['!A0&&!A1']
-2024-07-20 16:12:31,034 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A0&&!A1'])
-2024-07-20 16:12:31,034 INFO:Kernel output with 2 elements: ['!A0&&!A1', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:31,034 INFO:KERNEL BLACKBOX FINISHED
-2024-07-20 16:12:31,034 DEBUG:Dataset shrunk using basic shrink: ['!A0&&!A1', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:31,065 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A2&&A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:31,066 DEBUG:Finding kernel for dataset with 9 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A2&&A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,066 INFO:9 ELEMENTS: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A2&&A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,066 DEBUG:B_PRIME with 1 elements: ['(A2||A0)&&(A2||A0)']
-2024-07-20 16:12:31,094 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)'])
-2024-07-20 16:12:31,094 DEBUG:B_PRIME with 2 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1']
-2024-07-20 16:12:31,121 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1'])
-2024-07-20 16:12:31,121 DEBUG:B_PRIME with 3 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A2&&A1']
-2024-07-20 16:12:31,149 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A2&&A1'])
-2024-07-20 16:12:31,149 DEBUG:B_PRIME with 4 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A2&&A1', '!A1&&A2']
-2024-07-20 16:12:31,176 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A2&&A1', '!A1&&A2'])
-2024-07-20 16:12:31,176 DEBUG:Dataset expanded using sliding window of size 1: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A2&&A1', '!A1&&A2']
-2024-07-20 16:12:31,176 INFO:Checking line: (A2||A0)&&(A2||A0) with index: 0
-2024-07-20 16:12:31,176 DEBUG:Removing element: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:31,176 DEBUG:B with 3 elements = ['A0||!A1', '!A2&&A1', '!A1&&A2']
-2024-07-20 16:12:31,203 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['A0||!A1', '!A2&&A1', '!A1&&A2'])
-2024-07-20 16:12:31,203 INFO:SHRINK: CN = TRUE, removing: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:31,203 DEBUG:CONTINUE SHRINKING WITH 3 elements : ['A0||!A1', '!A2&&A1', '!A1&&A2']
-2024-07-20 16:12:31,203 INFO:Checking line: A0||!A1 with index: 0
-2024-07-20 16:12:31,203 DEBUG:Removing element: A0||!A1
-2024-07-20 16:12:31,203 DEBUG:B with 2 elements = ['!A2&&A1', '!A1&&A2']
-2024-07-20 16:12:31,229 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A2&&A1', '!A1&&A2'])
-2024-07-20 16:12:31,229 INFO:SHRINK: CN = TRUE, removing: A0||!A1
-2024-07-20 16:12:31,229 DEBUG:CONTINUE SHRINKING WITH 2 elements : ['!A2&&A1', '!A1&&A2']
-2024-07-20 16:12:31,229 INFO:Checking line: !A2&&A1 with index: 0
-2024-07-20 16:12:31,229 DEBUG:Removing element: !A2&&A1
-2024-07-20 16:12:31,229 DEBUG:B with 1 elements = ['!A1&&A2']
-2024-07-20 16:12:31,256 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&A2'])
-2024-07-20 16:12:31,256 INFO:Checking line: !A1&&A2 with index: 1
-2024-07-20 16:12:31,256 DEBUG:Removing element: !A1&&A2
-2024-07-20 16:12:31,256 DEBUG:B with 1 elements = ['!A2&&A1']
-2024-07-20 16:12:31,282 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A2&&A1'])
-2024-07-20 16:12:31,282 INFO:Kernel output with 2 elements: ['!A2&&A1', '!A1&&A2']
-2024-07-20 16:12:31,282 INFO:KERNEL BLACKBOX FINISHED
-2024-07-20 16:12:31,282 DEBUG:Dataset shrunk using basic shrink: ['!A2&&A1', '!A1&&A2']
-2024-07-20 16:12:31,309 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:31,309 DEBUG:Finding kernel for dataset with 8 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,309 INFO:8 ELEMENTS: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,309 DEBUG:B_PRIME with 1 elements: ['(A2||A0)&&(A2||A0)']
-2024-07-20 16:12:31,336 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)'])
-2024-07-20 16:12:31,336 DEBUG:B_PRIME with 2 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1']
-2024-07-20 16:12:31,367 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1'])
-2024-07-20 16:12:31,368 DEBUG:B_PRIME with 3 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2']
-2024-07-20 16:12:31,393 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2'])
-2024-07-20 16:12:31,394 DEBUG:B_PRIME with 4 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:31,420 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:31,420 DEBUG:B_PRIME with 5 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)']
-2024-07-20 16:12:31,446 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)'])
-2024-07-20 16:12:31,447 DEBUG:B_PRIME with 6 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0']
-2024-07-20 16:12:31,474 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0'])
-2024-07-20 16:12:31,474 DEBUG:B_PRIME with 7 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1']
-2024-07-20 16:12:31,501 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1'])
-2024-07-20 16:12:31,501 DEBUG:B_PRIME with 8 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,528 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:31,529 DEBUG:Dataset expanded using sliding window of size 1: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,529 INFO:Checking line: (A2||A0)&&(A2||A0) with index: 0
-2024-07-20 16:12:31,529 DEBUG:Removing element: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:31,529 DEBUG:B with 7 elements = ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,555 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:31,555 INFO:SHRINK: CN = TRUE, removing: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:31,555 DEBUG:CONTINUE SHRINKING WITH 7 elements : ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,556 INFO:Checking line: A0||!A1 with index: 0
-2024-07-20 16:12:31,556 DEBUG:Removing element: A0||!A1
-2024-07-20 16:12:31,556 DEBUG:B with 6 elements = ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,582 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:31,582 INFO:SHRINK: CN = TRUE, removing: A0||!A1
-2024-07-20 16:12:31,582 DEBUG:CONTINUE SHRINKING WITH 6 elements : ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,582 INFO:Checking line: !A1&&A2 with index: 0
-2024-07-20 16:12:31,582 DEBUG:Removing element: !A1&&A2
-2024-07-20 16:12:31,582 DEBUG:B with 5 elements = ['((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,608 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:31,608 INFO:SHRINK: CN = TRUE, removing: !A1&&A2
-2024-07-20 16:12:31,608 DEBUG:CONTINUE SHRINKING WITH 5 elements : ['((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,608 INFO:Checking line: ((A2&&A2)&&A1)||A0 with index: 0
-2024-07-20 16:12:31,608 DEBUG:Removing element: ((A2&&A2)&&A1)||A0
-2024-07-20 16:12:31,608 DEBUG:B with 4 elements = ['!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,644 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:31,644 INFO:SHRINK: CN = TRUE, removing: ((A2&&A2)&&A1)||A0
-2024-07-20 16:12:31,644 DEBUG:CONTINUE SHRINKING WITH 4 elements : ['!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,644 INFO:Checking line: !(!A2) with index: 0
-2024-07-20 16:12:31,644 DEBUG:Removing element: !(!A2)
-2024-07-20 16:12:31,644 DEBUG:B with 3 elements = ['A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,670 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:31,671 INFO:Checking line: A0 with index: 1
-2024-07-20 16:12:31,671 DEBUG:Removing element: A0
-2024-07-20 16:12:31,671 DEBUG:B with 3 elements = ['!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,697 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:31,697 INFO:Checking line: !A1 with index: 2
-2024-07-20 16:12:31,697 DEBUG:Removing element: !A1
-2024-07-20 16:12:31,697 DEBUG:B with 3 elements = ['!(!A2)', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:31,723 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!(!A2)', 'A0', '!(A2&&A0)'])
-2024-07-20 16:12:31,723 INFO:SHRINK: CN = TRUE, removing: !A1
-2024-07-20 16:12:31,723 DEBUG:CONTINUE SHRINKING WITH 3 elements : ['!(!A2)', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:31,723 INFO:Checking line: !(A2&&A0) with index: 2
-2024-07-20 16:12:31,723 DEBUG:Removing element: !(A2&&A0)
-2024-07-20 16:12:31,724 DEBUG:B with 2 elements = ['!(!A2)', 'A0']
-2024-07-20 16:12:31,749 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!(!A2)', 'A0'])
-2024-07-20 16:12:31,750 INFO:Kernel output with 3 elements: ['!(!A2)', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:31,750 INFO:KERNEL BLACKBOX FINISHED
-2024-07-20 16:12:31,750 DEBUG:Dataset shrunk using basic shrink: ['!(!A2)', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:31,777 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:31,777 DEBUG:Finding kernel for dataset with 8 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,777 INFO:8 ELEMENTS: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,777 DEBUG:B_PRIME with 1 elements: ['(A2||A0)&&(A2||A0)']
-2024-07-20 16:12:31,803 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)'])
-2024-07-20 16:12:31,803 DEBUG:B_PRIME with 2 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1']
-2024-07-20 16:12:31,829 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1'])
-2024-07-20 16:12:31,830 DEBUG:B_PRIME with 3 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2']
-2024-07-20 16:12:31,856 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2'])
-2024-07-20 16:12:31,856 DEBUG:B_PRIME with 4 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:31,882 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:31,883 DEBUG:B_PRIME with 5 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)']
-2024-07-20 16:12:31,909 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)'])
-2024-07-20 16:12:31,909 DEBUG:B_PRIME with 6 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0']
-2024-07-20 16:12:31,935 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0'])
-2024-07-20 16:12:31,935 DEBUG:B_PRIME with 7 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1']
-2024-07-20 16:12:31,967 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1'])
-2024-07-20 16:12:31,967 DEBUG:B_PRIME with 8 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,993 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:31,994 DEBUG:Dataset expanded using sliding window of size 1: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:31,994 INFO:Checking line: (A2||A0)&&(A2||A0) with index: 0
-2024-07-20 16:12:31,994 DEBUG:Removing element: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:31,994 DEBUG:B with 7 elements = ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,023 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,023 INFO:SHRINK: CN = TRUE, removing: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:32,023 DEBUG:CONTINUE SHRINKING WITH 7 elements : ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,023 INFO:Checking line: A0||!A1 with index: 0
-2024-07-20 16:12:32,023 DEBUG:Removing element: A0||!A1
-2024-07-20 16:12:32,023 DEBUG:B with 6 elements = ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,050 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,050 INFO:SHRINK: CN = TRUE, removing: A0||!A1
-2024-07-20 16:12:32,050 DEBUG:CONTINUE SHRINKING WITH 6 elements : ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,050 INFO:Checking line: !A1&&A2 with index: 0
-2024-07-20 16:12:32,050 DEBUG:Removing element: !A1&&A2
-2024-07-20 16:12:32,050 DEBUG:B with 5 elements = ['((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,077 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,077 INFO:SHRINK: CN = TRUE, removing: !A1&&A2
-2024-07-20 16:12:32,077 DEBUG:CONTINUE SHRINKING WITH 5 elements : ['((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,077 INFO:Checking line: ((A2&&A2)&&A1)||A0 with index: 0
-2024-07-20 16:12:32,077 DEBUG:Removing element: ((A2&&A2)&&A1)||A0
-2024-07-20 16:12:32,077 DEBUG:B with 4 elements = ['!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,103 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!(!A2)', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,103 INFO:SHRINK: CN = TRUE, removing: ((A2&&A2)&&A1)||A0
-2024-07-20 16:12:32,103 DEBUG:CONTINUE SHRINKING WITH 4 elements : ['!(!A2)', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,103 INFO:Checking line: !(!A2) with index: 0
-2024-07-20 16:12:32,103 DEBUG:Removing element: !(!A2)
-2024-07-20 16:12:32,103 DEBUG:B with 3 elements = ['A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,129 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,130 INFO:Checking line: A0 with index: 1
-2024-07-20 16:12:32,130 DEBUG:Removing element: A0
-2024-07-20 16:12:32,130 DEBUG:B with 3 elements = ['!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,156 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,156 INFO:Checking line: !A1 with index: 2
-2024-07-20 16:12:32,156 DEBUG:Removing element: !A1
-2024-07-20 16:12:32,156 DEBUG:B with 3 elements = ['!(!A2)', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:32,182 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!(!A2)', 'A0', '!(A2&&A0)'])
-2024-07-20 16:12:32,182 INFO:SHRINK: CN = TRUE, removing: !A1
-2024-07-20 16:12:32,183 DEBUG:CONTINUE SHRINKING WITH 3 elements : ['!(!A2)', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:32,183 INFO:Checking line: !(A2&&A0) with index: 2
-2024-07-20 16:12:32,183 DEBUG:Removing element: !(A2&&A0)
-2024-07-20 16:12:32,183 DEBUG:B with 2 elements = ['!(!A2)', 'A0']
-2024-07-20 16:12:32,208 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!(!A2)', 'A0'])
-2024-07-20 16:12:32,209 INFO:Kernel output with 3 elements: ['!(!A2)', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:32,209 INFO:KERNEL BLACKBOX FINISHED
-2024-07-20 16:12:32,209 DEBUG:Dataset shrunk using basic shrink: ['!(!A2)', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:32,236 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,237 DEBUG:Finding kernel for dataset with 7 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,237 INFO:7 ELEMENTS: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,237 DEBUG:B_PRIME with 1 elements: ['(A2||A0)&&(A2||A0)']
-2024-07-20 16:12:32,263 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)'])
-2024-07-20 16:12:32,263 DEBUG:B_PRIME with 2 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1']
-2024-07-20 16:12:32,290 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1'])
-2024-07-20 16:12:32,290 DEBUG:B_PRIME with 3 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2']
-2024-07-20 16:12:32,316 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2'])
-2024-07-20 16:12:32,317 DEBUG:B_PRIME with 4 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:32,343 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:32,343 DEBUG:B_PRIME with 5 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)']
-2024-07-20 16:12:32,369 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)'])
-2024-07-20 16:12:32,370 DEBUG:B_PRIME with 6 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1']
-2024-07-20 16:12:32,397 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1'])
-2024-07-20 16:12:32,397 DEBUG:B_PRIME with 7 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,424 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,424 DEBUG:Dataset expanded using sliding window of size 1: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,424 INFO:Checking line: (A2||A0)&&(A2||A0) with index: 0
-2024-07-20 16:12:32,424 DEBUG:Removing element: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:32,424 DEBUG:B with 6 elements = ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,450 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,451 INFO:SHRINK: CN = TRUE, removing: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:32,451 DEBUG:CONTINUE SHRINKING WITH 6 elements : ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,451 INFO:Checking line: A0||!A1 with index: 0
-2024-07-20 16:12:32,451 DEBUG:Removing element: A0||!A1
-2024-07-20 16:12:32,451 DEBUG:B with 5 elements = ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,477 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,477 INFO:SHRINK: CN = TRUE, removing: A0||!A1
-2024-07-20 16:12:32,477 DEBUG:CONTINUE SHRINKING WITH 5 elements : ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,477 INFO:Checking line: !A1&&A2 with index: 0
-2024-07-20 16:12:32,477 DEBUG:Removing element: !A1&&A2
-2024-07-20 16:12:32,477 DEBUG:B with 4 elements = ['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,503 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,504 INFO:SHRINK: CN = TRUE, removing: !A1&&A2
-2024-07-20 16:12:32,504 DEBUG:CONTINUE SHRINKING WITH 4 elements : ['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,504 INFO:Checking line: ((A2&&A2)&&A1)||A0 with index: 0
-2024-07-20 16:12:32,504 DEBUG:Removing element: ((A2&&A2)&&A1)||A0
-2024-07-20 16:12:32,504 DEBUG:B with 3 elements = ['!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,530 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,530 INFO:Checking line: !(!A2) with index: 1
-2024-07-20 16:12:32,530 DEBUG:Removing element: !(!A2)
-2024-07-20 16:12:32,530 DEBUG:B with 3 elements = ['((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,563 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,563 INFO:Checking line: !A1 with index: 2
-2024-07-20 16:12:32,563 DEBUG:Removing element: !A1
-2024-07-20 16:12:32,563 DEBUG:B with 3 elements = ['((A2&&A2)&&A1)||A0', '!(!A2)', '!(A2&&A0)']
-2024-07-20 16:12:32,589 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['((A2&&A2)&&A1)||A0', '!(!A2)', '!(A2&&A0)'])
-2024-07-20 16:12:32,590 INFO:Checking line: !(A2&&A0) with index: 3
-2024-07-20 16:12:32,590 DEBUG:Removing element: !(A2&&A0)
-2024-07-20 16:12:32,590 DEBUG:B with 3 elements = ['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1']
-2024-07-20 16:12:32,616 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1'])
-2024-07-20 16:12:32,616 INFO:Kernel output with 4 elements: ['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,616 INFO:KERNEL BLACKBOX FINISHED
-2024-07-20 16:12:32,616 DEBUG:Dataset shrunk using basic shrink: ['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,647 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,648 DEBUG:Finding kernel for dataset with 7 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,648 INFO:7 ELEMENTS: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,648 DEBUG:B_PRIME with 1 elements: ['(A2||A0)&&(A2||A0)']
-2024-07-20 16:12:32,674 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)'])
-2024-07-20 16:12:32,674 DEBUG:B_PRIME with 2 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1']
-2024-07-20 16:12:32,700 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1'])
-2024-07-20 16:12:32,701 DEBUG:B_PRIME with 3 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2']
-2024-07-20 16:12:32,727 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2'])
-2024-07-20 16:12:32,728 DEBUG:B_PRIME with 4 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:32,754 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:32,754 DEBUG:B_PRIME with 5 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)']
-2024-07-20 16:12:32,781 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)'])
-2024-07-20 16:12:32,781 DEBUG:B_PRIME with 6 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1']
-2024-07-20 16:12:32,808 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1'])
-2024-07-20 16:12:32,808 DEBUG:B_PRIME with 7 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,835 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,835 DEBUG:Dataset expanded using sliding window of size 1: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,835 INFO:Checking line: (A2||A0)&&(A2||A0) with index: 0
-2024-07-20 16:12:32,835 DEBUG:Removing element: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:32,835 DEBUG:B with 6 elements = ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,861 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,861 INFO:SHRINK: CN = TRUE, removing: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:32,861 DEBUG:CONTINUE SHRINKING WITH 6 elements : ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,861 INFO:Checking line: A0||!A1 with index: 0
-2024-07-20 16:12:32,862 DEBUG:Removing element: A0||!A1
-2024-07-20 16:12:32,862 DEBUG:B with 5 elements = ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,888 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,888 INFO:SHRINK: CN = TRUE, removing: A0||!A1
-2024-07-20 16:12:32,888 DEBUG:CONTINUE SHRINKING WITH 5 elements : ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,888 INFO:Checking line: !A1&&A2 with index: 0
-2024-07-20 16:12:32,888 DEBUG:Removing element: !A1&&A2
-2024-07-20 16:12:32,888 DEBUG:B with 4 elements = ['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,914 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,915 INFO:SHRINK: CN = TRUE, removing: !A1&&A2
-2024-07-20 16:12:32,915 DEBUG:CONTINUE SHRINKING WITH 4 elements : ['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,915 INFO:Checking line: ((A2&&A2)&&A1)||A0 with index: 0
-2024-07-20 16:12:32,915 DEBUG:Removing element: ((A2&&A2)&&A1)||A0
-2024-07-20 16:12:32,915 DEBUG:B with 3 elements = ['!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,942 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!(!A2)', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,942 INFO:Checking line: !(!A2) with index: 1
-2024-07-20 16:12:32,942 DEBUG:Removing element: !(!A2)
-2024-07-20 16:12:32,942 DEBUG:B with 3 elements = ['((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:32,971 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:32,971 INFO:Checking line: !A1 with index: 2
-2024-07-20 16:12:32,971 DEBUG:Removing element: !A1
-2024-07-20 16:12:32,971 DEBUG:B with 3 elements = ['((A2&&A2)&&A1)||A0', '!(!A2)', '!(A2&&A0)']
-2024-07-20 16:12:32,999 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['((A2&&A2)&&A1)||A0', '!(!A2)', '!(A2&&A0)'])
-2024-07-20 16:12:32,999 INFO:Checking line: !(A2&&A0) with index: 3
-2024-07-20 16:12:32,999 DEBUG:Removing element: !(A2&&A0)
-2024-07-20 16:12:32,999 DEBUG:B with 3 elements = ['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1']
-2024-07-20 16:12:33,025 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1'])
-2024-07-20 16:12:33,025 INFO:Kernel output with 4 elements: ['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,025 INFO:KERNEL BLACKBOX FINISHED
-2024-07-20 16:12:33,025 DEBUG:Dataset shrunk using basic shrink: ['((A2&&A2)&&A1)||A0', '!(!A2)', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,054 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,054 DEBUG:Finding kernel for dataset with 7 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,054 INFO:7 ELEMENTS: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,054 DEBUG:B_PRIME with 1 elements: ['(A2||A0)&&(A2||A0)']
-2024-07-20 16:12:33,082 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)'])
-2024-07-20 16:12:33,083 DEBUG:B_PRIME with 2 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1']
-2024-07-20 16:12:33,111 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1'])
-2024-07-20 16:12:33,111 DEBUG:B_PRIME with 3 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2']
-2024-07-20 16:12:33,144 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2'])
-2024-07-20 16:12:33,145 DEBUG:B_PRIME with 4 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:33,179 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:33,180 DEBUG:B_PRIME with 5 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0']
-2024-07-20 16:12:33,206 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0'])
-2024-07-20 16:12:33,206 DEBUG:B_PRIME with 6 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1']
-2024-07-20 16:12:33,233 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1'])
-2024-07-20 16:12:33,234 DEBUG:B_PRIME with 7 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,260 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,261 DEBUG:Dataset expanded using sliding window of size 1: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,261 INFO:Checking line: (A2||A0)&&(A2||A0) with index: 0
-2024-07-20 16:12:33,261 DEBUG:Removing element: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:33,261 DEBUG:B with 6 elements = ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,288 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,288 INFO:SHRINK: CN = TRUE, removing: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:33,288 DEBUG:CONTINUE SHRINKING WITH 6 elements : ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,288 INFO:Checking line: A0||!A1 with index: 0
-2024-07-20 16:12:33,288 DEBUG:Removing element: A0||!A1
-2024-07-20 16:12:33,288 DEBUG:B with 5 elements = ['!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,315 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,315 INFO:SHRINK: CN = TRUE, removing: A0||!A1
-2024-07-20 16:12:33,315 DEBUG:CONTINUE SHRINKING WITH 5 elements : ['!A1&&A2', '((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,315 INFO:Checking line: !A1&&A2 with index: 0
-2024-07-20 16:12:33,315 DEBUG:Removing element: !A1&&A2
-2024-07-20 16:12:33,315 DEBUG:B with 4 elements = ['((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,342 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['((A2&&A2)&&A1)||A0', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,342 INFO:Checking line: ((A2&&A2)&&A1)||A0 with index: 1
-2024-07-20 16:12:33,342 DEBUG:Removing element: ((A2&&A2)&&A1)||A0
-2024-07-20 16:12:33,342 DEBUG:B with 4 elements = ['!A1&&A2', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,368 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&A2', 'A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,368 INFO:SHRINK: CN = TRUE, removing: ((A2&&A2)&&A1)||A0
-2024-07-20 16:12:33,368 DEBUG:CONTINUE SHRINKING WITH 4 elements : ['!A1&&A2', 'A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,368 INFO:Checking line: A0 with index: 1
-2024-07-20 16:12:33,368 DEBUG:Removing element: A0
-2024-07-20 16:12:33,368 DEBUG:B with 3 elements = ['!A1&&A2', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,394 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&A2', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,394 INFO:Checking line: !A1 with index: 2
-2024-07-20 16:12:33,395 DEBUG:Removing element: !A1
-2024-07-20 16:12:33,395 DEBUG:B with 3 elements = ['!A1&&A2', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:33,420 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&A2', 'A0', '!(A2&&A0)'])
-2024-07-20 16:12:33,421 INFO:SHRINK: CN = TRUE, removing: !A1
-2024-07-20 16:12:33,421 DEBUG:CONTINUE SHRINKING WITH 3 elements : ['!A1&&A2', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:33,421 INFO:Checking line: !(A2&&A0) with index: 2
-2024-07-20 16:12:33,421 DEBUG:Removing element: !(A2&&A0)
-2024-07-20 16:12:33,421 DEBUG:B with 2 elements = ['!A1&&A2', 'A0']
-2024-07-20 16:12:33,447 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&A2', 'A0'])
-2024-07-20 16:12:33,447 INFO:Kernel output with 3 elements: ['!A1&&A2', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:33,447 INFO:KERNEL BLACKBOX FINISHED
-2024-07-20 16:12:33,447 DEBUG:Dataset shrunk using basic shrink: ['!A1&&A2', 'A0', '!(A2&&A0)']
-2024-07-20 16:12:33,475 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,475 DEBUG:Finding kernel for dataset with 6 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,475 INFO:6 ELEMENTS: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,476 DEBUG:B_PRIME with 1 elements: ['(A2||A0)&&(A2||A0)']
-2024-07-20 16:12:33,502 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)'])
-2024-07-20 16:12:33,502 DEBUG:B_PRIME with 2 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1']
-2024-07-20 16:12:33,528 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1'])
-2024-07-20 16:12:33,528 DEBUG:B_PRIME with 3 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2']
-2024-07-20 16:12:33,556 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2'])
-2024-07-20 16:12:33,557 DEBUG:B_PRIME with 4 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:33,584 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:33,584 DEBUG:B_PRIME with 5 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1']
-2024-07-20 16:12:33,610 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1'])
-2024-07-20 16:12:33,611 DEBUG:B_PRIME with 6 elements: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,638 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,638 DEBUG:Dataset expanded using sliding window of size 1: ['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,638 INFO:Checking line: (A2||A0)&&(A2||A0) with index: 0
-2024-07-20 16:12:33,638 DEBUG:Removing element: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:33,638 DEBUG:B with 5 elements = ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,665 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,665 INFO:SHRINK: CN = TRUE, removing: (A2||A0)&&(A2||A0)
-2024-07-20 16:12:33,665 DEBUG:CONTINUE SHRINKING WITH 5 elements : ['A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,665 INFO:Checking line: A0||!A1 with index: 0
-2024-07-20 16:12:33,665 DEBUG:Removing element: A0||!A1
-2024-07-20 16:12:33,665 DEBUG:B with 4 elements = ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,692 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,692 INFO:SHRINK: CN = TRUE, removing: A0||!A1
-2024-07-20 16:12:33,692 DEBUG:CONTINUE SHRINKING WITH 4 elements : ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,692 INFO:Checking line: !A1&&A2 with index: 0
-2024-07-20 16:12:33,692 DEBUG:Removing element: !A1&&A2
-2024-07-20 16:12:33,692 DEBUG:B with 3 elements = ['((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,719 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['((A2&&A2)&&A1)||A0', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,719 INFO:Checking line: ((A2&&A2)&&A1)||A0 with index: 1
-2024-07-20 16:12:33,719 DEBUG:Removing element: ((A2&&A2)&&A1)||A0
-2024-07-20 16:12:33,719 DEBUG:B with 3 elements = ['!A1&&A2', '!A1', '!(A2&&A0)']
-2024-07-20 16:12:33,746 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&A2', '!A1', '!(A2&&A0)'])
-2024-07-20 16:12:33,746 INFO:Checking line: !A1 with index: 2
-2024-07-20 16:12:33,746 DEBUG:Removing element: !A1
-2024-07-20 16:12:33,746 DEBUG:B with 3 elements = ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(A2&&A0)']
-2024-07-20 16:12:33,779 DEBUG:MiniSat result: UNSAT. Therefore, (A0&&!A0) is in Cn(['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(A2&&A0)'])
-2024-07-20 16:12:33,779 INFO:SHRINK: CN = TRUE, removing: !A1
-2024-07-20 16:12:33,779 DEBUG:CONTINUE SHRINKING WITH 3 elements : ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(A2&&A0)']
-2024-07-20 16:12:33,779 INFO:Checking line: !(A2&&A0) with index: 2
-2024-07-20 16:12:33,779 DEBUG:Removing element: !(A2&&A0)
-2024-07-20 16:12:33,779 DEBUG:B with 2 elements = ['!A1&&A2', '((A2&&A2)&&A1)||A0']
-2024-07-20 16:12:33,805 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['!A1&&A2', '((A2&&A2)&&A1)||A0'])
-2024-07-20 16:12:33,805 INFO:Kernel output with 3 elements: ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(A2&&A0)']
-2024-07-20 16:12:33,805 INFO:KERNEL BLACKBOX FINISHED
-2024-07-20 16:12:33,805 DEBUG:Dataset shrunk using basic shrink: ['!A1&&A2', '((A2&&A2)&&A1)||A0', '!(A2&&A0)']
-2024-07-20 16:12:33,834 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', 'A0', '!A1'])
-2024-07-20 16:12:33,834 DEBUG:Alpha is not a consequence of the dataset. Returning None.
-2024-07-20 16:12:33,861 DEBUG:MiniSat result: SAT. Therefore, (A0&&!A0) is not in Cn(['(A2||A0)&&(A2||A0)', 'A0||!A1', '!A1&&A2', '((A2&&A2)&&A1)||A0', '!(!A2)', '!A1'])
-2024-07-20 16:12:33,862 DEBUG:Alpha is not a consequence of the dataset. Returning None.
-2024-07-20 16:12:33,864 INFO:Execution time: 3.6480958461761475s, Memory Used: 36765696 KB, Strategy: 3, Search Strategy: V, Kernels: 11, Branches: 26, Tree depth: 5, Pruned branches: 16, Boundary: inf,Shrink Sliding Window size: 1, Expand Sliding Window size: 1, Shrink Divide and Conquer: False, Expand Divide and Conquer: False
-2024-07-20 16:12:33,864 INFO:Optimal hitting set: ['!(A2&&A0)', 'A0', '!A2&&A1', '!A0&&!A1'] with value: 4, Alpha: (A0&&!A0), Optimal Value: 4
+2024-07-20 16:34:17,067 DEBUG:Starting main script
+2024-07-20 16:34:17,390 DEBUG:starting thread (client mode): 0x29c54f0
+2024-07-20 16:34:17,390 DEBUG:Local version/idstring: SSH-2.0-paramiko_3.4.0
+2024-07-20 16:34:17,436 DEBUG:Remote version/idstring: SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11
+2024-07-20 16:34:17,436 INFO:Connected (version 2.0, client OpenSSH_8.2p1)
+2024-07-20 16:34:17,463 DEBUG:=== Key exchange possibilities ===
+2024-07-20 16:34:17,463 DEBUG:kex algos: curve25519-sha256, curve25519-sha256@libssh.org, ecdh-sha2-nistp256, ecdh-sha2-nistp384, ecdh-sha2-nistp521, diffie-hellman-group-exchange-sha256, diffie-hellman-group16-sha512, diffie-hellman-group18-sha512, diffie-hellman-group14-sha256, kex-strict-s-v00@openssh.com
+2024-07-20 16:34:17,463 DEBUG:server key: rsa-sha2-512, rsa-sha2-256, ssh-rsa, ecdsa-sha2-nistp256, ssh-ed25519
+2024-07-20 16:34:17,463 DEBUG:client encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
+2024-07-20 16:34:17,463 DEBUG:server encrypt: chacha20-poly1305@openssh.com, aes128-ctr, aes192-ctr, aes256-ctr, aes128-gcm@openssh.com, aes256-gcm@openssh.com
+2024-07-20 16:34:17,463 DEBUG:client mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
+2024-07-20 16:34:17,463 DEBUG:server mac: umac-64-etm@openssh.com, umac-128-etm@openssh.com, hmac-sha2-256-etm@openssh.com, hmac-sha2-512-etm@openssh.com, hmac-sha1-etm@openssh.com, umac-64@openssh.com, umac-128@openssh.com, hmac-sha2-256, hmac-sha2-512, hmac-sha1
+2024-07-20 16:34:17,463 DEBUG:client compress: none, zlib@openssh.com
+2024-07-20 16:34:17,463 DEBUG:server compress: none, zlib@openssh.com
+2024-07-20 16:34:17,463 DEBUG:client lang: <none>
+2024-07-20 16:34:17,463 DEBUG:server lang: <none>
+2024-07-20 16:34:17,463 DEBUG:kex follows: False
+2024-07-20 16:34:17,463 DEBUG:=== Key exchange agreements ===
+2024-07-20 16:34:17,463 DEBUG:Strict kex mode: True
+2024-07-20 16:34:17,463 DEBUG:Kex: curve25519-sha256@libssh.org
+2024-07-20 16:34:17,463 DEBUG:HostKey: ssh-ed25519
+2024-07-20 16:34:17,463 DEBUG:Cipher: aes128-ctr
+2024-07-20 16:34:17,463 DEBUG:MAC: hmac-sha2-256
+2024-07-20 16:34:17,463 DEBUG:Compression: none
+2024-07-20 16:34:17,464 DEBUG:=== End of kex handshake ===
+2024-07-20 16:34:17,510 DEBUG:Resetting outbound seqno after NEWKEYS due to strict mode
+2024-07-20 16:34:17,510 DEBUG:kex engine KexCurve25519 specified hash_algo <built-in function openssl_sha256>
+2024-07-20 16:34:17,510 DEBUG:Switch to new keys ...
+2024-07-20 16:34:17,510 DEBUG:Resetting inbound seqno after NEWKEYS due to strict mode
+2024-07-20 16:34:17,510 DEBUG:Attempting public-key auth...
+2024-07-20 16:34:17,511 DEBUG:Got EXT_INFO: {'server-sig-algs': b'ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com'}
+2024-07-20 16:34:17,567 DEBUG:userauth is OK
+2024-07-20 16:34:17,568 DEBUG:Finalizing pubkey algorithm for key of type 'ssh-rsa'
+2024-07-20 16:34:17,568 DEBUG:Our pubkey algorithm list: ['rsa-sha2-512', 'rsa-sha2-256', 'ssh-rsa']
+2024-07-20 16:34:17,568 DEBUG:Server-side algorithm list: ['ssh-ed25519', 'sk-ssh-ed25519@openssh.com', 'ssh-rsa', 'rsa-sha2-256', 'rsa-sha2-512', 'ssh-dss', 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'sk-ecdsa-sha2-nistp256@openssh.com']
+2024-07-20 16:34:17,568 DEBUG:Agreed upon 'rsa-sha2-512' pubkey algorithm
+2024-07-20 16:34:17,630 INFO:Authentication (publickey) successful!
+2024-07-20 16:34:17,641 DEBUG:[chan 0] Max packet in: 32768 bytes
+2024-07-20 16:34:18,156 DEBUG:Received global request "hostkeys-00@openssh.com"
+2024-07-20 16:34:18,156 DEBUG:Rejecting "hostkeys-00@openssh.com" global request from server.
+2024-07-20 16:34:18,156 DEBUG:Debug msg: b'/home/smueller/.ssh/authorized_keys:1: key options: agent-forwarding port-forwarding pty user-rc x11-forwarding'
+2024-07-20 16:34:18,182 DEBUG:[chan 0] Max packet out: 32768 bytes
+2024-07-20 16:34:18,182 DEBUG:Secsh channel 0 opened.
+2024-07-20 16:34:18,182 DEBUG:Building SSL context
+2024-07-20 16:34:18,197 DEBUG:Switching to SSL
+2024-07-20 16:34:18,337 DEBUG:SSL has been enabled
+2024-07-20 16:34:18,337 DEBUG:Starting authorization phase
+2024-07-20 16:34:18,338 DEBUG:The provided initial strategy is caching_sha2_password
+2024-07-20 16:34:18,338 INFO:package: mysql.connector.plugins
+2024-07-20 16:34:18,338 INFO:plugin_name: caching_sha2_password
+2024-07-20 16:34:18,338 INFO:AUTHENTICATION_PLUGIN_CLASS: MySQLCachingSHA2PasswordAuthPlugin
+2024-07-20 16:34:18,367 DEBUG:Exchanging further packets
+2024-07-20 16:34:18,392 DEBUG:caching_sha2_password completed succesfully
+2024-07-20 16:34:18,672 DEBUG:Random Value: 8, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: !(A1&&A2)
+2024-07-20 16:34:18,673 DEBUG:Random Value: 9, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: A0||A2
+2024-07-20 16:34:18,673 DEBUG:Random Value: 11, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: !A0||(A2&&A1)
+2024-07-20 16:34:18,673 DEBUG:Random Value: 5, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: A1&&(A0&&A1)
+2024-07-20 16:34:18,673 DEBUG:Random Value: 4, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: !(A0||(A1&&A0))
+2024-07-20 16:34:18,673 DEBUG:Random Value: 13, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: (A1&&A2)||(A0&&A1)
+2024-07-20 16:34:18,673 DEBUG:Random Value: 7, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: (A0&&A1)&&(A0&&A2)
+2024-07-20 16:34:18,673 DEBUG:Random Value: 3, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: !A0
+2024-07-20 16:34:18,674 DEBUG:Random Value: 12, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: !(!A2)
+2024-07-20 16:34:18,674 DEBUG:Random Value: 1, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: A2
+2024-07-20 16:34:18,674 DEBUG:Random Value: 10, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: (A2||A2)||A1
+2024-07-20 16:34:18,674 DEBUG:Random Value: 14, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: (A1||A1)&&A0
+2024-07-20 16:34:18,674 DEBUG:Random Value: 6, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: (A1&&A1)&&!A0
+2024-07-20 16:34:18,674 DEBUG:Random Value: 2, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: A1&&A0
+2024-07-20 16:34:18,674 DEBUG:Random Value: 15, Inconsistency Value: 0, Filename: data/SRS/Dataset_A/sig3_5_15/srs_165.txt, Value: !(A2&&A1)
+2024-07-20 16:34:18,674 INFO:Alpha: (A0&&!A0)
+2024-07-20 16:34:18,674 ERROR:DataSet Inconsistency Values == 0

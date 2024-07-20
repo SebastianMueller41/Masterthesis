@@ -86,6 +86,11 @@ if __name__ == "__main__":
         hitting_set_tree = None
         kernel_strategy = ExpandShrink(args.expand_sw_size, args.shrink_sw_size, args.shrink_div_conq, args.expand_div_conq)
 
+        if dataset.sum_values() == 0 and args.sp == 3:
+                print(f"DataSet Inconsistency Weights == {dataset.sum_values()}")
+                logging.error(f"DataSet Inconsistency Values == {dataset.sum_values()}")
+                sys.exit(1)
+
         if args.ss == 'BFS':
             search_strategy = BFS(kernel_strategy, dataset, args.alpha, args.sp)
         elif args.ss == 'DFS':
