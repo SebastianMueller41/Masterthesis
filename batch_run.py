@@ -8,8 +8,8 @@ PYTHON_SCRIPT = "main.py"
 MISSING_COMBINATION_FILES = [
     'data/SRS/sig3_5_15.csv',
     'data/SRS/sig5_15_25.csv',
-    'data/SRS/sig10_15_25.csv',
-    'data/SRS/sig15_15_25.csv'
+    #'data/SRS/sig10_15_25.csv',
+    #'data/SRS/sig15_15_25.csv'
     # Add more CSV file paths as needed
 ]
 
@@ -29,9 +29,11 @@ STRATEGY_PARAMS = [1, 2, 3]
 SEARCH_STRATEGIES = ['PRIORITY']
 # SEARCH_STRATEGIES = ['BFS', 'DFS', 'Hybrid', 'PRIORITY']
 
-# Pruner options
-PRUNER_OPTIONS = ['NONE', 'BEST']
-# PRUNER_OPTIONS = ['UPPER', 'LOWER', 'BEST', 'NONE']
+# Pruner options for all strategy params
+PRUNER_OPTIONS_ALL = ['BEST']
+
+# Pruner options for specific strategy params
+PRUNER_OPTIONS_23 = ['NONE']
 
 # Expand options
 EXPAND_OPTIONS = ['']
@@ -57,9 +59,13 @@ for MISSING_COMBINATIONS_FILE in MISSING_COMBINATION_FILES:
             # Process the first row if it is not the header
             FILE_NAME, *_ = first_line
             for strategy_param in STRATEGY_PARAMS:
+                if strategy_param in [2, 3]:
+                    pruner_options = PRUNER_OPTIONS_ALL + PRUNER_OPTIONS_23
+                else:
+                    pruner_options = PRUNER_OPTIONS_ALL
                 for search_strategy in SEARCH_STRATEGIES:
                     for param_set in PARAMETER_SETS:
-                        for pruner_option in PRUNER_OPTIONS:
+                        for pruner_option in pruner_options:
                             for expand_option in EXPAND_OPTIONS:
                                 for shrink_option in SHRINK_OPTIONS:
                                     command = f"python3 {PYTHON_SCRIPT} '{FILE_NAME}' --sp {strategy_param} --ss {search_strategy} --pruner {pruner_option} {expand_option} {shrink_option} {param_set}"
@@ -69,9 +75,13 @@ for MISSING_COMBINATIONS_FILE in MISSING_COMBINATION_FILES:
         for row in reader:
             FILE_NAME, *_ = row
             for strategy_param in STRATEGY_PARAMS:
+                if strategy_param in [2, 3]:
+                    pruner_options = PRUNER_OPTIONS_ALL + PRUNER_OPTIONS_23
+                else:
+                    pruner_options = PRUNER_OPTIONS_ALL
                 for search_strategy in SEARCH_STRATEGIES:
                     for param_set in PARAMETER_SETS:
-                        for pruner_option in PRUNER_OPTIONS:
+                        for pruner_option in pruner_options:
                             for expand_option in EXPAND_OPTIONS:
                                 for shrink_option in SHRINK_OPTIONS:
                                     command = f"python3 {PYTHON_SCRIPT} '{FILE_NAME}' --sp {strategy_param} --ss {search_strategy} --pruner {pruner_option} {expand_option} {shrink_option} {param_set}"
