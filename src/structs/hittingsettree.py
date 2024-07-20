@@ -167,5 +167,5 @@ class HittingSetTree:
             for bbvalue, leaf_node in sorted_leaf_nodes:
                 hitting_set = self.get_hitting_set_for_leaf(leaf_node)
                 hitting_set_elements = hitting_set.get_elements_with_values()
-                file.write(f"{bbvalue*10}, Hitting Set: {hitting_set_elements}\n")
+                file.write(f"{bbvalue}, Hitting Set: {hitting_set_elements}\n")
 
