@@ -13,6 +13,7 @@ class VerificationSearch(Strategy):
         self.strategy_param = strategy_param
         self.optimal_reached = False
         self.tree = HittingSetTree(dataset=dataset)
+        self.best_leaf = HSTreeNode()
 
     def find_kernels(self) -> None:
         initial_node = self.create_initial_node(self.dataset, self.alpha)
@@ -38,7 +39,7 @@ class VerificationSearch(Strategy):
         while priority_queue:
             _, current_node = heapq.heappop(priority_queue)
 
-            if self.should_prune():
+            if self.should_prune(current_node):
                 current_node.kernel = "PRUNED"
                 current_node.set_pruned()
                 continue
@@ -82,15 +83,22 @@ class VerificationSearch(Strategy):
         return current_node.bbvalue + assigned_value
 
     def update_boundary_with_leaf(self, leaf_node):
-        leaf_path_measure = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
-        if leaf_path_measure == self.tree.tree_sum:
+        #leaf_path_measure = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
+        leaf_path_measure = self.tree.get_hitting_set_for_leaf(leaf_node).sum_values()
+        dataset_sum = self.tree.dataset.sum_values()
+        if leaf_path_measure == dataset_sum:
             self.optimal_reached = True
+            self.best_leaf = leaf_node
             print(f"Optimal reached: {self.optimal_reached}")
 
-    def should_prune(self):
+    def should_prune(self, node):
         if self.tree.boundary == 0:
             return False
-        return self.optimal_reached
+        if not self.optimal_reached:
+            return False
+        if node is None or node.get_kernel() is None:
+            return True
+        return len(self.tree.get_hitting_set_for_leaf(node).get_elements()) >= len(self.tree.get_hitting_set_for_leaf(self.best_leaf).get_elements())
     
     def log_tree(self):
         self.tree.print_tree_to_file()

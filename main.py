@@ -153,20 +153,24 @@ if __name__ == "__main__":
         dataset.to_file(file_repair)
         cnf_converter = CNFConverter(verbose=False)
         cnf_converter.convert_to_cnf(file_repair, file_repair)
+        optimal_cardinality = len(optimal_hitting_set.get_elements())
         if dataset.get_elements():
             dataset_elements = dataset.get_elements()
         else:
             dataset_elements = "Empty."
     else:
+        optimal_cardinality = 0
         dataset.to_file(file_repair)
         dataset_elements = "No solution found."
 
     with open(file_repair, 'a') as file:
         file.write(f"\nFile: {args.filepath}")
+        file.write(f"\nExecution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
+        file.write(f"\nOptimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}")
         file.write(f"\nOptimal solution: {optimal_hitting_set.get_elements()}")
-        file.write(f"\nOptimal value: {optimal_value}")
+        file.write(f"\nOptimal value: {optimal_value}, Optimal cardinality: {optimal_cardinality}")
         file.write(f"\nRepaired dataset: {dataset_elements}\n")
-        file.write(f"\nAll explored hitting sets: \n(Path value, hitting set)\n")
+        file.write(f"\nAll explored hitting sets: \n(Value, Path Value, Cardinality, Hitting set)\n")
     
     hitting_set_tree.print_all_hitting_sets_to_file(file_repair)
 

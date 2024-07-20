@@ -86,11 +86,14 @@ class HittingSetTree:
                 hitting_set.add_element(current_node.edge, element_value)
             current_node = current_node.parent
         return hitting_set
-
+    
     def get_hitting_set_for_optimal_solution(self):
         if self.leaf_nodes:
-            # Ensure leaf_nodes is sorted in descending order based on bbvalue
-            sorted_leaf_nodes = sorted(self.leaf_nodes, key=lambda x: x[0], reverse=True)
+            # Ensure leaf_nodes is sorted by bbvalue descending and cardinality ascending
+            sorted_leaf_nodes = sorted(
+                self.leaf_nodes, 
+                key=lambda x: (-x[0], len(self.get_hitting_set_for_leaf(x[1]).get_elements()))
+            )
             _, best_leaf = sorted_leaf_nodes[0]  # Peek at the highest priority leaf
             return self.get_hitting_set_for_leaf(best_leaf)
         else:
@@ -162,10 +165,20 @@ class HittingSetTree:
             file.write("\n\n")
             
     def print_all_hitting_sets_to_file(self, output_file="tmp/all_hitting_sets.txt"):
-        sorted_leaf_nodes = sorted(self.leaf_nodes, key=lambda x: (x[0], len(self.get_hitting_set_for_leaf(x[1]).get_elements())), reverse=True)
-        with open(output_file, 'a') as file:
-            for bbvalue, leaf_node in sorted_leaf_nodes:
-                hitting_set = self.get_hitting_set_for_leaf(leaf_node)
-                hitting_set_elements = hitting_set.get_elements_with_values()
-                file.write(f"{bbvalue}, Hitting Set: {hitting_set_elements}\n")
+        # Convert heap to list for sorting
+        leaf_nodes_with_values = [
+            (bbvalue, len(self.get_hitting_set_for_leaf(leaf_node).get_elements()), leaf_node)
+            for bbvalue, leaf_node in self.leaf_nodes
+        ]
 
+        # Sort by bbvalue descending and cardinality ascending
+        sorted_leaf_nodes = sorted(leaf_nodes_with_values, key=lambda x: (-x[0], x[1]))
+
+        # Write to file
+        with open(output_file, 'a') as file:
+            for bbvalue, cardinality, leaf_node in sorted_leaf_nodes:
+                hitting_set = self.get_hitting_set_for_leaf(leaf_node)
+                if hitting_set is not None:
+                    hitting_set_elements = hitting_set.get_elements_with_values()
+                    HSvalue = hitting_set.sum_values()
+                    file.write(f"{HSvalue}, {bbvalue}, {cardinality}, Hitting Set: {hitting_set_elements}\n")
