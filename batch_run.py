@@ -7,8 +7,8 @@ PYTHON_SCRIPT = "main.py"
 # List of CSV files containing missing combinations
 MISSING_COMBINATION_FILES = [
     'data/SRS/sig3_5_15.csv',
-    #'data/SRS/sig5_15_25.csv'
-    #'data/SRS/sig10_15_25.csv'
+    # 'data/SRS/sig5_15_25.csv'
+    # 'data/SRS/sig10_15_25.csv'
     # Add more CSV file paths as needed
 ]
 
@@ -24,12 +24,9 @@ def execute_command(command):
 # Strategy parameters
 STRATEGY_PARAMS = [0, 1, 2, 3]
 
-# Search strategies
-SEARCH_STRATEGIES = ["P", "V"]
-
 # Parameter sets
 PARAMETER_SETS = [
-    "--alpha '(A0&&!A0)' -path-db  -res-db",
+    "--alpha '(A0&&!A0)' -path-db -res-db",
     # Add more parameter sets if needed
 ]
 
@@ -46,7 +43,11 @@ for MISSING_COMBINATIONS_FILE in MISSING_COMBINATION_FILES:
             # If the first row is not the header, process it
             FILE_NAME, *_ = first_line
             for strategy_param in STRATEGY_PARAMS:
-                for search_strategy in SEARCH_STRATEGIES:
+                if strategy_param == 3:
+                    search_strategies = ["P", "V"]
+                else:
+                    search_strategies = ["P"]
+                for search_strategy in search_strategies:
                     for param_set in PARAMETER_SETS:
                         command = f"python3 {PYTHON_SCRIPT} '{FILE_NAME}' --sp {strategy_param} --ss {search_strategy} {param_set}"
                         print(f"Executing: {command}")
@@ -55,7 +56,11 @@ for MISSING_COMBINATIONS_FILE in MISSING_COMBINATION_FILES:
         for row in reader:
             FILE_NAME, *_ = row
             for strategy_param in STRATEGY_PARAMS:
-                for search_strategy in SEARCH_STRATEGIES:
+                if strategy_param == 3:
+                    search_strategies = ["P", "V"]
+                else:
+                    search_strategies = ["P"]
+                for search_strategy in search_strategies:
                     for param_set in PARAMETER_SETS:
                         command = f"python3 {PYTHON_SCRIPT} '{FILE_NAME}' --sp {strategy_param} --ss {search_strategy} {param_set}"
                         print(f"Executing: {command}")
