@@ -4,10 +4,17 @@ typically representing data items or clauses in computational logic. The DataSet
 provides functionality to load data from a file, access elements, add or remove elements,
 clone itself, and write its contents to a file.
 """
-
-import logging
 import sys
 from mysql.connector import Error
+
+import logging
+from src.structs.logger import setup_logging
+
+# Set up logging for this module
+setup_logging()
+
+# Get the logger for this module
+data_logger = logging.getLogger(__name__)
 
 class DataSet:
     """
@@ -67,7 +74,7 @@ class DataSet:
                     # Example processing: log non-empty rows
                     if row['randomvalue'] == "" or row['inconsistencyvalue'] == "" or row['filename'] == "" or row['line'] == "":
                         continue
-                    logging.debug(f"Random Value: {row['randomvalue']}, Inconsistency Value: {row['inconsistencyvalue']}, Filename: {row['filename']}, Value: {row['line']}")
+                    data_logger.debug(f"Random Value: {row['randomvalue']}, Inconsistency Value: {row['inconsistencyvalue']}, Filename: {row['filename']}, Value: {row['line']}")
                     self.elements.append(row['line'])
                     element_value = None
                     if self.strategy_param == 2:
@@ -77,11 +84,11 @@ class DataSet:
                     self.element_values[row['line']] = element_value
 
             except Error as e:
-                logging.error(f"Failed to load data from MySQL database: {e}")
+                data_logger.error(f"Failed to load data from MySQL database: {e}")
             finally:
                 cursor.close()
         else:
-            logging.error("Connection to MySQL database failed")
+            data_logger.error("Connection to MySQL database failed")
 
     def get_elements(self):
         """
@@ -176,7 +183,7 @@ class DataSet:
         try:
             self.elements.remove(element)
         except ValueError:
-            logging.warning(f"Element {element} not found in the dataset.")
+            data_logger.warning(f"Element {element} not found in the dataset.")
 
     def clone(self):
         """

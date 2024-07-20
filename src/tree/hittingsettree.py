@@ -1,5 +1,13 @@
 import heapq
 from src.structs.dataset import DataSet
+import logging
+from src.structs.logger import setup_logging
+
+# Set up logging for this module
+setup_logging()
+
+# Get the logger for this module
+tree_logger = logging.getLogger(__name__)
 
 class HSTreeNode:
     def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None, bbvalue=0, parent=None, pruned=False):
@@ -43,11 +51,11 @@ class HSTreeNode:
 class HittingSetTree:
     def __init__(self, dataset=None, initial_kernel=None, output_file="tmp/tree_output.txt"):
         self.root = HSTreeNode(kernel=initial_kernel)
-        self.boundary = float('inf')
         self.dataset = dataset
         self.leaf_nodes = []
         self.output_file = output_file
         self.tree_sum = dataset.sum_values()
+        self.boundary = 0
 
         with open(self.output_file, 'w') as file:
             file.truncate()

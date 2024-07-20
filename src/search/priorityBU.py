@@ -3,7 +3,7 @@ import logging
 from src.kernels.kernelstrategy import KernelStrategy
 from src.search.strategy import Strategy
 from src.structs.dataset import DataSet
-from src.structs.hittingsettree import HSTreeNode, HittingSetTree
+from src.tree.hittingsettree import HSTreeNode, HittingSetTree
 
 class VerificationSearch(Strategy): 
     def __init__(self, kernelStrategy: KernelStrategy, dataset: DataSet, alpha, strategy_param):
@@ -13,12 +13,12 @@ class VerificationSearch(Strategy):
         self.strategy_param = strategy_param
         self.tree = HittingSetTree(dataset=dataset)
         self.best_leaf = HSTreeNode()
-        self.tree.boundary = 0
+        self.pruner.boundary = 0
 
     def find_kernels(self) -> None:
         initial_node = self.create_initial_node(self.dataset, self.alpha)
         if initial_node is None:
-            logging.info("Initial kernel is None, no need to span the tree.")
+            logger.info("Initial kernel is None, no need to span the tree.")
             return
         self.priority_search(initial_node)
         self.tree.print_tree()
@@ -91,14 +91,14 @@ class VerificationSearch(Strategy):
     def update_boundary_with_leaf(self, leaf_node):
         #leaf_path_measure = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
         leaf_path_measure = self.tree.get_hitting_set_for_leaf(leaf_node).sum_values()
-        if leaf_path_measure > self.tree.boundary:
-            self.tree.boundary = leaf_path_measure
-            print(f"Updated boundary: {self.tree.boundary}")
+        if leaf_path_measure > self.pruner.boundary:
+            self.pruner.boundary = leaf_path_measure
+            print(f"Updated boundary: {self.pruner.boundary}")
 
     def should_prune(self, node):
-        if self.tree.boundary == 0:
+        if self.pruner.boundary == 0:
             return False
-        return self.calculate_potential_bound(node) <= self.tree.boundary
+        return self.calculate_potential_bound(node) <= self.pruner.boundary
     
     def log_tree(self):
         self.tree.print_tree_to_file()

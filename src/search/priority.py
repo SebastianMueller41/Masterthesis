@@ -1,18 +1,34 @@
 import heapq
 import logging
+from src.kernels.kernelstrategy import KernelStrategy
 from src.search.strategy import Strategy
-from src.search.search import Search
-from src.structs.hittingsettree import HSTreeNode
+from src.structs.dataset import DataSet
+from src.tree.basebrancher import BaseBrancher
+from src.pruner.basepruner import BasePruner
+from src.tree.hittingsettree import HSTreeNode, HittingSetTree
+from src.structs.logger import setup_logging
 
-class PrioritySearch(Strategy, Search):
-    def __init__(self, kernelStrategy, dataset, alpha, strategy_param):
-        Search.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
-        self.tree.boundary = float('inf')
+# Set up logging for this module
+setup_logging()
+
+# Get the logger for this module
+ss_logger = logging.getLogger(__name__)
+
+class PrioritySearch(Strategy): 
+    def __init__(self, kernelStrategy: KernelStrategy, dataset: DataSet, brancher: BaseBrancher , pruner: BasePruner, alpha, strategy_param):
+        self.kernelStrategy = kernelStrategy
+        self.dataset = dataset
+        self.alpha = alpha
+        self.strategy_param = strategy_param
+        self.tree = HittingSetTree(dataset=dataset)
+        self.brancher = brancher
+        self.pruner = pruner
+        self.best_leaf = HSTreeNode()
 
     def find_kernels(self) -> None:
         initial_node = self.create_initial_node(self.dataset, self.alpha)
         if initial_node is None:
-            logging.info("Initial kernel is None, no need to span the tree.")
+            ss_logger.info("Initial kernel is None, no need to span the tree.")
             return
         self.priority_search(initial_node)
         self.tree.print_tree()
@@ -28,12 +44,13 @@ class PrioritySearch(Strategy, Search):
 
     def priority_search(self, root: HSTreeNode):
         priority_queue = []
-        self.add_to_priority_queue(priority_queue, root, 0)
+        self.brancher.add_to_priority_queue(priority_queue, root, 0)
+        ss_logger.info(f"Priority_queue: {priority_queue}")
 
         while priority_queue:
             _, current_node = heapq.heappop(priority_queue)
 
-            if self.should_prune(current_node):
+            if self.pruner.should_prune(current_node):
                 current_node.kernel = "PRUNED"
                 current_node.set_pruned()
                 continue
@@ -42,38 +59,16 @@ class PrioritySearch(Strategy, Search):
                 result = self.kernelStrategy.find_kernel(current_node.get_dataset(), self.alpha)
                 if result is not None:
                     current_node.set_kernel(result.get_elements())
-                    self.expand_children(current_node, priority_queue)
+                    self.brancher.expand_children(current_node, priority_queue)
                 else:
                     current_node.set_kernel("LEAF")
                     self.tree.add_leaf_node(current_node)
-                    self.update_boundary_with_leaf(current_node)
+                    self.pruner.update_boundary_with_leaf(current_node)
             else:
-                self.expand_children(current_node, priority_queue)
+                self.brancher.expand_children(current_node, priority_queue)
 
             self.log_tree()
 
-    def expand_children(self, current_node, priority_queue):
-        children = []
-        for element in current_node.get_kernel():
-            reduced_dataset = current_node.get_dataset().clone()
-            reduced_dataset.remove_element(element)
-
-            bbvalue = self.calculate_bbvalue(current_node, element, reduced_dataset)
-            child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=current_node.level + 1, bbvalue=bbvalue, parent=current_node)
-            current_node.add_child(child_node)
-
-            priority = self.tree.calculate_path_bbvalue_up_to_root(current_node)
-            if priority == 0:
-                priority = float('inf')  # Assign a very low priority for 0 values
-            children.append((priority, child_node))
-
-        # Sort children by priority in ascending order
-        children.sort(key=lambda x: x[0])
-        for priority, child_node in children:
-            self.add_to_priority_queue(priority_queue, child_node, priority)
-
-    def add_to_priority_queue(self, queue, node, priority):
-        heapq.heappush(queue, (priority, node))
-
-
-
+    def log_tree(self):
+        self.tree.print_tree_to_file()
+        self.tree.print_newline()

@@ -1,10 +1,8 @@
-# src/tree/base_expander.py
-
+import heapq
 from abc import ABC, abstractmethod
 from src.tree.hittingsettree import HSTreeNode
-import heapq
 
-class BaseExpander(ABC):
+class BaseBrancher(ABC):
     def __init__(self, dataset):
         self.dataset = dataset
 

@@ -3,6 +3,13 @@ from src.search.strategy import Strategy
 from src.search.search import Search
 from src.search.dfs import DFS
 from src.search.bfs import BFS
+from src.structs.logger import setup_logging
+
+# Set up logging for this module
+setup_logging()
+
+# Get the logger for this module
+ss_logger = logging.getLogger(__name__)
 
 class HybridSearch(Strategy, Search):
     def __init__(self, kernelStrategy, dataset, alpha, strategy_param):
@@ -13,7 +20,7 @@ class HybridSearch(Strategy, Search):
 
     def find_kernels(self) -> None:
         if self.first_leaf_found:
-            logging.info(f"First LEAF found, switching to BFS")
+            ss_logger.info(f"First LEAF found, switching to BFS")
             self.tree = self.dfs_search.tree
             self.bfs_search.tree = self.tree
             self.bfs_search.find_kernels()

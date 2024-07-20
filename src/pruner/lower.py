@@ -1,15 +1,35 @@
-from src.tree.basepruner import BasePruner
+from src.pruner.basepruner import BasePruner
 import logging
 from src.structs.logger import setup_logging
-
 
 # Set up logging for this module
 setup_logging()
 
 # Get the logger for this module
-tree_logger = logging.getLogger(__name__)
+prune_logger = logging.getLogger(__name__)
 
 class LowerPruner(BasePruner):
-    def __init__(self, tree, brancher):
+    def __init__(self, tree):
         self.tree = tree
-        self.brancher = brancher
+        self.best_solution = None
+        self.boundary = 0
+
+    # This approach is not used but maybe interesting for future work
+    def calculate_bbvalue(self, element, dataset):
+        assigned_value = dataset.element_values.get(element, 0)
+        transformed_value = 1 / (assigned_value) if assigned_value != 0 else 0
+        return transformed_value
+
+    def update_boundary_with_leaf(self, leaf_node):
+        #leaf_path_measure = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
+        leaf_path_measure = self.tree.get_hitting_set_for_leaf(leaf_node).sum_values()
+        if leaf_path_measure > self.boundary:
+            self.boundary = leaf_path_measure
+            prune_logger.debug(f"Updated boundary: {self.boundary}")
+
+    def should_prune(self, node):
+        if self.boundary == 0:
+            return False
+        path_value = self.tree.calculate_path_bbvalue_up_to_root(node) 
+        prune_logger.info(f"Should prune? {path_value <= self.boundary}")
+        return path_value <= self.boundary

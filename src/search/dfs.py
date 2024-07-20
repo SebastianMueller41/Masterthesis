@@ -1,7 +1,14 @@
-from src.structs.hittingsettree import HSTreeNode
+from src.tree.hittingsettree import HSTreeNode
 from src.search.strategy import Strategy
 from src.search.search import Search
 import logging
+from src.structs.logger import setup_logging
+
+# Set up logging for this module
+setup_logging()
+
+# Get the logger for this module
+ss_logger = logging.getLogger(__name__)
 
 class DFS(Strategy, Search):
     def __init__(self, kernelStrategy, dataset, alpha, strategy_param):
@@ -16,7 +23,7 @@ class DFS(Strategy, Search):
         if parent is None:
             result = self.kernelStrategy.find_kernel(dataset, alpha)
             if result is None:
-                logging.info("Initial kernel is None, no need to span the tree.")
+                ss_logger.info("Initial kernel is None, no need to span the tree.")
                 return
             self.tree.root = HSTreeNode(kernel=result.get_elements(), dataset=dataset, bbvalue=0, parent=None)
             self.dfs(self.tree.root.dataset, alpha, self.tree.root)

@@ -1,18 +1,16 @@
-from src.tree.basepruner import BasePruner
+from src.pruner.basepruner import BasePruner
 import logging
 from src.structs.logger import setup_logging
-
 
 # Set up logging for this module
 setup_logging()
 
 # Get the logger for this module
-tree_logger = logging.getLogger(__name__)
+prune_logger = logging.getLogger(__name__)
 
 class BestPruner(BasePruner):
-    def __init__(self, tree, brancher):
+    def __init__(self, tree):
         self.tree = tree
-        self.brancher = brancher
         self.optimal_reached = False
         self.best_solution = None
         self.boundary = 0
@@ -24,14 +22,21 @@ class BestPruner(BasePruner):
         if leaf_path_measure == dataset_sum:
             self.optimal_reached = True
             self.best_leaf = leaf_node
-            tree_logger.DEBUG(f"Optimal reached: {self.optimal_reached}")
-            print(f"Optimal reached: {self.optimal_reached}")
+            self.boundary = len(self.tree.get_hitting_set_for_leaf(leaf_node).get_elements())
+            self.tree.boundary = self.boundary
+            prune_logger.info(f"Optimal reached with: {self.tree.get_hitting_set_for_leaf(leaf_node).get_elements()}")
 
     def should_prune(self, node):
         if self.boundary == 0:
+            prune_logger.debug("Boundary == 0, Return False")
             return False
         if not self.optimal_reached:
+            prune_logger.debug("Optimal reached, Return False")
             return False
         if node is None or node.get_kernel() is None:
+            prune_logger.debug(f"Node is None: {node}, node.get_kernrel() is None: {node.get_kernel()}")
             return True
-        return len(self.tree.get_hitting_set_for_leaf(node).get_elements()) >= len(self.tree.get_hitting_set_for_leaf(self.best_leaf).get_elements())
+        HS_card = len(self.tree.get_hitting_set_for_leaf(node).get_elements())
+        Leaf_card = len(self.tree.get_hitting_set_for_leaf(self.best_leaf).get_elements())
+        prune_logger.info(f"Hitting_set_length: {HS_card}, Leaf_card: {Leaf_card}")
+        return HS_card >= Leaf_card

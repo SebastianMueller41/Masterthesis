@@ -1,17 +1,14 @@
-# src/tree/base_pruner.py
-
-from abc import ABC, abstractmethod
-
-class BasePruner(ABC):
+class BasePruner:
     def __init__(self, tree):
         self.tree = tree
-        self.optimal_reached = False
         self.best_solution = None
+        self.boundary = 0
 
-    @abstractmethod
-    def should_prune(self, node):
-        pass
+    def calculate_potential_bound(self, node):
+        return float('inf')
 
-    @abstractmethod
     def update_boundary_with_leaf(self, leaf_node):
         pass
+
+    def should_prune(self, node):
+        return False

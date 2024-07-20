@@ -1,11 +1,11 @@
 import argparse
-import os
 import sys
 import time
 import resource
 import signal
 import logging
 from src.CNFconverter.parse import CNFConverter
+from src.pruner.basepruner import BasePruner
 from src.search.hybrid import HybridSearch
 from src.search.priority import PrioritySearch
 from src.search.bfs import BFS
@@ -15,21 +15,20 @@ from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
 from src.structs.dataset import DataSet
 from src.database.database import create_ssh_tunnel_and_connect, log_execution_data
-
-# Configure the root logger
-logging.basicConfig(
-    filename='log/app.log',  # Log file name
-    filemode='w',  # Overwrite the log file on each run
-    level=logging.DEBUG,  # Set the logging level
-    format='%(asctime)s %(levelname)s:%(message)s'  # Log format
-)
+from src.structs.logger import setup_logging
+from src.pruner.best import BestPruner
+from src.tree.brancher import Brancher
+from src.pruner.lower import LowerPruner
+from src.pruner.upper import UpperPruner
+from src.tree.hittingsettree import HittingSetTree
 
 # Set up argument parser
-parser = argparse.ArgumentParser(description='Run the kernelization process with optional database logging.')
+parser = argparse.ArgumentParser(description='Run the kernelization process with optional database main_logger.')
 parser.add_argument('filepath', type=str, help='Path to the dataset file')
 parser.add_argument('--sp', type=int, choices=range(0, 4), required=True, help='Strategy parameter value (0-3)')
-parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'H', 'P', 'V'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
+parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'Hybrid', 'Priority', 'V'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
 parser.add_argument('--alpha', type=str, required=True, help='A string value to be used as alpha')
+parser.add_argument('--pruner', type=str, default='NONE', choices=['UPPER', 'LOWER', 'BEST', 'NONE'], help='Pruning/Boundary strategy to use: UPPER, LOWER, BEST, NONE')
 
 # Expand group with mutually exclusive options
 expand_group = parser.add_argument_group('expand')
@@ -49,6 +48,11 @@ parser.add_argument('-path-db', action='store_true', help='Indicate that the dat
 
 args = parser.parse_args()
 
+# Configure logging
+setup_logging(disable_logging=args.no_log)
+
+# Get the logger for main
+main_logger = logging.getLogger('main')
 
 # Function to handle timeout
 def timeout_handler(signum, frame):
@@ -58,7 +62,7 @@ if __name__ == "__main__":
     if args.no_log:
         logging.disable(logging.CRITICAL)
     
-    logging.debug("Starting main script")
+    main_logger.debug("Starting main script")
     # Prepare for timeout
     signal.signal(signal.SIGALRM, timeout_handler)
     timeout_duration = 1800  # 1800 seconds or 30 minutes
@@ -70,53 +74,68 @@ if __name__ == "__main__":
         dataset = DataSet(conn, input_file_path=args.filepath, strategy_param=args.sp, db=args.path_db)
         
         if dataset.size() == 0:
-            logging.error("No Dataset found, please use a dataset from DB or change code to use files.")
+            main_logger.error("No Dataset found, please use a dataset from DB or change code to use files.")
             sys.exit(1)
 
         if not 1 <= args.shrink_sw_size <= dataset.size() or not 1 <= args.expand_sw_size <= dataset.size():
             adjusted_shrink_sw_size = min(args.shrink_sw_size, dataset.size())
             adjusted_expand_sw_size = min(args.expand_sw_size, dataset.size())
-            logging.warning(f"--shrink-sw-size/--expand-sw-size must be between 1 and the length of the dataset ({dataset.size()}). Adjusting shrink_sw_size to {adjusted_shrink_sw_size} and expand_sw_size to {adjusted_expand_sw_size}.")
+            main_logger.warning(f"--shrink-sw-size/--expand-sw-size must be between 1 and the length of the dataset ({dataset.size()}). Adjusting shrink_sw_size to {adjusted_shrink_sw_size} and expand_sw_size to {adjusted_expand_sw_size}.")
             args.shrink_sw_size = adjusted_shrink_sw_size
             args.expand_sw_size = adjusted_expand_sw_size
 
         if args.alpha:
-            logging.info(f"Alpha: {args.alpha}")
+            main_logger.info(f"Alpha: {args.alpha}")
 
         hitting_set_tree = None
         kernel_strategy = ExpandShrink(args.expand_sw_size, args.shrink_sw_size, args.shrink_div_conq, args.expand_div_conq)
 
         if dataset.sum_values() == 0 and args.sp == 3:
                 print(f"DataSet Inconsistency Weights == {dataset.sum_values()}")
-                logging.error(f"DataSet Inconsistency Values == {dataset.sum_values()}")
+                main_logger.error(f"DataSet Inconsistency Values == {dataset.sum_values()}")
                 sys.exit(1)
+
+        brancher = Brancher(dataset)
+
+        # Initialize the HittingSetTree
+        hitting_set_tree = HittingSetTree(dataset)
+        
+        # Initialize the appropriate pruner based on user input
+        if args.pruner == 'UPPER':
+            pruner = UpperPruner(hitting_set_tree)
+        elif args.pruner == 'LOWER':
+            pruner = LowerPruner(hitting_set_tree)
+        elif args.pruner == 'BEST':
+            pruner = BestPruner(hitting_set_tree)
+        else:  # Default to BasePruner for no pruning
+            pruner = BasePruner(hitting_set_tree)
 
         if args.ss == 'BFS':
             search_strategy = BFS(kernel_strategy, dataset, args.alpha, args.sp)
         elif args.ss == 'DFS':
             search_strategy = DFS(kernel_strategy, dataset, args.alpha, args.sp)
-        elif args.ss == 'H':
+        elif args.ss == 'Hybrid':
             search_strategy = HybridSearch(kernel_strategy, dataset, args.alpha, args.sp)
-        elif args.ss == 'P':
+        elif args.ss == 'Priority':
             search_strategy = PrioritySearch(kernel_strategy, dataset, args.alpha, args.sp)
         elif args.ss == 'V':
-            search_strategy = VerificationSearch(kernel_strategy, dataset, args.alpha, args.sp)
+            search_strategy = VerificationSearch(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
         else:
-            logging.error("Invalid search strategy")
+            main_logger.error("Invalid search strategy")
             sys.exit(1)
 
         hitting_set_tree = KernelSolver(search_strategy).solve()
 
     except TimeoutError as e:
-        logging.error(f"Timeout occurred: {e}")
+        main_logger.error(f"Timeout occurred: {e}")
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
         if args.res_db and conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, None)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, None, args.pruner)
             conn.close()
         sys.exit(1)
     except Exception as e:
-        logging.error(f"An error occurred: {e}")
+        main_logger.error(f"An error occurred: {e}")
         sys.exit(1)
     finally:
         signal.alarm(0)  # Cancel the timeout
@@ -126,7 +145,7 @@ if __name__ == "__main__":
         num_kernels, num_branches = hitting_set_tree.count_kernels_and_branches()
         pruned_branches_count = hitting_set_tree.count_pruned_nodes()
         tree_depth = hitting_set_tree.tree_depth()
-        boundary = hitting_set_tree.boundary
+        boundary = pruner.boundary
         optimal_hitting_set = hitting_set_tree.get_hitting_set_for_optimal_solution()
         optimal_cardinality = len(optimal_hitting_set.get_elements()) if optimal_hitting_set else 0
         optimal_value = optimal_hitting_set.sum_values() if optimal_hitting_set else None
@@ -139,20 +158,20 @@ if __name__ == "__main__":
 
     resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
-    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
+    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Prunder: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
     print(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Cardinality: {optimal_cardinality}")
 
     if args.res_db:
         if conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set.get_elements(), args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size, optimal_cardinality)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set.get_elements(), args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size, optimal_cardinality, args.pruner)
             conn.close()
         else:
             print("Connection to MySQL database failed")
 
-    logging.info(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
-    logging.info(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Cardinality: {optimal_cardinality}")
+    main_logger.debug(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Prunder: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
+    main_logger.debug(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Cardinality: {optimal_cardinality}")
 
-    file_repair = "log/Results.out"
+    file_repair = "Results/Results.out"
 
     if optimal_hitting_set is not None:
         for element in optimal_hitting_set.get_elements():
@@ -170,6 +189,7 @@ if __name__ == "__main__":
 
     with open(file_repair, 'a') as file:
         file.write(f"\nFile: {args.filepath}")
+        file.write(f"\nBranch and Bound strategy: {args.pruner}")
         file.write(f"\nExecution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
         file.write(f"\nOptimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}")
         file.write(f"\nOptimal solution: {optimal_hitting_set.get_elements()}")
