@@ -24,8 +24,8 @@ from src.tree.hittingsettree import HittingSetTree
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Run the kernelization process with optional database main_logger.')
 parser.add_argument('filepath', type=str, help='Path to the dataset file')
-parser.add_argument('--sp', type=int, choices=range(0, 4), required=True, help='Strategy parameter value (0-3)')
-parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'Hybrid', 'Priority', 'V'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
+parser.add_argument('--sp', type=int, choices=range(0, 4), required=True, help='Strategy parameter for value assignment being used for Branch-and-Bound: 1: Cardinality, 2: Random Values, 3: Inconsistency Values)')
+parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'HYBRID', 'PRIORITY'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
 parser.add_argument('--alpha', type=str, required=True, help='A string value to be used as alpha')
 parser.add_argument('--pruner', type=str, default='NONE', choices=['UPPER', 'LOWER', 'BEST', 'NONE'], help='Pruning/Boundary strategy to use: UPPER, LOWER, BEST, NONE')
 
@@ -186,7 +186,7 @@ if __name__ == "__main__":
 
     with open(file_repair, 'a') as file:
         file.write(f"\nFile: {args.filepath}")
-        file.write(f"\nBranch and Bound strategy: {args.pruner}")
+        file.write(f"\nBranch and Bound strategy: {args.pruner} with Search strategy: {args.ss} and Value Assignment: {args.sp}")
         file.write(f"\nExecution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
         file.write(f"\nOptimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}")
         file.write(f"\nOptimal solution: {optimal_hitting_set.get_elements()}")
