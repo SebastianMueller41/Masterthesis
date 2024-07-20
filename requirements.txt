@@ -19,10 +19,10 @@ charset-normalizer==3.3.2
 click==8.1.7
 cloudpickle==3.0.0
 comm==0.2.2
-contourpy==1.2.1
+contourpy>=1.1.1,<1.2.1
 cryptography==42.0.7
 cycler==0.12.1
-dask==2024.2.1
+dask>=2023.5.0,<2024.0.0
 debugpy==1.8.2
 decorator==5.1.1
 defusedxml==0.7.1
