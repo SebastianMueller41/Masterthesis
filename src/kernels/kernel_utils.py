@@ -172,5 +172,6 @@ def cn(B_dataset, alpha):
         logging.debug(f"MiniSat result: SAT. Therefore, {alpha} is not in Cn({B_dataset.get_elements()})")
         return False
     else:
+        print("MiniSat output was unexpected.")
         logging.debug("MiniSat output was unexpected.")
         sys.exit(1)
