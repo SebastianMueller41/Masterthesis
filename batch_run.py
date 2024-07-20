@@ -27,19 +27,19 @@ STRATEGY_PARAMS = [1, 2, 3]
 
 # Search strategies
 SEARCH_STRATEGIES = ['PRIORITY']
-#SEARCH_STRATEGIES = ['BFS', 'DFS', 'Hybrid', 'PRIORITY']
+# SEARCH_STRATEGIES = ['BFS', 'DFS', 'Hybrid', 'PRIORITY']
 
 # Pruner options
 PRUNER_OPTIONS = ['NONE', 'BEST']
-#PRUNER_OPTIONS = ['UPPER', 'LOWER', 'BEST', 'NONE']
+# PRUNER_OPTIONS = ['UPPER', 'LOWER', 'BEST', 'NONE']
 
 # Expand options
-EXPAND_OPTIONS = []
-#EXPAND_OPTIONS = ['--expand-div-conq', '--expand-sw-size 5', '--expand-sw-size 5', '--expand-sw-size 10']  # Add more if needed
+EXPAND_OPTIONS = ['']
+# EXPAND_OPTIONS = ['--expand-div-conq', '--expand-sw-size 5', '--expand-sw-size 10']  # Add more if needed
 
 # Shrink options
-SHRINK_OPTIONS = []
-#SHRINK_OPTIONS = ['--shrink-div-conq', '--shrink-sw-size 5', '--shrink-sw-size 5', '--shrink-sw-size 10']  # Add more if needed
+SHRINK_OPTIONS = ['']
+# SHRINK_OPTIONS = ['--shrink-div-conq', '--shrink-sw-size 5', '--shrink-sw-size 10']  # Add more if needed
 
 # Parameter sets
 PARAMETER_SETS = [
@@ -53,11 +53,8 @@ for MISSING_COMBINATIONS_FILE in MISSING_COMBINATION_FILES:
     with open(MISSING_COMBINATIONS_FILE, mode='r') as file:
         reader = csv.reader(file)
         first_line = next(reader)  # Read the first line
-        if first_line[0] == 'filename':
-            # Skip the header row if it matches 'filename'
-            pass
-        else:
-            # If the first row is not the header, process it
+        if first_line[0] != 'filename':
+            # Process the first row if it is not the header
             FILE_NAME, *_ = first_line
             for strategy_param in STRATEGY_PARAMS:
                 for search_strategy in SEARCH_STRATEGIES:
