@@ -10,3 +10,4 @@ dataset.log
 .nohup.out.swp
 nohup.out
 log/
+log/app.log
