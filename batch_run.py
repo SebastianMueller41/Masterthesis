@@ -22,7 +22,7 @@ def execute_command(command):
         print("Command failed with exit code", e.returncode)
 
 # Strategy parameters
-STRATEGY_PARAMS = [3]
+STRATEGY_PARAMS = [0, 1, 2, 3]
 
 # Parameter sets
 PARAMETER_SETS = [
@@ -44,7 +44,7 @@ for MISSING_COMBINATIONS_FILE in MISSING_COMBINATION_FILES:
             FILE_NAME, *_ = first_line
             for strategy_param in STRATEGY_PARAMS:
                 if strategy_param == 3:
-                    search_strategies = ["V"]
+                    search_strategies = ["P", "V"]
                 else:
                     search_strategies = ["P"]
                 for search_strategy in search_strategies:
@@ -57,7 +57,7 @@ for MISSING_COMBINATIONS_FILE in MISSING_COMBINATION_FILES:
             FILE_NAME, *_ = row
             for strategy_param in STRATEGY_PARAMS:
                 if strategy_param == 3:
-                    search_strategies = ["V"]
+                    search_strategies = ["P", "V"]
                 else:
                     search_strategies = ["P"]
                 for search_strategy in search_strategies:
