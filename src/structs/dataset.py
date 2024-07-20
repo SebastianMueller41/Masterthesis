@@ -90,7 +90,7 @@ class DataSet:
         Returns:
             list: The elements contained in the dataset.
         """
-        return self.elements
+        return self.elements if self.elements is not None else []
 
     def get_elements_with_values(self):
         """

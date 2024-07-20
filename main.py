@@ -68,7 +68,7 @@ if __name__ == "__main__":
         conn = create_ssh_tunnel_and_connect()
         start_time = time.time()
         dataset = DataSet(conn, input_file_path=args.filepath, strategy_param=args.sp, db=args.path_db)
-
+        
         if dataset.size() == 0:
             logging.error("No Dataset found, please use a dataset from DB or change code to use files.")
             sys.exit(1)
