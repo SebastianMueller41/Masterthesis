@@ -20,11 +20,19 @@ def execute_command(command):
 # Read the CSV file and process each row
 with open(MISSING_COMBINATIONS_FILE, mode='r') as file:
     reader = csv.reader(file)
-    #next(reader)  # Skip the header row
+    first_line = next(reader)  # Read the first line
+    if first_line[0] == 'filename':
+        # Skip the header row if it matches 'filename'
+        pass
+    else:
+        # If the first row is not the header, process it
+        FILE_NAME, *_ = first_line
+        command = f"python3 {PYTHON_SCRIPT} '{FILE_NAME}' --sp 3 -res-db --ss P -path-db --alpha 'A0&&!A0'"
+        print(f"Executing: {command}")
+        execute_command(command)
 
     for row in reader:
         FILE_NAME, *_ = row
-
         command = f"python3 {PYTHON_SCRIPT} '{FILE_NAME}' --sp 3 -res-db --ss P -path-db --alpha 'A0&&!A0'"
         print(f"Executing: {command}")
         execute_command(command)
