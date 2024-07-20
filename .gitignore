@@ -9,4 +9,4 @@ dataset.log
 .kernel_operations.log.swp
 .nohup.out.swp
 nohup.out
-log/*
+log/
