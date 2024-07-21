@@ -11,7 +11,7 @@ setup_logging()
 # Get the logger for this module
 ss_logger = logging.getLogger(__name__)
 
-class PrioritySearch(Strategy, Search): 
+class PBS(Strategy, Search):
     def __init__(self, kernelStrategy, dataset, brancher, pruner, alpha, strategy_param):
         Search.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
         self.kernelStrategy = kernelStrategy

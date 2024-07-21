@@ -11,7 +11,7 @@ setup_logging()
 # Get the logger for this module
 ss_logger = logging.getLogger(__name__)
 
-class HybridSearch(Strategy, Search):
+class HYS(Strategy, Search):
     def __init__(self, kernelStrategy, dataset, brancher, pruner, alpha, strategy_param):
         Search.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
         self.first_leaf_found = False

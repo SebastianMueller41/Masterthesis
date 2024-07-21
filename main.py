@@ -6,8 +6,8 @@ import signal
 import logging
 from src.CNFconverter.parse import CNFConverter
 from src.pruner.basepruner import BasePruner
-from src.search.hybrid import HybridSearch
-from src.search.priority import PrioritySearch
+from src.search.hybrid import HYS
+from src.search.priority import PBS
 from src.search.bfs import BFS
 from src.search.dfs import DFS
 from src.solver.kernelsolver import KernelSolver
@@ -25,7 +25,7 @@ from src.tree.hittingsettree import HittingSetTree
 parser = argparse.ArgumentParser(description='Run the kernelization process with optional database main_logger.')
 parser.add_argument('filepath', type=str, help='Path to the dataset file')
 parser.add_argument('--sp', type=int, choices=range(0, 4), required=True, help='Strategy parameter for value assignment being used for Branch-and-Bound: 1: Cardinality, 2: Random Values, 3: Inconsistency Values)')
-parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'HYBRID', 'PRIORITY'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
+parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'HYS', 'PBS'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
 parser.add_argument('--alpha', type=str, required=True, help='A string value to be used as alpha')
 parser.add_argument('--pruner', type=str, default='NONE', choices=['UPPER', 'LOWER', 'BEST', 'NONE'], help='Pruning/Boundary strategy to use: UPPER, LOWER, BEST, NONE')
 
@@ -114,9 +114,9 @@ if __name__ == "__main__":
         elif args.ss == 'DFS':
             search_strategy = DFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
         elif args.ss == 'HYBRID':
-            search_strategy = HybridSearch(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
+            search_strategy = HYS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
         elif args.ss == 'PRIORITY':
-            search_strategy = PrioritySearch(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
+            search_strategy = PBS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
         else:
             main_logger.error("Invalid search strategy")
             sys.exit(1)

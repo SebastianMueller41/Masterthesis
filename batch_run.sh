@@ -1,60 +1,79 @@
 #!/bin/bash
 
-# Array of CSV files with filenames
-FILENAME_LISTS=(
-    "data/SRS/sig3_5_15.csv"
-    #"data/SRS/sig5_15_25.csv"
-    #"data/SRS/sig10_15_25.csv"
-    #"data/SRS/sig15_25_50.csv"
-    #"data/SRS/sig20_25_50.csv"
-)
-
-# Path to your Python script
+# Path to your main.py script
 PYTHON_SCRIPT="main.py"
 
-# Array of strategy parameters
-STRATEGY_PARAMS=(3)
-#STRATEGY_PARAMS=(1 2 3)
-
-# Array of search strategies
-SEARCH_STRATEGIES=("BFS" "DFS" "H" "P")
-
-# Array of parameter sets
-PARAMETER_SETS=(
-    "--alpha A0&&!A0 -r --log-db"
-    #"--alpha A0&&!A0 --log-db -dc"
-    #"--alpha A0&&!A0 --log-db --sw-size 5"
-    #"--alpha A0&&!A0 --log-db -dc --sw-size 5"
-    #"--alpha A0&&!A0 --log-db --sw-size 10"
-    #"--alpha A0&&!A0 --log-db -dc --sw-size 10"
+# List of CSV files containing missing combinations
+MISSING_COMBINATION_FILES=(
+    #'data/SRS/sig3_5_15.csv'
+    #'data/SRS/sig5_15_25.csv'
+    'data/SRS/sig10_15_25.csv'
+    #'data/SRS/sig15_15_25.csv'
+    # Add more CSV file paths as needed
 )
 
-# Loop through each CSV file
-for FILENAME_LIST in "${FILENAME_LISTS[@]}"
-do
-  # Check if the file exists
-  if [ ! -f "$FILENAME_LIST" ]; then
-    echo "File not found: $FILENAME_LIST"
-    continue
-  fi
-  
-  # Read each line in the filename list
-  while IFS=, read -r FILENAME
-  do
-    # Skip the header line if present
-    if [ "$FILENAME" != "filename" ]; then
-      # Run the Python script with the current filename, strategy parameters, and each set of additional parameters
-      for STRATEGY_PARAM in "${STRATEGY_PARAMS[@]}"
-      do
-        for SEARCH_STRATEGY in "${SEARCH_STRATEGIES[@]}"
-        do
-          for PARAM_SET in "${PARAMETER_SETS[@]}"
-          do
-            echo "Processing $FILENAME with strategy $STRATEGY_PARAM, search strategy $SEARCH_STRATEGY and params $PARAM_SET from $FILENAME_LIST"
-            python "$PYTHON_SCRIPT" "$FILENAME" "$STRATEGY_PARAM" --ss "$SEARCH_STRATEGY" $PARAM_SET
-          done
-        done
-      done
+# Strategy parameters
+STRATEGY_PARAMS=(1 2 3)
+
+# Search strategies
+SEARCH_STRATEGIES=('PRIORITY')
+# SEARCH_STRATEGIES=('BFS' 'DFS' 'Hybrid' 'PRIORITY')
+
+# Pruner options for all strategy params
+PRUNER_OPTIONS_ALL=('BEST')
+
+# Pruner options for specific strategy params
+PRUNER_OPTIONS_23=('NONE')
+
+# Expand options
+EXPAND_OPTIONS=('')
+# EXPAND_OPTIONS=('--expand-div-conq' '--expand-sw-size 5' '--expand-sw-size 10')  # Add more if needed
+
+# Shrink options
+SHRINK_OPTIONS=('')
+# SHRINK_OPTIONS=('--shrink-div-conq' '--shrink-sw-size 5' '--shrink-sw-size 10')  # Add more if needed
+
+# Parameter sets
+PARAMETER_SETS=(
+    "--alpha '(A0&&!A0)' -path-db -res-db"
+    # Add more parameter sets if needed
+)
+
+# Function to execute the command
+execute_command() {
+    local command=$1
+    echo "Executing: $command"
+    eval $command
+    if [ $? -ne 0 ]; then
+        echo "Command failed with exit code $?"
     fi
-  done < "$FILENAME_LIST"
+}
+
+# Loop through each CSV file
+for MISSING_COMBINATIONS_FILE in "${MISSING_COMBINATION_FILES[@]}"; do
+    if [ -f "$MISSING_COMBINATIONS_FILE" ]; then
+        while IFS=, read -r FILE_NAME _; do
+            if [ "$FILE_NAME" != "filename" ]; then
+                for strategy_param in "${STRATEGY_PARAMS[@]}"; do
+                    if [[ " ${STRATEGY_PARAMS[@]:1} " =~ " ${strategy_param} " ]]; then
+                        pruner_options=("${PRUNER_OPTIONS_ALL[@]}" "${PRUNER_OPTIONS_23[@]}")
+                    else
+                        pruner_options=("${PRUNER_OPTIONS_ALL[@]}")
+                    fi
+                    for search_strategy in "${SEARCH_STRATEGIES[@]}"; do
+                        for param_set in "${PARAMETER_SETS[@]}"; do
+                            for pruner_option in "${pruner_options[@]}"; do
+                                for expand_option in "${EXPAND_OPTIONS[@]}"; do
+                                    for shrink_option in "${SHRINK_OPTIONS[@]}"; do
+                                        command="python3 $PYTHON_SCRIPT '$FILE_NAME' --sp $strategy_param --ss $search_strategy --pruner $pruner_option $expand_option $shrink_option $param_set"
+                                        execute_command "$command"
+                                    done
+                                done
+                            done
+                        done
+                    done
+                done
+            fi
+        done < "$MISSING_COMBINATIONS_FILE"
+    fi
 done
