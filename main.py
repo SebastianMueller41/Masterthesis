@@ -113,9 +113,9 @@ if __name__ == "__main__":
             search_strategy = BFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
         elif args.ss == 'DFS':
             search_strategy = DFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
-        elif args.ss == 'HYBRID':
+        elif args.ss == 'HYS':
             search_strategy = HYS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
-        elif args.ss == 'PRIORITY':
+        elif args.ss == 'PBS':
             search_strategy = PBS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
         else:
             main_logger.error("Invalid search strategy")
