@@ -33,10 +33,13 @@ class BestPruner(BasePruner):
         if not self.optimal_reached:
             prune_logger.debug("Optimal reached, Return False")
             return False
-        if node is None or node.get_kernel() is None:
+        if node is None:
             prune_logger.debug(f"Node is None: {node}, node.get_kernrel() is None: {node.get_kernel()}")
             return True
         HS_card = len(self.tree.get_hitting_set_for_leaf(node).get_elements())
-        Leaf_card = len(self.tree.get_hitting_set_for_leaf(self.best_leaf).get_elements())
-        prune_logger.info(f"Hitting_set_length: {HS_card}, Leaf_card: {Leaf_card}")
-        return HS_card >= Leaf_card
+        Best_card = len(self.tree.get_hitting_set_for_leaf(self.best_leaf).get_elements())
+        prune_logger.info(f"Hitting_set_length: {HS_card}, Leaf_card: {Best_card}")
+        return HS_card >= Best_card
+
+
+#104, 120
