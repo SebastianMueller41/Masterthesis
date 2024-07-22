@@ -127,16 +127,16 @@ if __name__ == "__main__":
                 main_logger.error(f"DataSet Inconsistency Values == {dataset.sum_values()}")
                 sys.exit(1)
 
-        brancher = Brancher(dataset)
-        main_logger.debug("Brancher initialized.")
-
         # Initialize the HittingSetTree
         hitting_set_tree = HittingSetTree(dataset)
         main_logger.debug("Tree initialized.")
+
+        brancher = Brancher(dataset, hitting_set_tree)
+        main_logger.debug("Brancher initialized.")
         
         # Initialize the appropriate pruner based on user input
         if args.pruner == 'UPPER':
-            pruner = UpperPruner(hitting_set_tree, args.sp)
+            pruner = UpperPruner(hitting_set_tree, args.sp, args.alpha, args.shrink_sw_size, args.expand_sw_size)
         elif args.pruner == 'LOWER':
             pruner = LowerPruner(hitting_set_tree, args.sp)
         elif args.pruner == 'BEST':

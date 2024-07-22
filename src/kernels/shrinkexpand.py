@@ -21,22 +21,22 @@ class ShrinkExpand(KernelStrategy):
         dataset_clone = dataset.clone()  # Ensure your dataset object supports cloning
         if cn(dataset_clone, alpha):  # Use the imported cn function
             remainder = self.find_remainder(dataset_clone, alpha)
-            kr_logger.info(f"Found remainder {len(remainder.get_elements())} elements: {remainder.get_elements()}")
+            kr_logger.warn(f"Found remainder {len(remainder.get_elements())} elements: {remainder.get_elements()}")
             
             # Compute kernel as the difference between original dataset elements and remainder
             original_elements = set(dataset.get_elements())  # Use set for efficient lookup
             remainder_elements = set(remainder.get_elements())
             if original_elements == remainder_elements:
-                kr_logger.info(f"No kernel found, remainder = dataset")
+                kr_logger.warn(f"No kernel found, remainder = dataset")
                 return None
             else:
                 kernel_elements = original_elements - remainder_elements
                 kernel = DataSet(elements=list(kernel_elements))  # Create a new dataset from the kernel elements
 
-                kr_logger.info(f"Kernel found with {len(kernel.get_elements())} elements: {kernel.get_elements()}")
+                kr_logger.warn(f"Kernel found with {len(kernel.get_elements())} elements: {kernel.get_elements()}")
                 return kernel
         else:
-            kr_logger.debug(f"Dataset does not entail {alpha}, remainder = {dataset.get_elements()}, kernel = empty")
+            kr_logger.warn(f"Dataset does not entail {alpha}, remainder = {dataset.get_elements()}, kernel = empty")
             return None
 
     def find_remainder(self, dataset, alpha):

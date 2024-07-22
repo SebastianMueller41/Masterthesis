@@ -3,8 +3,9 @@ from abc import ABC, abstractmethod
 from src.tree.hittingsettree import HSTreeNode
 
 class BaseBrancher(ABC):
-    def __init__(self, dataset):
+    def __init__(self, dataset, tree):
         self.dataset = dataset
+        self.tree = tree
 
     @abstractmethod
     def expand_children(self, current_node, priority_queue, kernel_strategy, alpha):
