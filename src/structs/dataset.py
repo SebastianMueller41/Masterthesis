@@ -12,9 +12,11 @@ setup_logging()
 data_logger = logging.getLogger(__name__)
 
 # Global variables
+ini_strategy_param = 0
 ini_elements = []
 ini_element_values = {}
-ini_strategy_param = 0
+ini_random_values = {}
+ini_incon_values = {}
 
 class DataSet:
     """
@@ -214,6 +216,8 @@ def load_elements_from_file(file_path):
 def load_elements_from_db(conn, file_path):
     global ini_elements
     global ini_element_values
+    global ini_random_values
+    global ini_incon_values
     
     if conn is not None:
         cursor = conn.cursor(dictionary=True)
@@ -229,12 +233,8 @@ def load_elements_from_db(conn, file_path):
                     continue
                 data_logger.debug(f"Random Value: {row['randomvalue']}, Inconsistency Value: {row['inconsistencyvalue']}, Filename: {row['filename']}, Formula: {row['line']}")
                 ini_elements.append(row['line'])
-                element_value = None
-                if ini_strategy_param == 2:
-                    element_value = row['randomvalue']
-                elif ini_strategy_param == 3:
-                    element_value = row['inconsistencyvalue']
-                ini_element_values[row['line']] = element_value
+                ini_random_values[row['line']] = row['randomvalue']
+                ini_incon_values[row['line']] = row['inconsistencyvalue']
 
         except Error as e:
             data_logger.error(f"Failed to load data from MySQL database: {e}")
@@ -250,20 +250,26 @@ def apply_value_assignment_strategy(strategy_param):
     Args:
         strategy_param (int): The parameter defining the value assignment strategy.
     """
-    global ini_elements
     global ini_element_values
+
     if strategy_param == 0:
         for element in ini_elements:
             ini_element_values[element] = 0
     elif strategy_param == 1:
         for element in ini_elements:
             ini_element_values[element] = 1
-    elif strategy_param in {2, 3}:
-        # Values already assigned during load_elements_from_db
-        for element in ini_elements:
-            if element not in ini_element_values:
-                ini_element_values[element] = 0  # Default to 0 instead of None
+
+    if strategy_param == 2:
+        ini_element_values = ini_random_values
+    if strategy_param == 3:
+        ini_element_values = ini_incon_values
     # Ensure all elements have values assigned
     for element in ini_elements:
         if element not in ini_element_values:
             ini_element_values[element] = 0
+
+def get_incon_values():
+    return ini_incon_values
+
+def get_random_values():
+    return ini_random_values

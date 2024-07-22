@@ -12,7 +12,7 @@ from src.search.bfs import BFS
 from src.search.dfs import DFS
 from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
-from src.structs.dataset import initialize_dataset
+from src.structs.dataset import initialize_dataset, get_incon_values, get_random_values
 from src.database.database import create_ssh_tunnel_and_connect, log_execution_data
 from src.structs.logger import setup_logging
 from src.pruner.best import BestPruner
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
         if args.res_db and conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner, None)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner, None, None, None)
             conn.close()
         sys.exit(1)
     except Exception as e:
@@ -154,7 +154,16 @@ if __name__ == "__main__":
         optimal_value = optimal_hitting_set.sum_values() if optimal_hitting_set else None
         least_node = hitting_set_tree.sort_leaf_nodes_desc('bbvalue')
         _,last_node = hitting_set_tree.leaf_nodes[-1]
+        _,best_node = hitting_set_tree.leaf_nodes[0]
         lowest_card = len(hitting_set_tree.get_hitting_set_for_leaf(last_node).get_elements())
+        random_values = get_random_values()
+        incon_values = get_incon_values()
+        sum_random = 0
+        sum_incon = 0
+        for element in optimal_hitting_set.get_elements():
+            sum_random += random_values[element]
+            sum_incon += incon_values[element]
+
     else:
         num_kernels = num_branches = pruned_branches_count = 0
         tree_depth = boundary = None
@@ -165,17 +174,17 @@ if __name__ == "__main__":
 
     resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
-    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}")
+    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}, Optimal Value Random: {sum_random}, Optimal Value Incon: {sum_incon}")
     print(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Optimal Cardinality: {optimal_cardinality}")
 
     if args.res_db:
         if conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set.get_elements(), args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size, optimal_cardinality, args.pruner, lowest_card)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set.get_elements(), args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size, optimal_cardinality, args.pruner, lowest_card, sum_random, sum_incon)
             conn.close()
         else:
             print("Connection to MySQL database failed")
 
-    main_logger.debug(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}")
+    main_logger.debug(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}, Optimal Value Random: {sum_random}, Optimal Value Incon: {sum_incon}")
     main_logger.debug(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Cardinality: {optimal_cardinality}")
 
     file_repair = "Results/Results.out"
@@ -198,7 +207,7 @@ if __name__ == "__main__":
     with open(file_repair, 'a') as file:
         file.write(f"\nFile: {args.filepath}, DataSet Value: {dataset.sum_values()}")
         file.write(f"\nBranch and Bound strategy: {args.pruner} with Search strategy: {args.ss} and Weight Assignment: {args.sp}")
-        file.write(f"\nExecution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Prunder: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest cardinality: {lowest_card}")
+        file.write(f"\nExecution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}, Optimal Value Random: {sum_random}, Optimal Value Incon: {sum_incon}")
         file.write(f"\nOptimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}")
         file.write(f"\nOptimal solution: {optimal_hitting_set.get_elements()}")
         file.write(f"\nOptimal value: {optimal_value}, Optimal cardinality: {optimal_cardinality}")
