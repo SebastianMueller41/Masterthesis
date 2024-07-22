@@ -9,14 +9,15 @@ setup_logging()
 prune_logger = logging.getLogger(__name__)
 
 class LowerPruner(BasePruner):
-    def __init__(self, tree):
+    def __init__(self, tree, strategy_param):
         self.tree = tree
         self.best_solution = None
         self.boundary = 0
+        self.strategy_param = strategy_param
 
     # This approach is not used but maybe interesting for future work
     def calculate_bbvalue(self, element, dataset):
-        assigned_value = dataset.element_values.get(element, 0)
+        assigned_value = dataset.get_element_value(element)
         transformed_value = 1 / (assigned_value) if assigned_value != 0 else 0
         return transformed_value
 

@@ -46,7 +46,14 @@ class HSTreeNode:
         self.pruned = pruned
     
     def __lt__(self, other):
-        return (self.dataset.element_values.get(self.edge, 0) if self.edge else 0) < (self.dataset.element_values.get(other.edge, 0) if other.edge else 0)
+        # Compare based on bbvalue or any other criteria
+        return self.bbvalue < other.bbvalue
+
+    def __str__(self):
+        return f"HSTreeNode(kernel={self.kernel}, bbvalue={self.bbvalue})"
+
+    def __repr__(self):
+        return self.__str__()
 
 class HittingSetTree:
     def __init__(self, dataset=None, initial_kernel=None, output_file="Results/tree_output.txt"):
@@ -66,7 +73,7 @@ class HittingSetTree:
         elif parent == self.root and self.root.kernel is None:
             self.root.kernel = kernel
             return self.root
-        new_node = HSTreeNode(kernel=kernel)
+        new_node = HSTreeNode(kernel=kernel, dataset=self.dataset)
         parent.add_child(new_node)
         return new_node
     
@@ -74,14 +81,28 @@ class HittingSetTree:
         bbvalue = self.calculate_path_bbvalue_up_to_root(leaf_node)
         heapq.heappush(self.leaf_nodes, (bbvalue, leaf_node))
 
+    def sort_leaf_nodes_desc(self, criterion='bbvalue'):
+        if criterion == 'bbvalue':
+            # Sort by bbvalue in descending order, then by hitting set length in ascending order
+            self.leaf_nodes.sort(
+                key=lambda x: (-x[0], len(self.get_hitting_set_for_leaf(x[1]).get_elements()))
+            )
+        elif criterion == 'hitting_set_length':
+            # Sort by hitting set length in descending order, then by bbvalue in ascending order
+            self.leaf_nodes.sort(
+                key=lambda x: -len(self.get_hitting_set_for_leaf(x[1]).get_elements())
+            )
+        else:
+            raise ValueError(f"Unknown sorting criterion: {criterion}")
+
     def calculate_path_bbvalue_up_to_root(self, node):
         cumulative_bbvalue = 0.0
         current_node = node
         while current_node is not None and current_node.edge is not None:
-            edge_value = self.dataset.element_values.get(current_node.edge, None)
+            edge_value = self.dataset.get_element_value(current_node.edge)
             if edge_value is None:
                 edge_value = 0
-            cumulative_bbvalue += 1 / (float(edge_value)) if edge_value != 0 else 0
+            cumulative_bbvalue += (float(edge_value)) if edge_value != 0 else 0
             current_node = current_node.parent
         return cumulative_bbvalue
 
@@ -90,19 +111,14 @@ class HittingSetTree:
         current_node = leaf_node
         while current_node is not None and current_node.parent is not None:
             if current_node.edge is not None:
-                element_value = self.dataset.get_element_value(current_node.edge)
-                hitting_set.add_element(current_node.edge, element_value)
+                hitting_set.add_element(current_node.edge)
             current_node = current_node.parent
         return hitting_set
     
     def get_hitting_set_for_optimal_solution(self):
         if self.leaf_nodes:
-            # Ensure leaf_nodes is sorted by bbvalue descending and cardinality ascending
-            sorted_leaf_nodes = sorted(
-                self.leaf_nodes, 
-                key=lambda x: (-x[0], len(self.get_hitting_set_for_leaf(x[1]).get_elements()))
-            )
-            _, best_leaf = sorted_leaf_nodes[0]  # Peek at the highest priority leaf
+            self.sort_leaf_nodes_desc('bbvalue')
+            _, best_leaf = self.leaf_nodes[0]  # Peek at the highest priority leaf
             return self.get_hitting_set_for_leaf(best_leaf)
         else:
             return None
@@ -173,20 +189,12 @@ class HittingSetTree:
             file.write("\n\n")
             
     def print_all_hitting_sets_to_file(self, output_file="Results/all_hitting_sets.txt"):
-        # Convert heap to list for sorting
-        leaf_nodes_with_values = [
-            (bbvalue, len(self.get_hitting_set_for_leaf(leaf_node).get_elements()), leaf_node)
-            for bbvalue, leaf_node in self.leaf_nodes
-        ]
-
-        # Sort by bbvalue descending and cardinality ascending
-        sorted_leaf_nodes = sorted(leaf_nodes_with_values, key=lambda x: (-x[0], x[1]))
-
         # Write to file
+        self.sort_leaf_nodes_desc('bbvalue')
         with open(output_file, 'a') as file:
-            for bbvalue, cardinality, leaf_node in sorted_leaf_nodes:
+            for bbvalue, leaf_node in self.leaf_nodes:
                 hitting_set = self.get_hitting_set_for_leaf(leaf_node)
                 if hitting_set is not None:
                     hitting_set_elements = hitting_set.get_elements_with_values()
-                    HSvalue = hitting_set.sum_values()
-                    file.write(f"{HSvalue}, {bbvalue}, {cardinality}, Hitting Set: {hitting_set_elements}\n")
+                    cardinality = len(self.get_hitting_set_for_leaf(leaf_node).get_elements())
+                    file.write(f"{bbvalue}, {cardinality}, Hitting Set: {hitting_set_elements}\n")

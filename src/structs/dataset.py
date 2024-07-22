@@ -1,9 +1,4 @@
-"""
-This module defines the DataSet class, which is used to manage a collection of elements
-typically representing data items or clauses in computational logic. The DataSet class
-provides functionality to load data from a file, access elements, add or remove elements,
-clone itself, and write its contents to a file.
-"""
+import copy
 import sys
 from mysql.connector import Error
 
@@ -16,6 +11,11 @@ setup_logging()
 # Get the logger for this module
 data_logger = logging.getLogger(__name__)
 
+# Global variables
+ini_elements = []
+ini_element_values = {}
+ini_strategy_param = 0
+
 class DataSet:
     """
     A class to manage a collection of elements.
@@ -26,7 +26,7 @@ class DataSet:
         elements (list): A list of elements representing the dataset.
     """
     
-    def __init__(self, conn=None, input_file_path=None, strategy_param=0, elements=None, db=False):
+    def __init__(self, elements=None):
         """
         Initialize a new DataSet instance, optionally loading elements from a file and applying a value assignment strategy.
 
@@ -34,61 +34,9 @@ class DataSet:
             input_file_path (str, optional): The path to a file from which to load elements.
             elements (list, optional): An initial list of elements to populate the dataset.
             strategy (str, optional): The strategy identifier (e.g., "A1").
-            strategy_param (int, optional): The parameter that defines how values are assigned to the elements.
         """
-        self.conn = conn
         self.elements = elements if elements is not None else []
-        self.element_values = {}  # Initialize the mapping of elements to values
-        self.strategy_param = strategy_param
-        
-        if input_file_path:
-            if db:
-                self.load_elements_from_db(input_file_path)
-            else:
-                self.load_elements_from_file(input_file_path)
-        
-        if strategy_param is not None:
-            self.apply_value_assignment_strategy(strategy_param)
-
-    def load_elements_from_file(self, file_path):
-        """
-        Load elements from the specified file path into the dataset.
-        Each line in the file is treated as a separate element.
-        """
-        try:
-            with open(file_path, 'r') as file:
-                self.elements = [line.strip() for line in file.readlines()]
-        except FileNotFoundError:
-            sys.exit(f"File {file_path} not found.\nPlease check file path: {file_path}.")
-    
-    def load_elements_from_db(self, file_path):
-        if self.conn is not None:
-            cursor = self.conn.cursor(dictionary=True)
-            try:
-                query = f"SELECT randomvalue, inconsistencyvalue, filename, line FROM DATA_ENTRY where filename='{file_path}'"
-                cursor.execute(query)
-                rows = cursor.fetchall()
-
-                # Process the rows as needed, skipping empty lines
-                for row in rows:
-                    # Example processing: log non-empty rows
-                    if row['randomvalue'] == "" or row['inconsistencyvalue'] == "" or row['filename'] == "" or row['line'] == "":
-                        continue
-                    data_logger.debug(f"Random Value: {row['randomvalue']}, Inconsistency Value: {row['inconsistencyvalue']}, Filename: {row['filename']}, Value: {row['line']}")
-                    self.elements.append(row['line'])
-                    element_value = None
-                    if self.strategy_param == 2:
-                        element_value = row['randomvalue']
-                    elif self.strategy_param == 3:
-                        element_value = row['inconsistencyvalue']
-                    self.element_values[row['line']] = element_value
-
-            except Error as e:
-                data_logger.error(f"Failed to load data from MySQL database: {e}")
-            finally:
-                cursor.close()
-        else:
-            data_logger.error("Connection to MySQL database failed")
+        data_logger.info(f"ELEMENT VALUES: {ini_element_values}")
 
     def get_elements(self):
         """
@@ -106,7 +54,7 @@ class DataSet:
         Returns:
             list of tuples: Each tuple contains an element and its corresponding value.
         """
-        return [(element, self.element_values[element]) for element in self.elements]
+        return [(element, ini_element_values[element]) for element in self.elements]
     
     def get_element_value(self, element):
         """
@@ -118,7 +66,7 @@ class DataSet:
         Returns:
             The value assigned to the element, or None if the element is not found.
         """
-        return self.element_values.get(element, None)
+        return ini_element_values.get(element, 0)
 
     def get_values(self):
         """
@@ -127,7 +75,7 @@ class DataSet:
         Returns:
             list: A list of values assigned to the elements.
         """
-        return list(self.element_values.values())
+        return list(ini_element_values.values())
     
     def sum_values(self):
         """
@@ -136,32 +84,22 @@ class DataSet:
         Returns:
             int: The sum of the values of the elements.
         """
-        return sum(self.element_values[element] for element in self.elements)
-    
-    def sort_desc(self):
-        """
-        Sort the elements of the dataset in descending order based on their values.
-        """
-        self.elements.sort(key=lambda element: self.element_values.get(element, 0), reverse=True)
+        summe = 0
+        for element in self.elements:
+            summe += ini_element_values[element]
+        return summe
 
 
-    def add_element(self, element, value=None):
+    def add_element(self, element):
             """
             Add an element to the dataset if it is not already present.
             Optionally, add a value for the element.
 
             Args:
                 element (str): The element to add to the dataset.
-                value (int, optional): The value to associate with the element.
             """
             if element not in self.elements:
                 self.elements.append(element)
-                if value is not None:
-                    self.element_values[element] = value
-                elif element in self.element_values:
-                    self.element_values[element] = self.element_values[element]  # Preserve existing value
-                else:
-                    self.element_values[element] = 0  # Default value
     
     def add_element_at_start(self, element):
         """
@@ -190,10 +128,10 @@ class DataSet:
         Create a copy of the current DataSet instance.
 
         Returns:
-            DataSet: A new DataSet instance containing the same elements.
+            DataSet: A new DataSet instance containing the same elements and their values.
         """
         return DataSet(elements=list(self.elements))
-    
+
     def split(self):
         """
         Splits the dataset into two halves.
@@ -241,25 +179,91 @@ class DataSet:
             for element in self.elements:
                 file.write(element + '\n')
 
-    def apply_value_assignment_strategy(self, strategy_param):
-        """
-        Apply a value assignment strategy to each element in the dataset based on the specified parameter.
+# --------------------------------------------------------------------------------------- #
+# --------------------------------------------------------------------------------------- #
 
-        Args:
-            strategy_param (int): The parameter defining the value assignment strategy.
+def initialize_dataset(conn, input_file_path, strategy_param, db):
+    global ini_strategy_param
+    
+    ini_strategy_param = strategy_param
+    if input_file_path:
+        if db:
+            load_elements_from_db(conn, input_file_path)
+        else:
+            load_elements_from_file(input_file_path)
+    
+    if ini_strategy_param is not None:
+        apply_value_assignment_strategy(strategy_param)
+    
+    return DataSet(ini_elements)
+
+def load_elements_from_file(file_path):
         """
-        if strategy_param == 0:
-            for element in self.elements:
-                self.element_values[element] = 0
-        elif strategy_param == 1:
-            for element in self.elements:
-                self.element_values[element] = 1
-        elif strategy_param in {2, 3}:
-            # Values already assigned during load_elements_from_db
-            for element in self.elements:
-                if element not in self.element_values:
-                    self.element_values[element] = 0  # Default to 0 instead of None
-        # Ensure all elements have values assigned
-        for element in self.elements:
-            if element not in self.element_values:
-                self.element_values[element] = 0
+        Load elements from the specified file path into the dataset.
+        Each line in the file is treated as a separate element.
+        """
+        global ini_elements
+        global ini_element_values
+        try:
+            with open(file_path, 'r') as file:
+                ini_elements = [line.strip() for line in file.readlines()]
+                data_logger.debug(f"Dataset loaded: {ini_elements}")
+        except FileNotFoundError:
+            sys.exit(f"File {file_path} not found.\nPlease check file path: {file_path}.")
+    
+def load_elements_from_db(conn, file_path):
+    global ini_elements
+    global ini_element_values
+    
+    if conn is not None:
+        cursor = conn.cursor(dictionary=True)
+        try:
+            query = f"SELECT randomvalue, inconsistencyvalue, filename, line FROM DATA_ENTRY where filename='{file_path}'"
+            cursor.execute(query)
+            rows = cursor.fetchall()
+
+            # Process the rows as needed, skipping empty lines
+            for row in rows:
+                # Example processing: log non-empty rows
+                if row['randomvalue'] == "" or row['inconsistencyvalue'] == "" or row['filename'] == "" or row['line'] == "":
+                    continue
+                data_logger.debug(f"Random Value: {row['randomvalue']}, Inconsistency Value: {row['inconsistencyvalue']}, Filename: {row['filename']}, Formula: {row['line']}")
+                ini_elements.append(row['line'])
+                element_value = None
+                if ini_strategy_param == 2:
+                    element_value = row['randomvalue']
+                elif ini_strategy_param == 3:
+                    element_value = row['inconsistencyvalue']
+                ini_element_values[row['line']] = element_value
+
+        except Error as e:
+            data_logger.error(f"Failed to load data from MySQL database: {e}")
+        finally:
+            cursor.close()
+    else:
+        data_logger.error("Connection to MySQL database failed")
+
+def apply_value_assignment_strategy(strategy_param):
+    """
+    Apply a value assignment strategy to each element in the dataset based on the specified parameter.
+
+    Args:
+        strategy_param (int): The parameter defining the value assignment strategy.
+    """
+    global ini_elements
+    global ini_element_values
+    if strategy_param == 0:
+        for element in ini_elements:
+            ini_element_values[element] = 0
+    elif strategy_param == 1:
+        for element in ini_elements:
+            ini_element_values[element] = 1
+    elif strategy_param in {2, 3}:
+        # Values already assigned during load_elements_from_db
+        for element in ini_elements:
+            if element not in ini_element_values:
+                ini_element_values[element] = 0  # Default to 0 instead of None
+    # Ensure all elements have values assigned
+    for element in ini_elements:
+        if element not in ini_element_values:
+            ini_element_values[element] = 0

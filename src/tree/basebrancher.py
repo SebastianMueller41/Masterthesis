@@ -13,6 +13,6 @@ class BaseBrancher(ABC):
     def add_to_priority_queue(self, queue, node, priority):
         heapq.heappush(queue, (-priority, node))
 
-    def calculate_bbvalue(self, current_node, element, dataset):
-        assigned_value = dataset.element_values.get(element, 0)
+    def calculate_bbvalue(self, current_node, dataset):
+        assigned_value = dataset.get_value
         return current_node.bbvalue + assigned_value

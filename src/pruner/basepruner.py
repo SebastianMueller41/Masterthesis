@@ -1,5 +1,16 @@
+# Set up logging for this module
+import logging
+from src.structs.logger import setup_logging
+
+setup_logging()
+
+# Get the logger for this module
+prune_logger = logging.getLogger(__name__)
+
+prune_logger.info("BasePruner called.")
+
 class BasePruner:
-    def __init__(self, tree):
+    def __init__(self, tree, strategy_param):
         self.tree = tree
         self.best_solution = None
         self.boundary = 0

@@ -21,10 +21,11 @@ class PBS(Strategy, Search):
         self.tree = HittingSetTree(dataset=dataset)
         self.brancher = brancher
         self.pruner = pruner
-        self.best_leaf = HSTreeNode()
+        self.best_leaf = HSTreeNode(dataset=dataset)
 
     def find_kernels(self) -> None:
         initial_node = self.create_initial_node(self.dataset, self.alpha)
+        ss_logger.info("Initial kernel found!")
         if initial_node is None:
             ss_logger.info("Initial kernel is None, no need to span the tree.")
             return
@@ -47,12 +48,11 @@ class PBS(Strategy, Search):
 
         while priority_queue:
             _, current_node = heapq.heappop(priority_queue)
-
+            ss_logger.info("CHECK PRUNE!")
             if self.pruner.should_prune(current_node):
                 current_node.kernel = "PRUNED"
                 current_node.set_pruned()
                 continue
-
             if current_node.get_kernel() is None:
                 result = self.kernelStrategy.find_kernel(current_node.get_dataset(), self.alpha)
                 if result is not None:

@@ -12,7 +12,7 @@ from src.search.bfs import BFS
 from src.search.dfs import DFS
 from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
-from src.structs.dataset import DataSet
+from src.structs.dataset import initialize_dataset
 from src.database.database import create_ssh_tunnel_and_connect, log_execution_data
 from src.structs.logger import setup_logging
 from src.pruner.best import BestPruner
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     try:
         conn = create_ssh_tunnel_and_connect()
         start_time = time.time()
-        dataset = DataSet(conn, input_file_path=args.filepath, strategy_param=args.sp, db=args.path_db)
+        dataset = initialize_dataset(conn, input_file_path=args.filepath, strategy_param=args.sp, db=args.path_db)
         
         if dataset.size() == 0:
             main_logger.error("No Dataset found, please use a dataset from DB or change code to use files.")
@@ -95,19 +95,23 @@ if __name__ == "__main__":
                 sys.exit(1)
 
         brancher = Brancher(dataset)
+        main_logger.debug("Brancher initialized.")
 
         # Initialize the HittingSetTree
         hitting_set_tree = HittingSetTree(dataset)
+        main_logger.debug("Tree initialized.")
         
         # Initialize the appropriate pruner based on user input
         if args.pruner == 'UPPER':
-            pruner = UpperPruner(hitting_set_tree)
+            pruner = UpperPruner(hitting_set_tree, args.sp)
         elif args.pruner == 'LOWER':
-            pruner = LowerPruner(hitting_set_tree)
+            pruner = LowerPruner(hitting_set_tree, args.sp)
         elif args.pruner == 'BEST':
-            pruner = BestPruner(hitting_set_tree)
+            pruner = BestPruner(hitting_set_tree, args.sp)
         else:  # Default to BasePruner for no pruning
-            pruner = BasePruner(hitting_set_tree)
+            pruner = BasePruner(hitting_set_tree, args.sp)
+        
+        main_logger.debug("Pruner initialized.")
 
         if args.ss == 'BFS':
             search_strategy = BFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
@@ -121,6 +125,8 @@ if __name__ == "__main__":
             main_logger.error("Invalid search strategy")
             sys.exit(1)
 
+        main_logger.debug("Search initialized.")
+
         hitting_set_tree = KernelSolver(search_strategy).solve()
 
     except TimeoutError as e:
@@ -128,7 +134,7 @@ if __name__ == "__main__":
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
         if args.res_db and conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner, None)
             conn.close()
         sys.exit(1)
     except Exception as e:
@@ -146,53 +152,58 @@ if __name__ == "__main__":
         optimal_hitting_set = hitting_set_tree.get_hitting_set_for_optimal_solution()
         optimal_cardinality = len(optimal_hitting_set.get_elements()) if optimal_hitting_set else 0
         optimal_value = optimal_hitting_set.sum_values() if optimal_hitting_set else None
+        least_node = hitting_set_tree.sort_leaf_nodes_desc('bbvalue')
+        _,last_node = hitting_set_tree.leaf_nodes[-1]
+        lowest_card = len(hitting_set_tree.get_hitting_set_for_leaf(last_node).get_elements())
     else:
         num_kernels = num_branches = pruned_branches_count = 0
         tree_depth = boundary = None
         optimal_hitting_set = None
         optimal_value = None
         optimal_cardinality = 0
+        lowest_card = 0
 
     resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
-    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Prunder: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
-    print(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Cardinality: {optimal_cardinality}")
+    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}")
+    print(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Optimal Cardinality: {optimal_cardinality}")
 
     if args.res_db:
         if conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set.get_elements(), args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size, optimal_cardinality, args.pruner)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set.get_elements(), args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size, optimal_cardinality, args.pruner, lowest_card)
             conn.close()
         else:
             print("Connection to MySQL database failed")
 
-    main_logger.debug(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Prunder: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
+    main_logger.debug(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}")
     main_logger.debug(f"Optimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Cardinality: {optimal_cardinality}")
 
     file_repair = "Results/Results.out"
-
-    if optimal_hitting_set is not None:
+    repaired_dataset = dataset.clone()
+    if optimal_hitting_set:
         for element in optimal_hitting_set.get_elements():
-            dataset.remove_element(element)
-        dataset.to_file(file_repair)
+            repaired_dataset.remove_element(element)
+        repaired_dataset.to_file(file_repair)
         cnf_converter = CNFConverter(verbose=False)
         cnf_converter.convert_to_cnf(file_repair, file_repair)
-        if dataset.get_elements():
-            dataset_elements = dataset.get_elements()
+        if repaired_dataset.get_elements():
+            dataset_elements = repaired_dataset.get_elements()
         else:
+            main_logger("Dataset empty.")
             dataset_elements = "Empty."
     else:
-        dataset.to_file(file_repair)
+        repaired_dataset.to_file(file_repair)
         dataset_elements = "No solution found."
 
     with open(file_repair, 'a') as file:
-        file.write(f"\nFile: {args.filepath}")
-        file.write(f"\nBranch and Bound strategy: {args.pruner} with Search strategy: {args.ss} and Value Assignment: {args.sp}")
-        file.write(f"\nExecution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}")
+        file.write(f"\nFile: {args.filepath}, DataSet Value: {dataset.sum_values()}")
+        file.write(f"\nBranch and Bound strategy: {args.pruner} with Search strategy: {args.ss} and Weight Assignment: {args.sp}")
+        file.write(f"\nExecution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Prunder: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest cardinality: {lowest_card}")
         file.write(f"\nOptimal hitting set: {optimal_hitting_set.get_elements()} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}")
         file.write(f"\nOptimal solution: {optimal_hitting_set.get_elements()}")
         file.write(f"\nOptimal value: {optimal_value}, Optimal cardinality: {optimal_cardinality}")
         file.write(f"\nRepaired dataset: {dataset_elements}\n")
-        file.write(f"\nAll explored hitting sets: \n(Value, Path Value, Cardinality, Hitting set)\n")
+        file.write(f"\nAll explored hitting sets: \n(Value, Cardinality, Hitting set)\n")
     
     hitting_set_tree.print_all_hitting_sets_to_file(file_repair)
 

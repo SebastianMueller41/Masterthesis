@@ -1,0 +1,4 @@
+--sp 1 --pruner UPPER
+--sp 2 --pruner BEST
+--sp 3 --pruner BEST
+--sp 3 --pruner NONE

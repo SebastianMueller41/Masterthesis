@@ -39,7 +39,7 @@ class BFS(Strategy, Search):
                 reduced_dataset = current_node.get_dataset().clone()
                 reduced_dataset.remove_element(element)
 
-                bbvalue = self.brancher.calculate_bbvalue(current_node, element, reduced_dataset)
+                bbvalue = self.brancher.calculate_bbvalue(current_node, reduced_dataset)
                 child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=current_node.level + 1, bbvalue=bbvalue, parent=current_node)
                 current_node.add_child(child_node)
 

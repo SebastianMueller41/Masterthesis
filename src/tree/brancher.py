@@ -20,12 +20,11 @@ class Brancher(BaseBrancher):
         for element in current_node.get_kernel():
             reduced_dataset = current_node.get_dataset().clone()
             reduced_dataset.remove_element(element)
-
-            bbvalue = self.calculate_bbvalue(current_node, element, reduced_dataset)
+            bbvalue = self.calculate_bbvalue(current_node, element)
             child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=current_node.level + 1, bbvalue=bbvalue, parent=current_node)
             current_node.add_child(child_node)
 
-            priority = self.dataset.element_values.get(element, 0)
+            priority = self.dataset.get_element_value(element)
             children.append((priority, child_node))
 
         children.sort(reverse=True, key=lambda x: x[0])
@@ -35,6 +34,6 @@ class Brancher(BaseBrancher):
     def add_to_priority_queue(self, queue, node, priority):
         heapq.heappush(queue, (-priority, node))
 
-    def calculate_bbvalue(self, current_node, element, dataset):
-        assigned_value = dataset.element_values.get(element, 0)
+    def calculate_bbvalue(self, current_node, element):
+        assigned_value = self.dataset.get_element_value(element)
         return current_node.bbvalue + assigned_value
