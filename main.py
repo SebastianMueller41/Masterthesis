@@ -17,8 +17,8 @@ from src.database.database import create_ssh_tunnel_and_connect, log_execution_d
 from src.structs.logger import setup_logging
 from src.pruner.best import BestPruner
 from src.tree.brancher import Brancher
-from src.pruner.lower import LowerPruner
-from src.pruner.upper import UpperPruner
+from src.pruner.upperb import LowerPruner
+from src.pruner.lower import UpperPruner
 from src.tree.hittingsettree import HittingSetTree
 
 # Set up argument parser

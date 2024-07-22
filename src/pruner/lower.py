@@ -21,22 +21,25 @@ class LowerPruner(BasePruner):
         return transformed_value
 
     def update_boundary_with_leaf(self, leaf_node):
+        leaf_path_value = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
         if self.strategy_param == 1:
-            subproblem_value = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
+            subproblem_value = leaf_path_value
         #leaf_path_measure = self.tree.get_hitting_set_for_leaf(leaf_node).sum_values()
         else:
-            subproblem_value = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
+            subproblem_value = self.tree.dataset.get_values() - leaf_path_value
 
-        prune_logger.debug(f"Leaf path measure: {subproblem_value}, boundary: {self.boundary}")
+        prune_logger.debug(f"Subproblem: {subproblem_value}, leaf_path_value: {leaf_path_value} boundary: {self.boundary}")
         if subproblem_value < self.boundary:
-            prune_logger.debug(f"Update because Leaf path measure: {subproblem_value} < {self.boundary} boundary")
+            prune_logger.debug(f"Update because subproblem: {subproblem_value} < {self.boundary} boundary")
             self.boundary = subproblem_value
             prune_logger.debug(f"Updated boundary: {self.boundary}")
             print(f"Updated boundary: {self.boundary}")
 
     def should_prune(self, node):
-        if self.boundary == 0:
-            return False
         path_value = self.tree.calculate_path_bbvalue_up_to_root(node) 
+        if self.strategy_param == 1:
+            subproblem_value = path_value
+        else:
+            subproblem_value = self.tree.dataset_get_values() - path_value
         prune_logger.info(f"Should prune? {path_value <= self.boundary} because path_value {path_value} <= {self.boundary} boundary")
-        return path_value >= self.boundary
+        return subproblem_value >= self.boundary

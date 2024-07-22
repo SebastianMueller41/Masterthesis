@@ -5,3 +5,5 @@
 --sp 3 --pruner BEST
 --sp 3 --pruner UPPER
 
+Makes on sense:
+--sp 1 --pruner UPPER (because cardinality = minimal problem, would only work, if we use only remainder value)

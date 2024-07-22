@@ -13,8 +13,8 @@ MISSING_COMBINATION_FILES=(
 )
 
 # Strategy parameters and corresponding pruner combinations
-STRATEGY_PARAMS=(3)
-PRUNER_OPTIONS=(BEST)
+STRATEGY_PARAMS=(2)
+PRUNER_OPTIONS=(LOWER UPPER)
 
 # Search strategies
 SEARCH_STRATEGIES=('PBS')
