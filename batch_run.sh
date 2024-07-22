@@ -5,7 +5,7 @@ PYTHON_SCRIPT="main.py"
 
 # List of CSV files containing missing combinations
 MISSING_COMBINATION_FILES=(
-    'missingdata/SRS/sig3_5_15.csv'
+    'data/SRS/missingsig3_5_15.csv'
     #'data/SRS/sig5_15_25.csv'
     #'data/SRS/sig10_15_25.csv'
     #'data/SRS/SRS/Dataset_A/sig15_15_25.csv'
@@ -13,8 +13,8 @@ MISSING_COMBINATION_FILES=(
 )
 
 # Strategy parameters and corresponding pruner combinations
-STRATEGY_PARAMS=(1 2 3)
-PRUNER_OPTIONS=("" "" "BEST")
+STRATEGY_PARAMS=(3)
+PRUNER_OPTIONS=(BEST)
 
 # Search strategies
 SEARCH_STRATEGIES=('PBS')
