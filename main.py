@@ -193,6 +193,7 @@ if __name__ == "__main__":
             pruned_branches_count = hitting_set_tree.count_pruned_nodes()
             tree_depth = hitting_set_tree.tree_depth()
             boundary = pruner.boundary
+            dataset = dataset.get_elements()
             optimal_hitting_set = hitting_set_tree.get_hitting_set_for_optimal_solution(best_index).get_elements()
             optimal_cardinality = len(optimal_hitting_set) if optimal_hitting_set else 0
             optimal_hs = hitting_set_tree.get_hitting_set_for_optimal_solution(best_index)
@@ -220,7 +221,7 @@ if __name__ == "__main__":
 
     if args.res_db:
         if conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set.get_elements(), args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size, optimal_cardinality, args.pruner, lowest_card, best_random, best_incon, best_random_card, best_incon_card,min_val_rand,min_val_incon)
+            log_execution_data(conn, execution_time, resources_used, dataset, args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set.get_elements(), args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size, optimal_cardinality, args.pruner, lowest_card, best_random, best_incon, best_random_card, best_incon_card,min_val_rand,min_val_incon)
             conn.close()
         else:
             print("Connection to MySQL database failed")
@@ -229,8 +230,8 @@ if __name__ == "__main__":
     main_logger.debug(f"Optimal hitting set: {optimal_hitting_set} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Cardinality: {optimal_cardinality}")
 
     file_repair = "Results/Results.out"
-    repaired_dataset = dataset.clone()
     if optimal_hitting_set:
+        repaired_dataset = dataset.clone()
         for element in optimal_hitting_set:
             repaired_dataset.remove_element(element)
         repaired_dataset.to_file(file_repair)
@@ -242,11 +243,10 @@ if __name__ == "__main__":
             main_logger("Dataset empty.")
             dataset_elements = "Empty."
     else:
-        repaired_dataset.to_file(file_repair)
         dataset_elements = "No solution found."
 
     with open(file_repair, 'a') as file:
-        file.write(f"\nFile: {args.filepath}, DataSet Value: {dataset.sum_values()}")
+        file.write(f"\nFile: {args.filepath}, DataSet: {dataset}")
         file.write(f"\nBranch and Bound strategy: {args.pruner} with Search strategy: {args.ss} and Weight Assignment: {args.sp}")
         file.write(f"\nExecution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}, Optimal Value Random: {best_random}, Optimal Value Incon: {best_incon}")
         file.write(f"\nOptimal hitting set: {optimal_hitting_set} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}")
