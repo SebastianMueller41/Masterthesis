@@ -104,7 +104,7 @@ if __name__ == "__main__":
     main_logger.debug("Starting main script")
     # Prepare for timeout
     signal.signal(signal.SIGALRM, timeout_handler)
-    timeout_duration = 5  # 1800 seconds or 30 minutes
+    timeout_duration = 1800  # 1800 seconds or 30 minutes
     signal.alarm(timeout_duration)  # Start the timer
     conn = create_ssh_tunnel_and_connect()
     
@@ -211,6 +211,7 @@ if __name__ == "__main__":
             tree_depth = boundary = None
             optimal_hitting_set = None
             optimal_value = None
+            dataset_log = []
             optimal_cardinality = 0
             best_random, best_random_card, best_incon, best_incon_card, lowest_card, min_val_rand, min_card_rand, min_val_incon, min_card_incon = None, None, None, None, None, None, None, None, None
     
