@@ -14,8 +14,8 @@ MISSING_COMBINATION_FILES=(
 
 # Strategy parameters and pruner combinations
 declare -A STRATEGY_PRUNER_COMBINATIONS=(
-    #[1]="LOWER"
-    #[2]="LOWER UPPER"
+    [1]=""
+    [2]=""
     [3]="BEST"
 )
 
