@@ -189,6 +189,7 @@ if __name__ == "__main__":
     if hitting_set_tree:
         optimal_hitting_set = hitting_set_tree.get_hitting_set_for_optimal_solution(best_index)
         if optimal_hitting_set is not None:
+            print(f"\n\n{optimal_hitting_set}\n\n")
             num_kernels, num_branches = hitting_set_tree.count_kernels_and_branches()
             pruned_branches_count = hitting_set_tree.count_pruned_nodes()
             tree_depth = hitting_set_tree.tree_depth()
@@ -212,6 +213,7 @@ if __name__ == "__main__":
             optimal_hitting_set = None
             optimal_value = None
             optimal_cardinality = 0
+            dataset = dataset.get_elements()
             best_random, best_random_card, best_incon, best_incon_card, lowest_card, min_val_rand, min_card_rand, min_val_incon, min_card_incon = None, None, None, None, None, None, None, None, None
 
     resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
