@@ -27,12 +27,18 @@ class UpperPruner(BasePruner):
         return potential_bound 
 
     def update_boundary_with_leaf(self, leaf_node):
-        leaf_path_measure = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
         #leaf_path_measure = self.tree.get_hitting_set_for_leaf(leaf_node).sum_values()
-        if leaf_path_measure > self.boundary:
-            self.boundary = leaf_path_measure
-            prune_logger.debug(f"Updated boundary: {self.boundary}")
-            print(f"Updated boundary: {self.boundary}")
+        potential_value = self.calculate_potential_bound(leaf_node)
+        if potential_value >= self.boundary:
+            leaf_path_measure = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
+            if leaf_path_measure > self.boundary:
+                self.boundary = potential_value
+                prune_logger.debug(f"Updated boundary: {self.boundary}, because {leaf_path_measure} < {self.boundary} >= {potential_value}")
+                print(f"Updated boundary: {self.boundary}")
+            else:
+                prune_logger.debug(f"Potential value {potential_value} = {self.boundary} Boundary, but path measure {leaf_path_measure} not better.")
+        else:
+            prune_logger.info(f"potential_value {potential_value} > {self.boundary} Boundary")
 
     def should_prune(self, node):
         if self.boundary == 0:

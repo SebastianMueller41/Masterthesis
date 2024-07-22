@@ -42,7 +42,7 @@ LOGGING_CONFIG = {
         'file_structs': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'log/structs.log',
+            'filename': 'log/dataset.log',
             'mode': 'w',  # Overwrite the log file each time
             'formatter': 'default',
         },
