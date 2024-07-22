@@ -38,7 +38,6 @@ class DataSet:
             strategy (str, optional): The strategy identifier (e.g., "A1").
         """
         self.elements = elements if elements is not None else []
-        data_logger.info(f"ELEMENT VALUES: {ini_element_values}")
 
     def get_elements(self):
         """
@@ -195,7 +194,7 @@ def initialize_dataset(conn, input_file_path, strategy_param, db):
             load_elements_from_file(input_file_path)
     
     if ini_strategy_param is not None:
-        apply_value_assignment_strategy(strategy_param)
+        apply_value_assignment_strategy()
     
     return DataSet(ini_elements)
 
@@ -243,7 +242,7 @@ def load_elements_from_db(conn, file_path):
     else:
         data_logger.error("Connection to MySQL database failed")
 
-def apply_value_assignment_strategy(strategy_param):
+def apply_value_assignment_strategy():
     """
     Apply a value assignment strategy to each element in the dataset based on the specified parameter.
 
@@ -252,16 +251,17 @@ def apply_value_assignment_strategy(strategy_param):
     """
     global ini_element_values
 
-    if strategy_param == 0:
+    if ini_strategy_param == 0:
         for element in ini_elements:
             ini_element_values[element] = 0
-    elif strategy_param == 1:
+    elif ini_strategy_param == 1:
         for element in ini_elements:
             ini_element_values[element] = 1
+            data_logger.warning(f"Value: {ini_element_values[element]}")
 
-    if strategy_param == 2:
+    if ini_strategy_param == 2:
         ini_element_values = ini_random_values
-    if strategy_param == 3:
+    if ini_strategy_param == 3:
         ini_element_values = ini_incon_values
     # Ensure all elements have values assigned
     for element in ini_elements:

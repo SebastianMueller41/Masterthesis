@@ -115,10 +115,10 @@ class HittingSetTree:
             current_node = current_node.parent
         return hitting_set
     
-    def get_hitting_set_for_optimal_solution(self):
+    def get_hitting_set_for_optimal_solution(self, index):
         if self.leaf_nodes:
             self.sort_leaf_nodes_desc('bbvalue')
-            _, best_leaf = self.leaf_nodes[0]  # Peek at the highest priority leaf
+            _, best_leaf = self.leaf_nodes[index]  # To peek at the highest (UPPER) or lowest (LOWER) priority
             return self.get_hitting_set_for_leaf(best_leaf)
         else:
             return None

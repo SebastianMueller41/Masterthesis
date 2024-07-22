@@ -133,11 +133,13 @@ if __name__ == "__main__":
 
         brancher = Brancher(dataset, hitting_set_tree)
         main_logger.debug("Brancher initialized.")
-        
+
+        best_node = 0 # Index to peak at hitting_set_collection
         # Initialize the appropriate pruner based on user input
         if args.pruner == 'UPPER':
             pruner = UpperPruner(hitting_set_tree, args.sp, args.alpha, args.shrink_sw_size, args.expand_sw_size)
         elif args.pruner == 'LOWER':
+            best_node = -1 # To get leaf with least priority 
             pruner = LowerPruner(hitting_set_tree, args.sp)
         elif args.pruner == 'BEST':
             pruner = BestPruner(hitting_set_tree, args.sp)
@@ -182,7 +184,7 @@ if __name__ == "__main__":
         pruned_branches_count = hitting_set_tree.count_pruned_nodes()
         tree_depth = hitting_set_tree.tree_depth()
         boundary = pruner.boundary
-        optimal_hitting_set = hitting_set_tree.get_hitting_set_for_optimal_solution()
+        optimal_hitting_set = hitting_set_tree.get_hitting_set_for_optimal_solution(best_node)
         optimal_cardinality = len(optimal_hitting_set.get_elements()) if optimal_hitting_set else 0
         optimal_value = optimal_hitting_set.sum_values() if optimal_hitting_set else None
         if args.pruner == 'NONE':
