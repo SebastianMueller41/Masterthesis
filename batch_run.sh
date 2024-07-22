@@ -12,13 +12,9 @@ MISSING_COMBINATION_FILES=(
     # Add more CSV file paths as needed
 )
 
-# Strategy parameters and pruner combinations
-declare -A STRATEGY_PRUNER_COMBINATIONS=(
-    [1]=""
-    [2]=""
-    [3]="BEST"
-)
-
+# Strategy parameters and corresponding pruner combinations
+STRATEGY_PARAMS=(3)
+PRUNER_OPTIONS=("" "" "BEST")
 
 # Search strategies
 SEARCH_STRATEGIES=('PBS')
@@ -49,20 +45,19 @@ execute_command() {
 }
 
 # Loop through each CSV file
-for MISSING_COMBINATIONS_FILE in "${MISSING_COMBINATION_FILES[@]}"; do
+for MISSING_COMBINATIONS_FILE in "${MISSING_COMBINATIONS_FILES[@]}"; do
     if [ -f "$MISSING_COMBINATIONS_FILE" ]; then
         while IFS=, read -r FILE_NAME _; do
             if [ "$FILE_NAME" != "filename" ]; then
-                for strategy_param in "${!STRATEGY_PRUNER_COMBINATIONS[@]}"; do
-                    pruner_options=(${STRATEGY_PRUNER_COMBINATIONS[$strategy_param]})
-                    for pruner_option in "${pruner_options[@]}"; do
-                        for search_strategy in "${SEARCH_STRATEGIES[@]}"; do
-                            for param_set in "${PARAMETER_SETS[@]}"; do
-                                for expand_option in "${EXPAND_OPTIONS[@]}"; do
-                                    for shrink_option in "${SHRINK_OPTIONS[@]}"; do
-                                        command="python3 $PYTHON_SCRIPT '$FILE_NAME' --sp $strategy_param --ss $search_strategy --pruner $pruner_option $expand_option $shrink_option $param_set"
-                                        execute_command "$command"
-                                    done
+                for i in "${!STRATEGY_PARAMS[@]}"; do
+                    strategy_param=${STRATEGY_PARAMS[$i]}
+                    pruner_option=${PRUNER_OPTIONS[$i]}
+                    for search_strategy in "${SEARCH_STRATEGIES[@]}"; do
+                        for param_set in "${PARAMETER_SETS[@]}"; do
+                            for expand_option in "${EXPAND_OPTIONS[@]}"; do
+                                for shrink_option in "${SHRINK_OPTIONS[@]}"; do
+                                    command="python3 $PYTHON_SCRIPT '$FILE_NAME' --sp $strategy_param --ss $search_strategy --pruner $pruner_option $expand_option $shrink_option $param_set"
+                                    execute_command "$command"
                                 done
                             done
                         done
