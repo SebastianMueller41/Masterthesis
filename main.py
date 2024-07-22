@@ -104,14 +104,13 @@ if __name__ == "__main__":
     main_logger.debug("Starting main script")
     # Prepare for timeout
     signal.signal(signal.SIGALRM, timeout_handler)
-    timeout_duration = 1800  # 1800 seconds or 30 minutes
+    timeout_duration = 5  # 1800 seconds or 30 minutes
     signal.alarm(timeout_duration)  # Start the timer
-
+    conn = create_ssh_tunnel_and_connect()
+    
     try:
-        conn = create_ssh_tunnel_and_connect()
-        start_time = time.time()
         dataset = initialize_dataset(conn, input_file_path=args.filepath, strategy_param=args.sp, db=args.path_db)
-        
+        start_time = time.time()
         if dataset.size() == 0:
             main_logger.error("No Dataset found, please use a dataset from DB or change code to use files.")
             sys.exit(1)
@@ -176,8 +175,9 @@ if __name__ == "__main__":
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
         if args.res_db and conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner, None,None,None,None,None,None)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner, None,None,None,None,None,None,None)
             conn.close()
+            print("Program timed out.")
         sys.exit(1)
     except Exception as e:
         main_logger.error(f"An error occurred: {e}")
@@ -189,12 +189,11 @@ if __name__ == "__main__":
     if hitting_set_tree:
         optimal_hitting_set = hitting_set_tree.get_hitting_set_for_optimal_solution(best_index)
         if optimal_hitting_set is not None:
-            print(f"\n\n{optimal_hitting_set}\n\n")
             num_kernels, num_branches = hitting_set_tree.count_kernels_and_branches()
             pruned_branches_count = hitting_set_tree.count_pruned_nodes()
             tree_depth = hitting_set_tree.tree_depth()
             boundary = pruner.boundary
-            dataset = dataset.get_elements()
+            dataset_log = dataset.get_elements()
             optimal_hitting_set = hitting_set_tree.get_hitting_set_for_optimal_solution(best_index).get_elements()
             optimal_cardinality = len(optimal_hitting_set) if optimal_hitting_set else 0
             optimal_hs = hitting_set_tree.get_hitting_set_for_optimal_solution(best_index)
@@ -213,22 +212,21 @@ if __name__ == "__main__":
             optimal_hitting_set = None
             optimal_value = None
             optimal_cardinality = 0
-            dataset = dataset.get_elements()
             best_random, best_random_card, best_incon, best_incon_card, lowest_card, min_val_rand, min_card_rand, min_val_incon, min_card_incon = None, None, None, None, None, None, None, None, None
-
+    
     resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
-    print(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}, Max Value Random: {best_random}, Max Value Incon: {best_incon}, Optimal Random Cardinality: {best_random_card}, Optimal Incon Cardinality: {best_incon_card}, Min Value Random: {min_val_rand}, Min Value Incon: {min_val_incon}")
+    print(f"\nExecution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}, Max Value Random: {best_random}, Max Value Incon: {best_incon}, Optimal Random Cardinality: {best_random_card}, Optimal Incon Cardinality: {best_incon_card}, Min Value Random: {min_val_rand}, Min Value Incon: {min_val_incon}")
     print(f"Optimal hitting set: {optimal_hitting_set} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Optimal Cardinality: {optimal_cardinality}")
 
     if args.res_db:
         if conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset, args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size, optimal_cardinality, args.pruner, lowest_card, best_random, best_incon, best_random_card, best_incon_card,min_val_rand,min_val_incon)
+            log_execution_data(conn, execution_time, resources_used, dataset_log, args.sp, num_kernels, num_branches, tree_depth, pruned_branches_count, args.filepath, boundary, optimal_hitting_set, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, optimal_value, args.expand_div_conq, args.shrink_sw_size, optimal_cardinality, args.pruner, lowest_card, best_random, best_incon, best_random_card, best_incon_card,min_val_rand,min_val_incon)
             conn.close()
         else:
             print("Connection to MySQL database failed")
 
-    main_logger.debug(f"Execution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}, Max Value Random: {best_random}, Max Value Incon: {best_incon}, Optimal Random Cardinality: {best_random_card}, Optimal Incon Cardinality: {best_incon_card}, Min Value Random: {min_val_rand}, Min Value Incon: {min_val_incon}")
+    main_logger.debug(f"\nExecution time: {execution_time}s, Memory Used: {resources_used}, Strategy: {args.sp}, Search Strategy: {args.ss}, Kernels: {num_kernels}, Branches: {num_branches}, Tree depth: {tree_depth}, Pruned branches: {pruned_branches_count}, Boundary: {boundary}, Pruner: {args.pruner},Shrink Sliding Window size: {args.shrink_sw_size}, Expand Sliding Window size: {args.expand_sw_size}, Shrink Divide and Conquer: {args.shrink_div_conq}, Expand Divide and Conquer: {args.expand_div_conq}, Lowest Cardinality: {lowest_card}, Max Value Random: {best_random}, Max Value Incon: {best_incon}, Optimal Random Cardinality: {best_random_card}, Optimal Incon Cardinality: {best_incon_card}, Min Value Random: {min_val_rand}, Min Value Incon: {min_val_incon}")
     main_logger.debug(f"Optimal hitting set: {optimal_hitting_set} with value: {optimal_value}, Alpha: {args.alpha}, Optimal Value: {optimal_value}, Cardinality: {optimal_cardinality}")
 
     file_repair = "Results/Results.out"
@@ -257,10 +255,10 @@ if __name__ == "__main__":
         file.write(f"\nRepaired dataset: {dataset_elements}\n")
 
         file.write(f"\nMax random value: {best_random} with card: {best_random_card}")
-        file.write(f"\nMax incon value: {best_incon} with card: {best_incon_card}\n")
+        file.write(f"\nMax incon value: {best_incon}\n")
 
         file.write(f"\nMin random value: {min_val_rand} with card: {min_card_rand}")
-        file.write(f"\nMin incon value: {min_val_incon} with card: {min_card_incon}\n")
+        file.write(f"\nMin incon value: {min_val_incon}\n")
 
         file.write(f"\nAll explored hitting sets: \n(Value, Cardinality, Hitting set)\n")
     

@@ -21,13 +21,16 @@ class LowerPruner(BasePruner):
         return transformed_value
 
     def update_boundary_with_leaf(self, leaf_node):
-        leaf_path_measure = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
+        if self.strategy_param == 1:
+            subproblem_value = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
         #leaf_path_measure = self.tree.get_hitting_set_for_leaf(leaf_node).sum_values()
+        else:
+            subproblem_value = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
 
-        prune_logger.debug(f"Leaf path measure: {leaf_path_measure}, boundary: {self.boundary}")
-        if leaf_path_measure < self.boundary:
-            prune_logger.debug(f"Update because Leaf path measure: {leaf_path_measure} > {self.boundary} boundary")
-            self.boundary = leaf_path_measure
+        prune_logger.debug(f"Leaf path measure: {subproblem_value}, boundary: {self.boundary}")
+        if subproblem_value < self.boundary:
+            prune_logger.debug(f"Update because Leaf path measure: {subproblem_value} < {self.boundary} boundary")
+            self.boundary = subproblem_value
             prune_logger.debug(f"Updated boundary: {self.boundary}")
             print(f"Updated boundary: {self.boundary}")
 
