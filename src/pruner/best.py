@@ -1,6 +1,7 @@
 from src.pruner.basepruner import BasePruner
 import logging
 from src.structs.logger import setup_logging
+from src.structs.dataset import get_strategy_param
 
 # Set up logging for this module
 setup_logging()
@@ -56,7 +57,7 @@ class BestPruner(BasePruner):
     
     # Check if any element of the dataset has a value of 0
     def has_zero_value(self, dataset):
-        for element, value in dataset.get_elements_with_values():
-            if value == 0 and dataset.sum_values() == len(dataset.get_elements()):
+        for _, value in dataset.get_elements_with_values():
+            if value == 0:
                 return True
         return False

@@ -273,3 +273,6 @@ def get_incon_values():
 
 def get_random_values():
     return ini_random_values
+
+def get_strategy_param():
+    return ini_strategy_param

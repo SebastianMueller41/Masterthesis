@@ -16,8 +16,9 @@ MISSING_COMBINATION_FILES=(
 declare -A STRATEGY_PRUNER_COMBINATIONS=(
     [1]="UPPER"
     [2]="BEST NONE"
-    [3]="BEST"
+    [3]="BEST UPPER"
 )
+
 
 # Search strategies
 SEARCH_STRATEGIES=('PBS')
