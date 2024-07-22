@@ -13,7 +13,7 @@ MISSING_COMBINATION_FILES=(
 )
 
 # Strategy parameters and corresponding pruner combinations
-STRATEGY_PARAMS=(3)
+STRATEGY_PARAMS=(1 2 3)
 PRUNER_OPTIONS=("" "" "BEST")
 
 # Search strategies
@@ -45,18 +45,26 @@ execute_command() {
 }
 
 # Loop through each CSV file
-for MISSING_COMBINATIONS_FILE in "${MISSING_COMBINATIONS_FILES[@]}"; do
+for MISSING_COMBINATIONS_FILE in "${MISSING_COMBINATION_FILES[@]}"; do
+    echo "Processing file: $MISSING_COMBINATIONS_FILE"
     if [ -f "$MISSING_COMBINATIONS_FILE" ]; then
         while IFS=, read -r FILE_NAME _; do
             if [ "$FILE_NAME" != "filename" ]; then
+                echo "Found file name: $FILE_NAME"
                 for i in "${!STRATEGY_PARAMS[@]}"; do
                     strategy_param=${STRATEGY_PARAMS[$i]}
                     pruner_option=${PRUNER_OPTIONS[$i]}
+                    echo "Using strategy_param: $strategy_param, pruner_option: $pruner_option"
                     for search_strategy in "${SEARCH_STRATEGIES[@]}"; do
+                        echo "Using search_strategy: $search_strategy"
                         for param_set in "${PARAMETER_SETS[@]}"; do
+                            echo "Using param_set: $param_set"
                             for expand_option in "${EXPAND_OPTIONS[@]}"; do
+                                echo "Using expand_option: $expand_option"
                                 for shrink_option in "${SHRINK_OPTIONS[@]}"; do
+                                    echo "Using shrink_option: $shrink_option"
                                     command="python3 $PYTHON_SCRIPT '$FILE_NAME' --sp $strategy_param --ss $search_strategy --pruner $pruner_option $expand_option $shrink_option $param_set"
+                                    echo "Command: $command"
                                     execute_command "$command"
                                 done
                             done
@@ -65,5 +73,7 @@ for MISSING_COMBINATIONS_FILE in "${MISSING_COMBINATIONS_FILES[@]}"; do
                 done
             fi
         done < "$MISSING_COMBINATIONS_FILE"
+    else
+        echo "File not found: $MISSING_COMBINATIONS_FILE"
     fi
 done
