@@ -118,7 +118,7 @@ def insert_results(conn, run):
 # Example usage
 conn = create_ssh_tunnel_and_connect()
 
-runs = parse_csv('Results/All_hitting_sets.csv')
+runs = parse_csv('Results/All_hitting_sets_sig3.csv')
 
 for run in runs:
     try:
