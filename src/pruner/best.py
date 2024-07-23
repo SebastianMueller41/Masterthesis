@@ -31,23 +31,24 @@ class BestPruner(BasePruner):
             prune_logger.info(f"Optimal reached with: {self.tree.get_hitting_set_for_leaf(leaf_node).get_elements()}")
 
     def should_prune(self, node):
+        # Check if node is None
+        if node is None:
+            prune_logger.debug(f"Node is {node}")
+            return True
+        
         # Check if boundary is zero
         if self.boundary == 0:
-            prune_logger.debug("Boundary is zero, returning False.")
+            prune_logger.debug(f"Lower boundary is {self.boundary}, returning False.")
             return False
         
         # Check if optimal solution is reached
         if not self.optimal_reached:
-            prune_logger.debug("Optimal solution not reached, returning False.")
+            prune_logger.debug(f"Upper bound = {self.optimal_reached}, Optimal solution not reached, returning False.")
             return False
-        
-        # Check if node is None
-        if node is None:
-            prune_logger.debug(f"Node is None: {node}, node.get_kernel() is None: {node.get_kernel()}")
-            return True
         
         # Check hitting set cardinality
         if self.card_check:
+            prune_logger.debug(f"Upper bound = {self.optimal_reached}, Lower bound = {self.boundary}")
             hs_cardinality = len(self.tree.get_hitting_set_for_leaf(node).get_elements())
             best_cardinality = len(self.tree.get_hitting_set_for_leaf(self.best_leaf).get_elements())
             prune_logger.info(f"Hitting set length: {hs_cardinality}, Best leaf cardinality: {best_cardinality}")

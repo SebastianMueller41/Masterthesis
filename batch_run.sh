@@ -6,15 +6,16 @@ PYTHON_SCRIPT="main.py"
 # List of CSV files containing missing combinations
 MISSING_COMBINATION_FILES=(
     'data/SRS/sig3_5_15.csv'
-    #'data/SRS/sig5_15_25.csv'
-    #'data/SRS/sig10_15_25.csv'
-    #'data/SRS/SRS/Dataset_A/sig15_15_25.csv'
+    'data/SRS/sig5_15_25.csv'
+    'data/SRS/sig10_15_25.csv'
+    'data/SRS/sig15_15_25.csv'
+    'data/SRS/sig15_25_50.csv'
     # Add more CSV file paths as needed
 )
 
 # Strategy parameters and corresponding pruner combinations
-STRATEGY_PARAMS=(2 3)
-PRUNER_OPTIONS=('LOWER')
+STRATEGY_PARAMS=(2)
+PRUNER_OPTIONS=('NONE')
 
 # Search strategies
 SEARCH_STRATEGIES=('PBS')
@@ -30,7 +31,7 @@ SHRINK_OPTIONS=('')
 
 # Parameter sets
 PARAMETER_SETS=(
-    "--alpha '(A0&&!A0)' -path-db -res-db"
+    "--alpha '(A0&&!A0)' -path-db"
     # Add more parameter sets if needed
 )
 

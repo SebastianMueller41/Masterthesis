@@ -10,13 +10,14 @@ setup_logging()
 tree_logger = logging.getLogger(__name__)
 
 class HSTreeNode:
-    def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None, bbvalue=0, parent=None, pruned=False):
+    def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None, bbvalue=0, sub_value=0, parent=None, pruned=False):
         self.kernel = kernel
         self.children = children if children is not None else []
         self.edge = edge
         self.level = level
         self.dataset = dataset
         self.bbvalue = bbvalue
+        self.sub_value = sub_value
         self.parent = parent
         self.pruned = pruned
 
@@ -80,20 +81,6 @@ class HittingSetTree:
     def add_leaf_node(self, leaf_node):
         bbvalue = self.calculate_path_bbvalue_up_to_root(leaf_node)
         heapq.heappush(self.leaf_nodes, (bbvalue, leaf_node))
-
-    def sort_leaf_nodes_desc(self, criterion='bbvalue'):
-        if criterion == 'bbvalue':
-            # Sort by bbvalue in descending order, then by hitting set length in ascending order
-            self.leaf_nodes.sort(
-                key=lambda x: (-x[0], len(self.get_hitting_set_for_leaf(x[1]).get_elements()))
-            )
-        elif criterion == 'hitting_set_length':
-            # Sort by hitting set length in descending order, then by bbvalue in ascending order
-            self.leaf_nodes.sort(
-                key=lambda x: -len(self.get_hitting_set_for_leaf(x[1]).get_elements())
-            )
-        else:
-            raise ValueError(f"Unknown sorting criterion: {criterion}")
 
     def calculate_path_bbvalue_up_to_root(self, node):
         cumulative_bbvalue = 0.0
@@ -176,25 +163,14 @@ class HittingSetTree:
         indent = "  " * level
         hitting_set_value = self.calculate_path_bbvalue_up_to_root(node)
 
-        output_text = f"{level}{indent}Kernel: {node.kernel}, Edge: {node.edge}, Level: {node.level}, Bound: {self.boundary}, Hitting Set Value: {hitting_set_value}\n"
+        output_text = f"{level}{indent}Kernel: {node.kernel}, Edge: {node.edge}, Level: {node.level}, Bound: {self.boundary}, Path Value: {hitting_set_value}, Sub Value: {node.sub_value}, Dataset Sum: {node.dataset.sum_values()}\n"
 
         with open(output_file, 'a') as file:
             file.write(output_text)
 
         for child in node.children:
             self.print_tree_to_file(child, level + 1, output_file)
-        
-    def print_newline(self, output_file="log/tree_output.txt"):    
+
+    def print_newline(self, output_file="Results/tree_output.txt"):    
         with open(output_file, "a") as file:
             file.write("\n\n")
-            
-    def print_all_hitting_sets_to_file(self, output_file="Results/all_hitting_sets.txt"):
-        # Write to file
-        self.sort_leaf_nodes_desc('bbvalue')
-        with open(output_file, 'a') as file:
-            for bbvalue, leaf_node in self.leaf_nodes:
-                hitting_set = self.get_hitting_set_for_leaf(leaf_node)
-                if hitting_set is not None:
-                    hitting_set_elements = hitting_set.get_elements_with_values()
-                    cardinality = len(self.get_hitting_set_for_leaf(leaf_node).get_elements())
-                    file.write(f"{bbvalue}, {cardinality}, Hitting Set: {hitting_set_elements}\n")

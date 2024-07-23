@@ -4,3 +4,7 @@ Makes on sense:
 --sp 1, LOWER
 --sp 2, LOWER, UPPER, NONE
 --sp 3, LOWER, UPPER, BEST
+
+LOWER -> Finds optimal solution with lowest Value
+UPPER -> Finds optimal solution with highest Value
+BEST -> Finds optimal solution with highest Value and Lowest Cardinality
