@@ -1,9 +1,6 @@
---sp 1 --pruner LOWER
---sp 2 --pruner LOWER
---sp 2 --pruner UPPER
---sp 2 --pruner NONE
---sp 3 --pruner BEST
---sp 3 --pruner UPPER
-
 Makes on sense:
 --sp 1 --pruner UPPER (because cardinality = minimal problem, would only work, if we use only remainder value)
+
+--sp 1, LOWER
+--sp 2, LOWER, UPPER, NONE
+--sp 3, LOWER, UPPER, BEST
