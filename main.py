@@ -147,6 +147,7 @@ if __name__ == "__main__":
         execution_time = time.time() - start_time
 
         results = ResultCalculator(hitting_set_tree, pruner)
+        #results.log_results(conn)
         results.print_results()
         results.print_results_to_file("Results/All_hitting_sets.csv",execution_time,args.alpha, args.filepath)
 

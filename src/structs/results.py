@@ -1,5 +1,6 @@
 import csv
 import logging
+from src.database.database import log_execution_data
 from src.structs.logger import setup_logging
 from src.structs.dataset import get_random_values,get_incon_values
 
@@ -24,12 +25,10 @@ class ResultCalculator:
         # Create a list of tuples containing (BBVALUE, hitting_set, LEAF_NODE)
         self.leaf_nodes = [(bbvalue, len(self.tree.get_hitting_set_for_leaf(leaf).get_elements()), leaf) for bbvalue, leaf in self.tree.leaf_nodes]
         self.sort_leaf_nodes()
-        pass
 
-        for _,leaf in self.tree.leaf_nodes:
-            HS = self.tree.get_hitting_set_for_leaf(leaf)
-            random_HS_value = sum(self.random_values[element] for element in HS.get_elements())
-            incon_HS_value = sum(self.incon_values[element] for element in HS.get_elements())
+        #HS = self.tree.get_hitting_set_for_leaf(leaf)
+        #random_HS_value = sum(self.random_values[element] for element in HS.get_elements())
+        #incon_HS_value = sum(self.incon_values[element] for element in HS.get_elements())
             
             #leafs_random[leaf] = random_HS_value
             #leafs_incon[leaf] = incon_HS_value
@@ -68,6 +67,10 @@ class ResultCalculator:
 
     def print_results_to_file(self, result_path="Results/All_hitting_sets.csv", execution_time = 0, alpha = 'alpha', file_name='xx'):
         self.write_to_csv(result_path, execution_time, alpha, file_name)
+
+    def log_results(self, conn):
+        log_execution_data()
+        conn.close()
 
     def write_to_csv(self, filename, execution_time, alpha, file_name):
         num_kernels, num_branches = self.tree.count_kernels_and_branches()
