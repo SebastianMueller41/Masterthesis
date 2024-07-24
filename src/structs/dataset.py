@@ -185,7 +185,7 @@ class DataSet:
 
 def initialize_dataset(conn, input_file_path, strategy_param, db):
     global ini_strategy_param
-    
+
     ini_strategy_param = strategy_param
     if input_file_path:
         if db:

@@ -57,13 +57,14 @@ class HSTreeNode:
         return self.__str__()
 
 class HittingSetTree:
-    def __init__(self, dataset=None, initial_kernel=None, output_file="Results/tree_output.txt"):
+    def __init__(self, dataset=None, kernel_strategy=None, initial_kernel=None, search_strategy=None, output_file="Results/tree_output.txt"):
         self.root = HSTreeNode(kernel=initial_kernel)
         self.dataset = dataset
         self.leaf_nodes = []
         self.output_file = output_file
         self.tree_sum = dataset.sum_values()
         self.boundary = 0
+        self.search_strategy = search_strategy
 
         with open(self.output_file, 'w') as file:
             file.truncate()

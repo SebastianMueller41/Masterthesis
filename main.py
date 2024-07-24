@@ -24,7 +24,7 @@ from src.tree.hittingsettree import HittingSetTree
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Run the kernelization process with optional database main_logger.')
 parser.add_argument('filepath', type=str, help='Path to the dataset file')
-parser.add_argument('--sp', type=int, choices=range(0, 4), required=True, help='Strategy parameter for value assignment being used for Branch-and-Bound: 1: Cardinality, 2: Random Values, 3: Inconsistency Values)')
+parser.add_argument('--vp', type=int, choices=range(0, 4), required=True, help='Value parameter for value assignment being used for Branch-and-Bound: 1: Cardinality, 2: Random Values, 3: Inconsistency Values)')
 parser.add_argument('--ss', '--search-strategy', type=str, default='P', choices=['BFS', 'DFS', 'HYS', 'PBS'], required=True, help='Search strategy to use: BFS, DFS, Hybrid, Priority')
 parser.add_argument('--alpha', type=str, required=True, help='A string value to be used as alpha')
 parser.add_argument('--pruner', type=str, default='NONE', choices=['UPPER', 'LOWER', 'BEST', 'NONE'], help='Pruning/Boundary strategy to use: UPPER, LOWER, BEST, NONE')
@@ -66,10 +66,14 @@ if __name__ == "__main__":
     signal.signal(signal.SIGALRM, timeout_handler)
     timeout_duration = 1800  # 1800 seconds or 30 minutes
     signal.alarm(timeout_duration)  # Start the timer
-    conn = create_ssh_tunnel_and_connect()
+
+    if args.path_db:
+        conn = create_ssh_tunnel_and_connect()
+    else:
+        conn = False
     
     try:
-        dataset = initialize_dataset(conn, input_file_path=args.filepath, strategy_param=args.sp, db=args.path_db)
+        dataset = initialize_dataset(conn, input_file_path=args.filepath, strategy_param=args.vp, db=args.path_db)
         start_time = time.time()
         if dataset.size() == 0:
             main_logger.error("No Dataset found, please use a dataset from DB or change code to use files.")
@@ -88,7 +92,7 @@ if __name__ == "__main__":
         hitting_set_tree = None
         kernel_strategy = ExpandShrink(args.expand_sw_size, args.shrink_sw_size, args.shrink_div_conq, args.expand_div_conq)
 
-        if dataset.sum_values() == 0 and args.sp == 3:
+        if dataset.sum_values() == 0 and args.vp == 3:
                 print(f"DataSet Inconsistency Weights == {dataset.sum_values()}")
                 main_logger.error(f"DataSet Inconsistency Values == {dataset.sum_values()}")
                 sys.exit(1)
@@ -103,25 +107,25 @@ if __name__ == "__main__":
         best_index = 0 # Index to peak at hitting_set_collection
         # Initialize the appropriate pruner based on user input
         if args.pruner == 'UPPER':
-            pruner = UpperPruner(hitting_set_tree, args.alpha, args.shrink_sw_size, args.expand_sw_size)
+            pruner = UpperPruner(kernel_strategy, hitting_set_tree, args.alpha)
         elif args.pruner == 'LOWER':
             best_index = -1 # To get leaf with least priority 
-            pruner = LowerPruner(hitting_set_tree)
+            pruner = LowerPruner(kernel_strategy, hitting_set_tree, args.alpha)
         elif args.pruner == 'BEST':
-            pruner = BestPruner(hitting_set_tree)
+            pruner = BestPruner(kernel_strategy, hitting_set_tree, args.alpha)
         else:  # Default to BasePruner for no pruning
-            pruner = BasePruner(hitting_set_tree)
+            pruner = BasePruner(kernel_strategy, hitting_set_tree, args.alpha)
         
         main_logger.debug("Pruner initialized.")
 
         if args.ss == 'BFS':
-            search_strategy = BFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
+            search_strategy = BFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.vp)
         elif args.ss == 'DFS':
-            search_strategy = DFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
+            search_strategy = DFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.vp)
         elif args.ss == 'HYS':
-            search_strategy = HYS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
+            search_strategy = HYS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.vp)
         elif args.ss == 'PBS':
-            search_strategy = PBS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.sp)
+            search_strategy = PBS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.vp)
         else:
             main_logger.error("Invalid search strategy")
             sys.exit(1)
@@ -129,13 +133,22 @@ if __name__ == "__main__":
         main_logger.debug("Search initialized.")
 
         hitting_set_tree = KernelSolver(search_strategy).solve()
+ 
+        execution_time = time.time() - start_time
+        resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
+
+        results = ResultCalculator(tree=hitting_set_tree, pruner=pruner, execution_time=execution_time, ressources=resources_used, search_strategy=args.ss, alpha=args.alpha, value=args.vp, filename=args.filepath, output_file="Results/All_hitting_sets.csv")
+        #results.log_results(conn)
+        results.print_results_to_file()
+        results.print_results()
+        
 
     except TimeoutError as e:
         main_logger.error(f"Timeout occurred: {e}")
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
         if args.res_db and conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.sp, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner, None,None,None,None,None,None,None)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.vp, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner, None,None,None,None,None,None,None)
             conn.close()
             print("Program timed out.")
         sys.exit(1)
@@ -144,20 +157,3 @@ if __name__ == "__main__":
         sys.exit(1)
     finally:
         signal.alarm(0)  # Cancel the timeout
-        execution_time = time.time() - start_time
-
-        results = ResultCalculator(hitting_set_tree, pruner)
-        #results.log_results(conn)
-        results.print_results()
-        results.print_results_to_file("Results/All_hitting_sets.csv",execution_time,args.alpha, args.filepath)
-
-
-
-
-
-
-
-
-
-    
-    

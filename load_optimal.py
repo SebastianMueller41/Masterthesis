@@ -90,30 +90,42 @@ def insert_results(conn, run):
 
     # Calculate the maximum values for the optimal hitting set
     max_cardinality = max(hs[1] for hs in hitting_set_values)
-    max_random_sum = max(hs[2] for hs in hitting_set_values)
-    max_inconsistency_sum = max(hs[3] for hs in hitting_set_values)
+    max_random_value = max(hs[2] for hs in hitting_set_values)
+    max_incon_value = max(hs[3] for hs in hitting_set_values)
+    min_cardinality = min(hs[1] for hs in hitting_set_values)
+    min_random_value = min(hs[2] for hs in hitting_set_values)
+    min_incon_value = min(hs[3] for hs in hitting_set_values)
+    num_leafs = len(hitting_set_values)
 
     # Insert execution results into OPTIMAL table
     try:
         cursor.execute("""
             INSERT INTO EXE_RESULTS.OPTIMAL (
-                execution_time, filename, num_kernels, num_branches, tree_depth, alpha, optimal_cardinality, optimal_hs_random, optimal_hs_incon
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                execution_time, filename, num_kernels, num_branches, tree_depth, alpha, max_cardinality, max_random_value, max_incon_value, min_random_value, min_incon_value, min_cardinality, num_leafs
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             ON DUPLICATE KEY UPDATE
                 execution_time = VALUES(execution_time),
                 num_kernels = VALUES(num_kernels),
                 num_branches = VALUES(num_branches),
                 tree_depth = VALUES(tree_depth),
                 alpha = VALUES(alpha),
-                optimal_cardinality = VALUES(optimal_cardinality),
-                optimal_hs_random = VALUES(optimal_hs_random),
-                optimal_hs_incon = VALUES(optimal_hs_incon)
-        """, (execution_time, filename, num_kernels, num_branches, tree_depth, alpha, max_cardinality, max_random_sum, max_inconsistency_sum))
+                max_cardinality = VALUES(max_cardinality),
+                max_random_value = VALUES(max_random_value),
+                max_incon_value = VALUES(max_incon_value),
+                min_random_value = VALUES(min_random_value),
+                min_incon_value = VALUES(min_incon_value),
+                min_cardinality = VALUES(min_cardinality),
+                num_leafs = VALUES(num_leafs),
+        """, (
+            execution_time, filename, num_kernels, num_branches, tree_depth, alpha,
+            max_cardinality, max_random_value, max_incon_value, min_random_value, min_incon_value, min_cardinality, num_leafs
+        ))
         conn.commit()
     except Error as e:
         print(f"Failed to insert data into MySQL database: {e}")
     finally:
         cursor.close()
+
 
 # Example usage
 conn = create_ssh_tunnel_and_connect()

@@ -9,8 +9,8 @@ setup_logging()
 prune_logger = logging.getLogger(__name__)
 
 class LowerPruner(BasePruner):
-    def __init__(self, tree):
-        self.tree = tree
+    def __init__(self, kernel_strategy, tree):
+        super().__init__(kernel_strategy, tree)
         self.boundary = float('inf')
 
     def update_boundary_with_leaf(self, leaf_node):

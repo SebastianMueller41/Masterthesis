@@ -15,7 +15,7 @@ class DFS(Strategy, Search):
         Search.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
         self.pruner = pruner
         self.brancher = brancher
-        self.datset = dataset
+        self.dataset = dataset
         ss_logger.debug("Initialized DFS")
 
     def find_kernels(self) -> None:
@@ -33,16 +33,16 @@ class DFS(Strategy, Search):
             self.tree.root = HSTreeNode(kernel=result.get_elements(), dataset=dataset, bbvalue=0, parent=None)
             self.dfs(self.tree.root.dataset, alpha, self.tree.root)
         else:
-            parent.dataset = self.dataset
             if self.pruner.should_prune(parent):
                 parent.kernel = "PRUNED"
                 parent.set_pruned()
                 return
+
             for element in parent.get_kernel():
                 reduced_dataset = parent.get_dataset().clone()
                 reduced_dataset.remove_element(element)
 
-                bbvalue = self.brancher.calculate_bbvalue(parent, reduced_dataset)
+                bbvalue = self.brancher.calculate_bbvalue(parent)
                 child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=parent.level + 1, bbvalue=bbvalue, parent=parent)
                 parent.add_child(child_node)
 
@@ -54,4 +54,5 @@ class DFS(Strategy, Search):
                     child_node.set_kernel("LEAF")
                     self.tree.add_leaf_node(child_node)
                     self.pruner.update_boundary_with_leaf(child_node)
+
         self.log_tree()

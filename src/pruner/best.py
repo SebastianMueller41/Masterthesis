@@ -10,12 +10,10 @@ setup_logging()
 prune_logger = logging.getLogger(__name__)
 
 class BestPruner(BasePruner):
-    def __init__(self, tree, strategy_param):
-        self.tree = tree
+    def __init__(self, kernel_strategy, tree):
+        super().__init__(kernel_strategy, tree)
         self.optimal_reached = False
         self.best_solution = None
-        self.boundary = 0
-        self.strategy_param = strategy_param
         self.card_check = self.has_zero_value(self.tree.dataset)
         prune_logger.debug(f"Cardinality set to: {self.card_check}, because {self.tree.dataset.sum_values()} <= {len(self.tree.dataset.get_elements())}")
 

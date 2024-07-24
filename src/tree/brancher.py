@@ -36,10 +36,3 @@ class Brancher(BaseBrancher):
 
     def add_to_priority_queue(self, queue, node, priority):
         heapq.heappush(queue, (-priority, node))
-
-    def calculate_bbvalue(self, current_node):
-        #assigned_value = self.dataset.get_element_value(element)
-        path_from_leaf = self.tree.get_hitting_set_for_leaf(current_node)
-        assigned_value = path_from_leaf.sum_values() if path_from_leaf is not None else 0
-        tree_logger.debug(f"assigned_value = {assigned_value}")
-        return assigned_value
