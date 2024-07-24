@@ -1,7 +1,6 @@
 from src.pruner.basepruner import BasePruner
 import logging
 from src.structs.logger import setup_logging
-from src.kernels.shrinkexpand import ShrinkExpand
 
 # Set up logging for this module
 setup_logging()
@@ -10,22 +9,29 @@ setup_logging()
 prune_logger = logging.getLogger(__name__)
 
 prune_logger.info("Pruner called.")
+
 class UpperPruner(BasePruner):
-    def __init__(self, kernel_strategy, tree):
-        super().__init__(kernel_strategy, tree)
-        self.boundary = 0
-    
+    def __init__(self, kernel_strategy, tree, alpha):
+        super().__init__(kernel_strategy, tree, alpha)
+        self.lower_bound = float('-inf')  # Initialize with a very low value
+
     def update_boundary_with_leaf(self, leaf_node):
         leaf_path_measure = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
-        if leaf_path_measure > self.boundary:
-            prune_logger.debug(f"leaf_path_measure {leaf_path_measure} > {self.boundary} lower boundary")
-            self.boundary = leaf_path_measure
-            prune_logger.debug(f"Updated lower boundary: {self.boundary}")
-            print(f"Updated lower boundary: {self.boundary}")
+        if leaf_path_measure > self.lower_bound:
+            prune_logger.debug(f"leaf_path_measure {leaf_path_measure} > {self.lower_bound} lower boundary")
+            self.lower_bound = leaf_path_measure
+            prune_logger.debug(f"Updated lower boundary: {self.lower_bound}")
+            print(f"Updated lower boundary: {self.lower_bound}")
         else:
-            prune_logger.debug(f"Path value {leaf_path_measure} <= {self.boundary} lower boundary")
+            prune_logger.debug(f"Path value {leaf_path_measure} <= {self.lower_bound} lower boundary")
+
+    def calculate_potential_bound(self, node):
+        # This method should be implemented to calculate the potential bound of the node
+        # For now, let's assume it returns some computed value
+        return node.bbvalue  # Placeholder implementation
 
     def should_prune(self, node):
         potential_value = self.calculate_potential_bound(node)
-        prune_logger.debug(f"Prune: {potential_value < self.boundary}, because {potential_value} < {self.boundary}")
-        return potential_value < self.boundary
+        prune_logger.debug(f"Node BBValue: {node.bbvalue}")
+        prune_logger.debug(f"Prune: {potential_value < self.lower_bound}, because {potential_value} < {self.lower_bound}")
+        return potential_value < self.lower_bound
