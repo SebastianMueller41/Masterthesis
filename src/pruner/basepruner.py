@@ -13,7 +13,9 @@ class BasePruner:
     def __init__(self, kernel_strategy, tree, alpha):
         self.tree = tree
         self.best_solution = None
-        self.boundary = None
+        self.optimal_reached = False
+        self.lower_bound = 0
+        self.upper_bound = float('inf')
         self.alpha = alpha
         self.kernel_strategy = kernel_strategy
         self.remainder_flag = False # Set Flag to True to calculate remainder value of node
@@ -24,7 +26,7 @@ class BasePruner:
         return subproblem_value
     
     def find_remainder_in_dataaset(self, dataset):
-        return self.kenrel_strategy.find_remainder(dataset)
+        return self.kernel_strategy.find_remainder(dataset)
     
     def calculate_potential_bound(self, node):
         if self.remainder_flag:

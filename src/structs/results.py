@@ -27,6 +27,8 @@ class ResultCalculator:
             'num_kernels': None,
             'num_branches': None,
             'tree_depth': None,
+            'upper_bound' : None,
+            'lower_bound': None,
             'pruned_branches_count': None,
             'result_value': None,
             'cardinality_value': None,
@@ -53,13 +55,14 @@ class ResultCalculator:
         print(f"\n*********** EXECUTION AND PERFORMANCE PARAMETERS ***********")
         print(f"\nExecution time: {self.execution_time} \nMemory Used: {self.ressources} \nKernels: {self.result['num_kernels']}, \nBranches {self.result['num_branches']}:")
         print(f"\nBranches: {self.result['num_branches']} \nTree depth: {self.result['tree_depth']} \nPruned branches: {self.result['pruned_branches_count']}")
-        print(f"Boundary: {self.pruner.boundary}")
+        
+        print(f"Upper Bound: {self.result['upper_bound']}, Lower Bound: {self.result['lower_bound']}")
 
         print(f"\n*********** SEARCH & STRATEGY PARAMETERS ***********")
         print(f"\nAlpha: {self.alpha} \nValue Assignment Strategy: {self.value}, \nSearch Strategy: {self.ss}")
         print(f"Pruner: {self.pruner.__class__.__name__} \nShrink Sliding Window size: {self.pruner.kernel_strategy.sw_shrink} \nExpand Sliding Window size: {self.pruner.kernel_strategy.sw_expand} \nShrink Divide and Conquer: {self.pruner.kernel_strategy.div_conq_shrink} \nExpand Divide and Conquer: {self.pruner.kernel_strategy.div_conq_expand}")
 
-        print(f"*********** RESULTS ***********")
+        print(f"\n*********** RESULTS ***********")
         print(f"\nOptimal hitting set: {self.tree.get_hitting_set_for_leaf(self.leaf_nodes[self.best_leaf_index][2]).get_elements()} with: \n- Value: {self.result['result_value']} \n- Cardinality: {self.result['cardinality_value']}")
 
         print(f"\n*********** VERIFICATION ***********")
@@ -89,7 +92,7 @@ class ResultCalculator:
 
     def calculate(self):
         # Debugging statement to print leaf_nodes
-        print(f"Leaf nodes: {self.leaf_nodes}")
+        print(f"\nLeaf nodes: {self.leaf_nodes}")
 
         # Ensure leaf_nodes is not empty
         if not self.leaf_nodes:
@@ -102,11 +105,12 @@ class ResultCalculator:
         # Check and calculate max_hs_val and max_hs_card
         if isinstance(self.pruner, UpperPruner):
             if self.leaf_nodes:
-                max_hs_val = max(self.leaf_nodes, key=lambda x: x[0])[0]
-                max_hs_card = max(self.leaf_nodes, key=lambda x: x[1])[1]
-                self.result['max_hs_val'] = max_hs_val
-                self.result['max_hs_card'] = max_hs_card
-                print(f"Max HS Val: {self.result['max_hs_val']}, Max HS Card: {self.result['max_hs_card']}")
+
+                min_hs_val = max(self.leaf_nodes, key=lambda x: x[0])[0]
+                min_hs_card = max(self.leaf_nodes, key=lambda x: x[1])[1]
+                self.result['min_hs_val'] = min_hs_val
+                self.result['min_hs_card'] = min_hs_card
+                print(f"\nMin HS Val: {self.result['min_hs_val']}, Min HS Card: {self.result['min_hs_card']}")
             else:
                 print("No leaf nodes available for calculating max values.")
 
@@ -114,12 +118,14 @@ class ResultCalculator:
         if isinstance(self.pruner, LowerPruner):
             if self.leaf_nodes:
                 self.best_leaf_index = -1
-                self.result['min_hs_val'] = min(self.leaf_nodes, key=lambda x: x[0])[0]
-                self.result['min_hs_card'] = min(self.leaf_nodes, key=lambda x: x[1])[1]
-                print(f"Min HS Val: {self.result['min_hs_val']}, Min HS Card: {self.result['min_hs_card']}")
+                self.result['max_hs_val'] = min(self.leaf_nodes, key=lambda x: x[0])[0]
+                self.result['max_hs_card'] = min(self.leaf_nodes, key=lambda x: x[1])[1]
+                print(f"\nMax HS Val: {self.result['max_hs_val']}, Max HS Card: {self.result['max_hs_card']}")
             else:
                 print("No leaf nodes available for calculating min values.")
 
+        self.result['upper_bound'] = self.pruner.upper_bound
+        self.result['lower_bound'] = self.pruner.lower_bound
         self.result['num_kernels'], self.result['num_branches'] = self.tree.count_kernels_and_branches()
         self.result['tree_depth'] = self.tree.tree_depth()
         self.result['pruned_branches_count'] = self.tree.count_pruned_nodes()

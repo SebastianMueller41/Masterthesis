@@ -1,24 +1,33 @@
 import heapq
 from abc import ABC, abstractmethod
-from src.tree.hittingsettree import HSTreeNode
+import logging
+from src.structs.logger import setup_logging
+
+# Set up logging for this module
+setup_logging()
 
 class BaseBrancher(ABC):
-    def __init__(self, dataset, tree):
+    tree_logger = logging.getLogger(__name__)
+    def __init__(self, dataset, tree, pruner):
         self.dataset = dataset
         self.tree = tree
+        self.pruner = pruner
+        self.min_heap = []
+        self.max_heap = []
 
     @abstractmethod
     def expand_children(self, current_node, priority_queue, kernel_strategy, alpha):
         pass
 
-    def add_to_priority_queue(self, queue, node, priority):
-        heapq.heappush(queue, (-priority, node))
+    @abstractmethod
+    def add_to_priority_queue(self, node):
+        pass
 
     def calculate_bbvalue(self, current_node):
         #assigned_value = self.dataset.get_element_value(element)
         path_from_leaf = self.tree.get_hitting_set_for_leaf(current_node)
         assigned_value = path_from_leaf.sum_values() if path_from_leaf is not None else 0
-        self.tree_logger.debug(f"assigned_value = {assigned_value}")
+        self.tree_logger.debug(f"Calculated bbvlalue: {assigned_value}")
         return assigned_value
 
 """

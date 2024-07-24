@@ -7,6 +7,8 @@ from src.tree.hittingsettree import HSTreeNode
 class Brancher(BaseBrancher):
     def __init__(self, dataset, tree, pruner):
         super().__init__(dataset, tree, pruner)
+        self.min_heap = []
+        self.max_heap = []
 
     def expand_children(self, current_node, priority_queue):
         children = []
@@ -24,10 +26,9 @@ class Brancher(BaseBrancher):
 
         children.sort(reverse=True, key=lambda x: x[0])
         for priority, child_node in children:
-            self.add_to_priority_queue(child_node)
-    
-    def add_to_priority_queue(self, node):
-        priority = self.pruner.calculate_potential_bound(node)
+            self.add_to_priority_queue(child_node, priority)
+
+    def add_to_priority_queue(self, node, priority):
         heapq.heappush(self.min_heap, (priority, node))
         heapq.heappush(self.max_heap, (-priority, node))
 

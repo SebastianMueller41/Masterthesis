@@ -54,8 +54,7 @@ class PBS(Strategy, Search):
             if element is None:
                 ss_logger.error("Attempted to pop from an empty heap")
                 break
-            xxx , current_node = element
-            ss_logger.debug(f"Current Node BBvalue: {xxx}, Edge: {current_node.edge}, Sub Value: {current_node.sub_value}")
+            _, current_node = element
             ss_logger.info("CHECK PRUNE!")
             if self.pruner.should_prune(current_node):
                 ss_logger.info("Node pruned")

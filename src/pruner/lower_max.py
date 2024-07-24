@@ -9,22 +9,21 @@ setup_logging()
 prune_logger = logging.getLogger(__name__)
 
 class LowerPruner(BasePruner):
-    def __init__(self, kernel_strategy, tree):
-        super().__init__(kernel_strategy, tree)
-        self.boundary = float('inf')
+    def __init__(self, kernel_strategy, tree, alpha):
+        super().__init__(kernel_strategy, tree, alpha)
 
     def update_boundary_with_leaf(self, leaf_node):
         prune_logger.info(f"LEAF FOUND with path value: {leaf_node.bbvalue}")
         subproblem_value = self.calculate_subproblem(leaf_node)
-        if subproblem_value < self.boundary:
-            prune_logger.debug(f"Update because subproblem: {subproblem_value} < {self.boundary} upper boundary")
-            self.boundary = subproblem_value
-            prune_logger.debug(f"Updated upper boundary: {self.boundary}")
-            print(f"Updated upper boundary: {self.boundary}")
+        if subproblem_value < self.upper_bound:
+            prune_logger.debug(f"Update because subproblem: {subproblem_value} < {self.upper_bound} upper boundary")
+            self.upper_bound = subproblem_value
+            prune_logger.debug(f"Updated upper boundary: {self.upper_bound}")
+            print(f"Updated upper_bound: {self.upper_bound}")
 
     def should_prune(self, node):
         potential_bound = self.calculate_potential_bound(node)
-        return potential_bound >= self.boundary
+        return potential_bound < self.upper_bound
 
 """
 if self.strategy_param == 1:

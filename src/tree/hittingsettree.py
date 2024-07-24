@@ -6,10 +6,8 @@ from src.structs.logger import setup_logging
 # Set up logging for this module
 setup_logging()
 
-# Get the logger for this module
-tree_logger = logging.getLogger(__name__)
-
 class HSTreeNode:
+    tree_logger = logging.getLogger(__name__)
     def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None, bbvalue=0, sub_value=0, parent=None, pruned=False):
         self.kernel = kernel
         self.children = children if children is not None else []
@@ -63,7 +61,8 @@ class HittingSetTree:
         self.leaf_nodes = []
         self.output_file = output_file
         self.tree_sum = dataset.sum_values()
-        self.boundary = 0
+        self.upper_bound = float('inf')
+        self.lower_bound = 0
         self.search_strategy = search_strategy
 
         with open(self.output_file, 'w') as file:
@@ -164,7 +163,7 @@ class HittingSetTree:
         indent = "  " * level
         hitting_set_value = self.calculate_path_bbvalue_up_to_root(node)
 
-        output_text = f"{level}{indent}Kernel: {node.kernel}, Edge: {node.edge}, Level: {node.level}, Bound: {self.boundary}, Path Value: {hitting_set_value}, Sub Value: {node.sub_value}, Dataset Sum: {node.dataset.sum_values()}\n"
+        output_text = f"{level}{indent}Kernel: {node.kernel}, Edge: {node.edge}, Level: {node.level}, Bounds L / U: {self.upper_bound} / {self.lower_bound}, Path Value: {hitting_set_value}, Sub Value: {node.sub_value}, Dataset Sum: {node.dataset.sum_values()}\n"
 
         with open(output_file, 'a') as file:
             file.write(output_text)

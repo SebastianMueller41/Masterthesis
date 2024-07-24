@@ -51,7 +51,7 @@ args = parser.parse_args()
 setup_logging(disable_logging=args.no_log)
 
 # Get the logger for main
-main_logger = logging.getLogger('main')
+main_logger = logging.getLogger(__name__)
 
 # Function to handle timeout
 def timeout_handler(signum, frame):
@@ -101,9 +101,6 @@ if __name__ == "__main__":
         hitting_set_tree = HittingSetTree(dataset)
         main_logger.debug("Tree initialized.")
 
-        brancher = Brancher(dataset, hitting_set_tree)
-        main_logger.debug("Brancher initialized.")
-
         best_index = 0 # Index to peak at hitting_set_collection
         # Initialize the appropriate pruner based on user input
         if args.pruner == 'UPPER':
@@ -118,6 +115,9 @@ if __name__ == "__main__":
         
         main_logger.debug("Pruner initialized.")
 
+        brancher = Brancher(dataset, hitting_set_tree, pruner)
+        main_logger.debug("Brancher initialized.")
+        
         if args.ss == 'BFS':
             search_strategy = BFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.vp)
         elif args.ss == 'DFS':
