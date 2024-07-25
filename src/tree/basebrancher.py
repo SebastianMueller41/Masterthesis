@@ -1,6 +1,6 @@
-import heapq
 from abc import ABC, abstractmethod
 import logging
+from sortedcontainers import SortedList
 from src.structs.logger import setup_logging
 
 # Set up logging for this module
@@ -12,8 +12,7 @@ class BaseBrancher(ABC):
         self.dataset = dataset
         self.tree = tree
         self.pruner = pruner
-        self.min_heap = []
-        self.max_heap = []
+        self.queue = SortedList(key=lambda x: (x[0], x[2]))
 
     @abstractmethod
     def expand_children(self, current_node, priority_queue, kernel_strategy, alpha):

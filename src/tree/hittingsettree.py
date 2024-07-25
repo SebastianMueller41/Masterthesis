@@ -7,7 +7,6 @@ from src.structs.logger import setup_logging
 setup_logging()
 
 class HSTreeNode:
-    tree_logger = logging.getLogger(__name__)
     def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None, bbvalue=0, sub_value=0, parent=None, pruned=False):
         self.kernel = kernel
         self.children = children if children is not None else []

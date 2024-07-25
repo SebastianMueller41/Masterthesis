@@ -24,7 +24,6 @@ class PBS(Strategy, Search):
         self.brancher = brancher
         self.pruner = pruner
         self.best_leaf = HSTreeNode(dataset=dataset)
-        self.priority_queue = self.brancher.min_heap  # Use the min_heap from brancher
 
     def find_kernels(self) -> None:
         initial_node = self.create_initial_node(self.dataset, self.alpha)
@@ -45,32 +44,33 @@ class PBS(Strategy, Search):
         return initial_node
 
     def priority_search(self, root: HSTreeNode):
-        self.brancher.add_to_priority_queue(root, 0)
+        self.brancher.add_to_priority_queue(root)
         ss_logger.info(f"Priority search started")
 
-        while self.priority_queue:
+        while self.brancher.queue:
             element = self.brancher.pop_element(self.pruner)
-            ss_logger.debug(f"Popped element: {element}")
             if element is None:
                 ss_logger.error("Attempted to pop from an empty heap")
                 break
+            node_path = self.tree.get_hitting_set_for_leaf(element[1]).get_elements()
+            ss_logger.debug(f"Popped element: {element[1].edge}, with value: {element[0]}, Path: {node_path}")
             _, current_node = element
-            ss_logger.info("CHECK PRUNE!")
             if self.pruner.should_prune(current_node):
                 ss_logger.info("Node pruned")
                 current_node.kernel = "PRUNED"
                 current_node.set_pruned()
                 continue
+            ss_logger.info(f"Not prune path: {node_path} with value: {element[0]}!")
             if current_node.get_kernel() is None:
                 result = self.kernelStrategy.find_kernel(current_node.get_dataset(), self.alpha)
                 if result is not None:
                     current_node.set_kernel(result.get_elements())
-                    self.brancher.expand_children(current_node, self.priority_queue)
+                    self.brancher.expand_children(current_node)
                 else:
                     current_node.set_kernel("LEAF")
                     self.tree.add_leaf_node(current_node)
                     self.pruner.update_boundary_with_leaf(current_node)
             else:
-                self.brancher.expand_children(current_node, self.priority_queue)
+                self.brancher.expand_children(current_node)
 
             self.log_tree()

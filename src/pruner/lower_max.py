@@ -7,6 +7,7 @@ setup_logging()
 
 # Get the logger for this module
 prune_logger = logging.getLogger(__name__)
+prune_logger.info("Pruner called.")
 
 class LowerPruner(BasePruner):
     def __init__(self, kernel_strategy, tree, alpha):
