@@ -10,7 +10,7 @@ setup_logging()
 kr_logger = logging.getLogger(__name__)
 
 class ExpandShrink(KernelStrategy):
-    def __init__(self, sw_expand=1, sw_shrink=1, div_conq_shrink=False, div_conq_expand=False):
+    def __init__(self, sw_expand=1, sw_shrink=1, div_conq_shrink=False, div_conq_expand=False, alpha=None):
         """
         Initialize the ExpandShrink strategy.
 
@@ -24,8 +24,9 @@ class ExpandShrink(KernelStrategy):
         self.div_conq_expand = div_conq_expand
         self.sw_expand = sw_expand
         self.sw_shrink = sw_shrink
+        self.alpha = alpha
 
-    def find_kernel(self, dataset, alpha):
+    def find_kernel(self, dataset):
         """
         Find the kernel of the dataset with respect to alpha.
 
@@ -36,26 +37,26 @@ class ExpandShrink(KernelStrategy):
         Returns:
         DataSet: The resulting kernel if found, else None.
         """
-        if cn(dataset, alpha):
+        if cn(dataset, self.alpha):
             kr_logger.debug(f"Finding kernel for dataset with {len(dataset.get_elements_with_values())} elements: {dataset.get_elements_with_values()}")
             # Expand phase
             if self.div_conq_expand:
-                expanded_dataset = expand_divide_and_conquer(dataset, alpha)
+                expanded_dataset = expand_divide_and_conquer(dataset, self.alpha)
                 kr_logger.debug(f"Dataset expanded using divide-and-conquer: {expanded_dataset.get_elements_with_values()}")
             else:
-                expanded_dataset = expand(dataset, alpha, self.sw_expand)
+                expanded_dataset = expand(dataset, self.alpha, self.sw_expand)
                 kr_logger.debug(f"Dataset expanded using sliding window of size {self.sw_expand}: {expanded_dataset.get_elements()}")
 
             # Shrink phase
             if self.div_conq_shrink:
-                kernel = shrink_divide_and_conquer(expanded_dataset, alpha)
+                kernel = shrink_divide_and_conquer(expanded_dataset, self.alpha)
                 kr_logger.debug(f"Dataset shrunk using divide-and-conquer: {kernel.get_elements_with_values()}")
             else:
                 if self.sw_shrink > 1:
-                    kernel = shrink_sliding_window(expanded_dataset, alpha, self.sw_shrink)
+                    kernel = shrink_sliding_window(expanded_dataset, self.alpha, self.sw_shrink)
                     kr_logger.debug(f"Dataset shrunk using sliding window of size {self.sw_shrink}: {kernel.get_elements_with_values()}")
                 else:
-                    kernel = shrink(expanded_dataset, alpha)
+                    kernel = shrink(expanded_dataset, self.alpha)
                     kr_logger.debug(f"Dataset shrunk using basic shrink: {kernel.get_elements_with_values()}")
             return kernel
         else:

@@ -115,7 +115,7 @@ def insert_results(conn, run):
                 min_random_value = VALUES(min_random_value),
                 min_incon_value = VALUES(min_incon_value),
                 min_cardinality = VALUES(min_cardinality),
-                num_leafs = VALUES(num_leafs),
+                num_leafs = VALUES(num_leafs)
         """, (
             execution_time, filename, num_kernels, num_branches, tree_depth, alpha,
             max_cardinality, max_random_value, max_incon_value, min_random_value, min_incon_value, min_cardinality, num_leafs
@@ -130,7 +130,7 @@ def insert_results(conn, run):
 # Example usage
 conn = create_ssh_tunnel_and_connect()
 
-runs = parse_csv('Results/All_hitting_sets_sig3.csv')
+runs = parse_csv('Results/All_hitting_sets.csv')
 
 for run in runs:
     try:

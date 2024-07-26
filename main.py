@@ -90,7 +90,7 @@ if __name__ == "__main__":
             main_logger.info(f"Alpha: {args.alpha}")
 
         hitting_set_tree = None
-        kernel_strategy = ExpandShrink(args.expand_sw_size, args.shrink_sw_size, args.shrink_div_conq, args.expand_div_conq)
+        kernel_strategy = ExpandShrink(args.expand_sw_size, args.shrink_sw_size, args.shrink_div_conq, args.expand_div_conq, args.alpha)
 
         if dataset.sum_values() == 0 and args.vp == 3:
                 print(f"DataSet Inconsistency Weights == {dataset.sum_values()}")
@@ -100,7 +100,7 @@ if __name__ == "__main__":
         # Initialize the HittingSetTree
         hitting_set_tree = HittingSetTree(dataset)
         main_logger.debug("Tree initialized.")
-
+        """
         best_index = 0 # Index to peak at hitting_set_collection
         # Initialize the appropriate pruner based on user input
         if args.pruner == 'UPPER':
@@ -114,18 +114,16 @@ if __name__ == "__main__":
             pruner = BasePruner(kernel_strategy, hitting_set_tree, args.alpha)
         
         main_logger.debug("Pruner initialized.")
-
-        brancher = Brancher(dataset, hitting_set_tree, pruner)
-        main_logger.debug("Brancher initialized.")
+        """
         
         if args.ss == 'BFS':
-            search_strategy = BFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.vp)
+            search_strategy = BFS(kernel_strategy, dataset, args.pruner)
         elif args.ss == 'DFS':
-            search_strategy = DFS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.vp)
+            search_strategy = DFS(kernel_strategy, dataset, args.pruner)
         elif args.ss == 'HYS':
-            search_strategy = HYS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.vp)
+            search_strategy = HYS(kernel_strategy, dataset, args.pruner)
         elif args.ss == 'PBS':
-            search_strategy = PBS(kernel_strategy, dataset, brancher, pruner, args.alpha, args.vp)
+            search_strategy = PBS(kernel_strategy, dataset, args.pruner)
         else:
             main_logger.error("Invalid search strategy")
             sys.exit(1)
@@ -137,11 +135,12 @@ if __name__ == "__main__":
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
-        results = ResultCalculator(tree=hitting_set_tree, pruner=pruner, execution_time=execution_time, ressources=resources_used, search_strategy=args.ss, alpha=args.alpha, value=args.vp, filename=args.filepath, output_file="Results/All_hitting_sets.csv")
+        results = ResultCalculator(kernelStrategy=kernel_strategy, search_strategy=search_strategy, tree=hitting_set_tree, execution_time=execution_time, ressources=resources_used, value=args.vp, filename=args.filepath, output_file="Results/All_hitting_sets.csv")
         #results.log_results(conn)
         results.print_results_to_file()
-        results.print_results()
-        
+        #results.print_results()
+
+        print(f"\nExecution Time: {execution_time}\n")        
 
     except TimeoutError as e:
         main_logger.error(f"Timeout occurred: {e}")

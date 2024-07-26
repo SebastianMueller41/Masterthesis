@@ -11,21 +11,19 @@ setup_logging()
 # Get the logger for this module
 ss_logger = logging.getLogger(__name__)
 class BFS(Strategy, Search):
-    def __init__(self, kernelStrategy, dataset, brancher, pruner, alpha, strategy_param):
-        Search.__init__(self, kernelStrategy, dataset, alpha, strategy_param)
-        self.pruner = pruner
-        self.brancher = brancher
+    def __init__(self, kernelStrategy, dataset, pruner):
+        self.search = Search.__init__(self, kernelStrategy, dataset, pruner)
 
     def find_kernels(self) -> None:
-        self.bfs(self.dataset, self.alpha)
+        self.bfs(self.dataset)
         self.tree.print_tree()
         self.log_tree()
 
-    def bfs(self, dataset, alpha):
+    def bfs(self, dataset):
         queue = deque()
-        result = self.kernelStrategy.find_kernel(dataset, alpha)
+        result = self.kernelStrategy.find_kernel(dataset)
         if result is not None:
-            self.tree.root = HSTreeNode(kernel=result.get_elements(), dataset=dataset, bbvalue=0, parent=None)
+            self.tree.root = HSTreeNode(kernel=result.get_elements(), dataset=dataset, path_value=0, parent=None)
             queue.append(self.tree.root)
 
         while queue:
@@ -34,22 +32,13 @@ class BFS(Strategy, Search):
                 current_node.kernel = "PRUNED"
                 current_node.set_pruned()
                 continue
-
-            for element in current_node.get_kernel():
-                reduced_dataset = current_node.get_dataset().clone()
-                reduced_dataset.remove_element(element)
-
-                bbvalue = self.brancher.calculate_bbvalue(current_node)
-                child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=current_node.level + 1, bbvalue=bbvalue, parent=current_node)
-                current_node.add_child(child_node)
-
-                result = self.kernelStrategy.find_kernel(reduced_dataset, alpha)
-                if result is not None:
-                    child_node.set_kernel(result.get_elements())
-                    queue.append(child_node)
+            
+            child_nodes = self.brancher.expand_children(current_node)
+            ss_logger.info(f"Child nodes from brancher: {child_nodes}")
+            for child_node in child_nodes:
+                if child_node.kernel == 'LEAF':
+                    self.pruner.update_boundary_with_leaf(current_node)
                 else:
-                    child_node.set_kernel("LEAF")
-                    self.tree.add_leaf_node(child_node)
-                    self.pruner.update_boundary_with_leaf(child_node)
+                    queue.append(child_node) 
 
         self.log_tree()
