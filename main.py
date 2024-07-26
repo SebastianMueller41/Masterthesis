@@ -4,21 +4,18 @@ import time
 import resource
 import signal
 import logging
-from src.pruner.basepruner import BasePruner
 from src.search.hybrid import HYS
-from src.search.priority import PBS
 from src.search.bfs import BFS
 from src.search.dfs import DFS
+from src.search.priority import PBS
+from src.search.search import Search
+from src.search.strategy import Strategy
 from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
-from src.structs.dataset import initialize_dataset
+from src.structs.dataset import DataSet, initialize_dataset
 from src.structs.results import ResultCalculator
 from src.database.database import create_ssh_tunnel_and_connect, log_execution_data
 from src.structs.logger import setup_logging
-from src.pruner.best import BestPruner
-from src.tree.brancher import Brancher
-from src.pruner.lower_max import LowerPruner
-from src.pruner.upper_min import UpperPruner
 from src.tree.hittingsettree import HittingSetTree
 
 # Set up argument parser
@@ -115,7 +112,8 @@ if __name__ == "__main__":
         
         main_logger.debug("Pruner initialized.")
         """
-        
+
+        # Initialize the appropriate search strategy
         if args.ss == 'BFS':
             search_strategy = BFS(kernel_strategy, dataset, args.pruner)
         elif args.ss == 'DFS':
@@ -138,9 +136,19 @@ if __name__ == "__main__":
         results = ResultCalculator(kernelStrategy=kernel_strategy, search_strategy=search_strategy, tree=hitting_set_tree, execution_time=execution_time, ressources=resources_used, value=args.vp, filename=args.filepath, output_file="Results/All_hitting_sets.csv")
         #results.log_results(conn)
         results.print_results_to_file()
-        #results.print_results()
+        results.print_results()
 
-        print(f"\nExecution Time: {execution_time}\n")        
+        #print(f"\nNumber of computed kernels: {len(search_strategy.brancher.computed_kernels)}")
+        #for kernel in search_strategy.brancher.computed_kernels:
+        #    print(f"Path to node: {hitting_set_tree.get_hitting_set_for_leaf(kernel).get_elements()}, kernel: {kernel.kernel}")
+
+       # print(f"\nNumber of called shrink: {kernel_strategy.counter}")
+       # for kernel in kernel_strategy.computed_kernels:
+       #     print(f"Computed Kernel: {kernel.get_elements() if isinstance(kernel, DataSet) else ''}")
+
+        print("\n\nLEAFS VISITED IN ORDER: (Path_value, Cardinality, Hitting_set)\n")
+        for leaf in search_strategy.leaf_nodes: 
+            print(f"{leaf.path_value}, {len(hitting_set_tree.get_hitting_set_for_leaf(leaf).get_elements())},{hitting_set_tree.get_hitting_set_for_leaf(leaf).get_elements()}") 
 
     except TimeoutError as e:
         main_logger.error(f"Timeout occurred: {e}")

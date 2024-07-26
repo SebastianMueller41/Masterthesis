@@ -1,5 +1,4 @@
 from collections import deque
-from src.search.strategy import Strategy
 from src.search.search import Search
 from src.tree.hittingsettree import HSTreeNode
 import logging
@@ -10,16 +9,17 @@ setup_logging()
 
 # Get the logger for this module
 ss_logger = logging.getLogger(__name__)
-class BFS(Strategy, Search):
+
+class BFS(Search):
     def __init__(self, kernelStrategy, dataset, pruner):
-        self.search = Search.__init__(self, kernelStrategy, dataset, pruner)
+        super().__init__(kernelStrategy, dataset, pruner)
 
     def find_kernels(self) -> None:
-        self.bfs(self.dataset)
+        self.search(self.dataset)
         self.tree.print_tree()
         self.log_tree()
 
-    def bfs(self, dataset):
+    def search(self, dataset):
         queue = deque()
         result = self.kernelStrategy.find_kernel(dataset)
         if result is not None:

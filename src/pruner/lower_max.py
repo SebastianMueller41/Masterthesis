@@ -10,32 +10,21 @@ prune_logger = logging.getLogger(__name__)
 prune_logger.info("Pruner called.")
 
 class LowerPruner(BasePruner):
-    def __init__(self, kernel_strategy, tree, alpha):
-        super().__init__(kernel_strategy, tree, alpha)
+    def __init__(self, kernel_strategy, tree):
+        super().__init__(kernel_strategy, tree)
 
     def update_boundary_with_leaf(self, leaf_node):
-        prune_logger.info(f"LEAF FOUND with path value: {leaf_node.bbvalue}")
-        subproblem_value = self.calculate_subproblem(leaf_node)
-        if subproblem_value < self.upper_bound:
-            prune_logger.debug(f"Update because subproblem: {subproblem_value} < {self.upper_bound} upper boundary")
-            self.upper_bound = subproblem_value
-            prune_logger.debug(f"Updated upper boundary: {self.upper_bound}")
-            print(f"Updated upper_bound: {self.upper_bound}")
+        prune_logger.info(f"LEAF FOUND with path value: {leaf_node.path_value} and sub_value: {leaf_node.sub_value} path: {self.tree.get_hitting_set_for_leaf(leaf_node).get_elements()}")
+        if leaf_node.sub_value < self.tree.upperBound:
+            prune_logger.debug(f"Update {leaf_node.sub_value < self.tree.upperBound} because subproblem: {leaf_node.sub_value } < {self.tree.upperBound} upper boundary")
+            self.tree.upperBound = leaf_node.sub_value 
+            prune_logger.debug(f"Updated upper boundary: {self.tree.upperBound}")
+            print(f"Updated upperBound: {self.tree.upperBound}")
 
     def should_prune(self, node):
-        potential_bound = self.calculate_potential_bound(node)
-        return potential_bound < self.upper_bound
-
-"""
-if self.strategy_param == 1:
-            subproblem_value = leaf_path_value
-        #leaf_path_measure = self.tree.get_hitting_set_for_leaf(leaf_node).sum_values()
-
-if self.strategy_param == 1:
-    prune_logger.info(f"Should prune? {path_value <= self.boundary} because path_value {path_value} <= {self.boundary} upper boundary")
-    return path_value <= self.boundary
-else:
-    subproblem_value = self.tree.dataset.sum_values() - path_value
-    prune_logger.info(f"Should prune? {path_value <= self.boundary} because path_value {path_value} <= {self.boundary} upper boundary")
-    return path_value >= self.boundary 
-"""
+        if self.tree.upperBound > self.tree.dataset.sum_values():
+            prune_logger.info(f"Not pruning, because leafs: {self.tree.leaf_nodes}")
+            return False
+        prune_logger.warning(f"Pruning {node.sub_value >= self.tree.upperBound}, because Subvale {node.sub_value} >= {self.tree.upperBound} upperBound")
+        prune_logger.warning(f"Node path value: {node.path_value}")
+        return node.sub_value <= self.tree.upperBound

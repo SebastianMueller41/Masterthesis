@@ -61,7 +61,7 @@ class ShrinkExpand(KernelStrategy):
                 B_prime.remove_element(element)
             kr_logger.debug(f"Checking and removing elements: {window_elements}, B_prime now with {len(B_prime.get_elements())} elements = {B_prime.get_elements()}")
 
-            if cn(B_prime, alpha):  # Use the imported cn function
+            if cn(B_prime, self.alpha):  # Use the imported cn function
                 kr_logger.info(f"SHRINK: CN = TRUE for window elements {window_elements}, B_dataset = {B_prime.get_elements()}, removed elements: {removed_elements.get_elements()}")
                 B_dataset = B_prime
                 removed_elements.add_element(element)

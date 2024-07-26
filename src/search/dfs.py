@@ -1,6 +1,5 @@
-from src.tree.hittingsettree import HSTreeNode
-from src.search.strategy import Strategy
 from src.search.search import Search
+from src.tree.hittingsettree import HSTreeNode
 import logging
 from src.structs.logger import setup_logging
 
@@ -10,9 +9,9 @@ setup_logging()
 # Get the logger for this module
 ss_logger = logging.getLogger(__name__)
 
-class DFS(Strategy, Search):
+class DFS(Search):
     def __init__(self, kernelStrategy, dataset, pruner):
-        self.search = Search.__init__(self, kernelStrategy, dataset, pruner)
+        super().__init__(kernelStrategy, dataset, pruner)
         ss_logger.debug("Initialized DFS")
 
     def find_kernels(self) -> None:

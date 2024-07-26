@@ -25,6 +25,8 @@ class ExpandShrink(KernelStrategy):
         self.sw_expand = sw_expand
         self.sw_shrink = sw_shrink
         self.alpha = alpha
+        self.computed_kernels = []
+        self.counter = 0
 
     def find_kernel(self, dataset):
         """
@@ -37,6 +39,7 @@ class ExpandShrink(KernelStrategy):
         Returns:
         DataSet: The resulting kernel if found, else None.
         """
+        self.counter +=1
         if cn(dataset, self.alpha):
             kr_logger.debug(f"Finding kernel for dataset with {len(dataset.get_elements_with_values())} elements: {dataset.get_elements_with_values()}")
             # Expand phase
@@ -58,7 +61,9 @@ class ExpandShrink(KernelStrategy):
                 else:
                     kernel = shrink(expanded_dataset, self.alpha)
                     kr_logger.debug(f"Dataset shrunk using basic shrink: {kernel.get_elements_with_values()}")
+            self.computed_kernels.append(kernel)
             return kernel
         else:
             kr_logger.debug("Alpha is not a consequence of the dataset. Returning None.")
+            self.computed_kernels.append('')
             return None

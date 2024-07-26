@@ -1,5 +1,7 @@
 # Set up logging for this module
 import logging
+from src.kernels.expandshrink import ExpandShrink
+from src.kernels.shrinkexpand import ShrinkExpand
 from src.structs.logger import setup_logging
 
 setup_logging()
@@ -10,15 +12,18 @@ prune_logger = logging.getLogger(__name__)
 prune_logger.info("BasePruner called.")
 
 class BasePruner:
-    def __init__(self, kernel_strategy, tree, alpha):
+    def __init__(self, kernel_strategy, tree):
         self.tree = tree
         self.best_solution = None
         self.optimal_reached = False
-        self.lower_bound = 0
-        self.upper_bound = float('inf')
-        self.alpha = alpha
         self.kernel_strategy = kernel_strategy
         self.remainder_flag = False # Set Flag to True to calculate remainder value of node
+        self.initial_remainder_flag = False
+        self.remainder = ShrinkExpand(window_size=1, divide_and_conquer=True,alpha=self.kernel_strategy.alpha)
+        if self.initial_remainder_flag:
+            possible_HS_value = self.tree.dataset.sum_values() - self.remainder_value
+            self.tree.lowerBound = possible_HS_value
+            self.tree.upperBound = possible_HS_value
 
     def calculate_subproblem(self, node):
         subproblem_value = node.dataset.sum_values()
@@ -26,35 +31,42 @@ class BasePruner:
         return subproblem_value
     
     def find_remainder_in_dataaset(self, dataset):
-        return self.kernel_strategy.find_remainder(dataset)
+        return self.remainder.find_remainder(dataset)
     
     def calculate_potential_bound(self, node):
         if self.remainder_flag:
-            remainder = self.shrink_expand.find_remainder(node.dataset, self.alpha)
+            remainder = self.shrink_expand.find_remainder(node.dataset)
             if remainder is not None:
-                subproblem_value = node.dataset.sum_values() - remainder.sum_values()
+                subproblem_value = node.sub_value - remainder.sum_values()
                 prune_logger.debug(f"Computed Remainder: {node.dataset.get_elements()}, with value {remainder.sum_values()}, subproblem value {subproblem_value} = node_dataset value {node.dataset.sum_values()} - remainder value {- remainder.sum_values()}")
         else:
-            subproblem_value = self.calculate_subproblem(node)
-            prune_logger.debug(f"Calculating subproblem from node dataset: subproblem value {subproblem_value}")
+            subproblem_value = node.sub_value
+            prune_logger.debug(f"Calculating subproblem from node: {node.edge} subproblem value {subproblem_value}")
 
-        node.sub_value = subproblem_value
-        path_value = self.tree.get_hitting_set_for_leaf(node).sum_values()
-        potential_bound = path_value + subproblem_value # Add sum value of remaining elements
-        prune_logger.debug(f"Path value: {path_value} with subproblem value: {subproblem_value} and remaining dataset: {node.get_dataset().get_elements()}")
-        return potential_bound 
+        prune_logger.debug(f"Path value: {node.path_value} with subproblem value: {subproblem_value} and remaining dataset: {node.get_dataset().get_elements()}")
+        return subproblem_value
 
     def should_prune(self, node):
         return False
     
     def update_boundary_with_leaf(self, leaf_node):
+        prune_logger.info(f"LEAF FOUND with path value: {leaf_node.path_value} and sub_value: {leaf_node.sub_value} path: {self.tree.get_hitting_set_for_leaf(leaf_node).get_elements()}")
+        if leaf_node.sub_value < self.tree.upperBound:
+            prune_logger.debug(f"Update {leaf_node.sub_value > self.tree.upperBound} because subproblem: {leaf_node.sub_value } > {self.tree.upperBound} upper boundary")
+            self.tree.upperBound = leaf_node.sub_value 
+            prune_logger.debug(f"Updated upper boundary: {self.tree.upperBound}")
+            print(f"Updated upperBound: {self.tree.upperBound}")
+
+    def should_prune(self, node):
+        prune_logger.debug(f"Prune CHECK: {node.sub_value <= self.tree.upperBound}, because {node.sub_value} <= {self.tree.upperBound}")
+        if self.tree.upperBound > self.tree.dataset.sum_values():
+            prune_logger.info(f"Not pruning, upperBound <= {self.tree.dataset.sum_values()}")
+        prune_logger.warning(f"Pruning {node.sub_value <= self.tree.upperBound}, because Subvale {node.sub_value} <= {self.tree.upperBound} upperBound")
         pass
-
-
     """
     
         def calculate_potential_bound(self, node):
         subproblem_value = self.calculate_subproblem(node)
-        prune_logger.info(f"Node path value: {node.bbvalue}")
-        return node.bbvalue+subproblem_value
+        prune_logger.info(f"Node path value: {node.path_value}")
+        return node.path_value+subproblem_value
         """

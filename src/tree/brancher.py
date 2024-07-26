@@ -1,6 +1,6 @@
-import heapq
 import logging
-from src.pruner.lower_max import LowerPruner
+
+from sortedcontainers import SortedList
 from src.pruner.upper_min import UpperPruner
 from src.structs.logger import setup_logging
 from src.tree.basebrancher import BaseBrancher
@@ -12,46 +12,34 @@ setup_logging()
 tree_logger = logging.getLogger(__name__)
 
 class Brancher(BaseBrancher):
-    def __init__(self, dataset, tree, pruner):
-        super().__init__(dataset, tree, pruner)
-        self.tree_logger.debug("TEST")
+    def __init__(self, kernelStrategy, dataset, tree):
+        super().__init__(kernelStrategy, dataset, tree)
+
+    def initialize_queue(self, pruner):
+        if pruner == 'UPPER':
+            tree_logger.warning(f"Upper Pruner, Initializing SortedList with sub_value DESC and cardinality DESC")
+            self.queue = SortedList(key=lambda x: (-x[0], x[2]))  # Sort desc by sub_value and asc by cardinality
+        elif pruner == 'LOWER':
+            tree_logger.warning(f"LOWER PRUNER, QUEUE ASC!")
+            self.queue = SortedList(key=lambda x: (x[0], -x[2]))  # Sort asc by sub_value and asc by cardinality
+        else:
+            self.queue = SortedList()
 
     def expand_children(self, current_node):
         for element in current_node.get_kernel():
+            self.computed_kernels.append(current_node)
             reduced_dataset = current_node.get_dataset().clone()
             reduced_dataset.remove_element(element)
-            bbvalue = self.tree.calculate_path_bbvalue_up_to_root(current_node)
+            child_path_value = self.calculate_child_path(current_node, element)
             sub_value = reduced_dataset.sum_values()
-            self.tree_logger.info(f"Calculated bbvalue = {bbvalue}")
-            child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=current_node.level + 1, bbvalue=bbvalue, sub_value=sub_value, parent=current_node)
+            self.tree_logger.info(f"Calculated child_path_value = {child_path_value}")
+            child_node = HSTreeNode(kernel=None, dataset=reduced_dataset, edge=element, level=current_node.level + 1, path_value=child_path_value, sub_value=sub_value, parent=current_node)
+            tree_logger.debug(f"Child Node created with: path value {child_path_value}, sub_value {sub_value}")
             current_node.add_child(child_node)
             self.add_to_priority_queue(child_node)
-            self.tree_logger.debug(f"Adding node element {element} to queue with value: {bbvalue}")            
+            self.tree_logger.debug(f"Adding node element {element} to queue with value: {sub_value}")
 
     def add_to_priority_queue(self, node):
-        self.queue.add((node.bbvalue, node, node.sub_value))
-
-    def pop_min_element(self):
-        if self.queue:
-            element = self.queue.pop(0)  # Remove and return the smallest element
-            self.tree_logger.debug(f"Popped min element {element[1].edge} from queue: {element}")
-            return element
-        return None
-
-    def pop_max_element(self):
-        if self.queue:
-            element = self.queue.pop(-1)  # Remove and return the largest element
-            self.tree_logger.debug(f"Popped max element {element[1].edge} from queue: {element}")
-            return element
-        return None
-
-    def pop_element(self, pruner):
-        if isinstance(pruner, UpperPruner):
-            return self.pop_min_element()
-        elif isinstance(pruner, LowerPruner):
-            return self.pop_max_element()
-        else:
-            if pruner.optimal_reached:
-                return self.pop_min_element()
-            else:
-                return self.pop_max_element()
+        cardinality = len(self.tree.get_hitting_set_for_leaf(node).get_elements())
+        self.queue.add((node.sub_value, node, cardinality))
+        tree_logger.debug(f"Priority Queue: {self.queue}")

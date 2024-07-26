@@ -7,13 +7,13 @@ from src.structs.logger import setup_logging
 setup_logging()
 
 class HSTreeNode:
-    def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None, bbvalue=0, sub_value=0, parent=None, pruned=False):
+    def __init__(self, kernel=None, children=None, edge=None, level=0, dataset=None, path_value=0, sub_value=0, parent=None, pruned=False):
         self.kernel = kernel
         self.children = children if children is not None else []
         self.edge = edge
         self.level = level
         self.dataset = dataset
-        self.bbvalue = bbvalue
+        self.path_value = path_value
         self.sub_value = sub_value
         self.parent = parent
         self.pruned = pruned
@@ -45,10 +45,10 @@ class HSTreeNode:
     
     def __lt__(self, other):
         # Compare based on bbvalue or any other criteria
-        return self.bbvalue < other.bbvalue
+        return self.path_value < other.path_value
 
     def __str__(self):
-        return f"HSTreeNode(kernel={self.kernel}, bbvalue={self.bbvalue})"
+        return f"HSTreeNode(kernel={self.kernel}, bbvalue={self.path_value})"
 
     def __repr__(self):
         return self.__str__()
@@ -60,9 +60,10 @@ class HittingSetTree:
         self.leaf_nodes = []
         self.output_file = output_file
         self.tree_sum = dataset.sum_values()
-        self.upper_bound = float('inf')
-        self.lower_bound = 0
+        self.upperBound = float('inf')
+        self.lowerBound = 0
         self.search_strategy = search_strategy
+        self.kernelStrategy = kernel_strategy
 
         with open(self.output_file, 'w') as file:
             file.truncate()
@@ -94,6 +95,7 @@ class HittingSetTree:
 
     def get_hitting_set_for_leaf(self, leaf_node):
         hitting_set = DataSet()
+        #hitting_set.add_element(leaf_node.edge)
         current_node = leaf_node
         while current_node is not None and current_node.parent is not None:
             if current_node.edge is not None:
@@ -162,7 +164,7 @@ class HittingSetTree:
         indent = "  " * level
         hitting_set_value = self.calculate_path_bbvalue_up_to_root(node)
 
-        output_text = f"{level}{indent}Kernel: {node.kernel}, Edge: {node.edge}, Level: {node.level}, Bounds L / U: {self.upper_bound} / {self.lower_bound}, Path Value: {hitting_set_value}, Sub Value: {node.sub_value}, Dataset Sum: {node.dataset.sum_values()}\n"
+        output_text = f"{level}{indent}Kernel: {node.kernel}, Edge: {node.edge}, Level: {node.level}, Bounds L / U: {self.upperBound} / {self.lowerBound}, Path Value: {hitting_set_value}, Sub Value: {node.sub_value}, Dataset Sum: {node.dataset.sum_values()}\n"
 
         with open(output_file, 'a') as file:
             file.write(output_text)
