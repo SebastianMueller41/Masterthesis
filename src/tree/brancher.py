@@ -22,7 +22,7 @@ class Brancher(BaseBrancher):
             tree_logger.warning(f"LOWER PRUNER, QUEUE ASC!")
             self.queue = SortedList(key=lambda x: (x[0], -x[1], x[3]))  # sub_value, path_value, current_node, cardinality 
         else:
-            self.queue = SortedList()
+            self.queue = SortedList(key=lambda x: (-x[1], x[3]))
 
     def expand_children(self, current_node):
         for element in current_node.get_kernel():

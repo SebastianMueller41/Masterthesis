@@ -60,11 +60,11 @@ class ResultCalculator:
 
     def sort_leaf_nodes_asc(self):
         # Sort the list based on BBVALUE (descending) and then Cardinality (ascending)
-        self.leaf_nodes = sorted(self.leaf_nodes, key=lambda x: (x[0], -x[1])) 
+        self.leaf_nodes = sorted(self.leaf_nodes, key=lambda x: (x[0], x[1])) 
 
     def sort_leaf_nodes_desc(self):
         # Sort the list based on BBVALUE (descending) and then Cardinality (ascending)
-        self.leaf_nodes = sorted(self.leaf_nodes, key=lambda x: (-x[0], -x[1])) 
+        self.leaf_nodes = sorted(self.leaf_nodes, key=lambda x: (-x[0], x[1])) 
 
     def print_results(self):
         self.calculate()

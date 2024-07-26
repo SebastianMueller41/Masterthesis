@@ -18,18 +18,21 @@ class BestPruner(BasePruner):
         prune_logger.info(f"Cardinality check set to: {self.card_check}, because {self.tree.dataset.sum_values()} <= {len(self.tree.dataset.get_elements())}")
         self.max_reached = False  # Initialize max_reached
         if not self.card_check:
-            return None
+            return None         # If dataset does not qualify for approach, don´t execute
 
     def update_boundary_with_leaf(self, leaf_node):
-        leaf_path_measure = leaf_node.path_value
         dataset_sum = self.tree.dataset.sum_values()
-        prune_logger.info(f"Leaf path measure: {leaf_path_measure}, Dataset sum: {dataset_sum}")
-        prune_logger.debug(f"Remaidner_value = {self.remainder_value}")
-
-        if leaf_path_measure >= self.tree.lowerBound: # ASSUMPTION: We find the highest possible value with the first leaf!
-            self.tree.lowerBound = leaf_path_measure
+        prune_logger.info(f"Leaf path measure: {leaf_node.path_value}, Dataset sum: {dataset_sum}")
+        if not self.max_reached:
+            if leaf_node.path_value == dataset_sum:
+                self.max_reached = True
+                self.tree.lowerBound = leaf_node.path_value
+                self.tree.upperBound = len(self.tree.get_hitting_set_for_leaf(leaf_node).get_elements())
+            elif leaf_node.path_value > self.tree.lowerBound:
+                self.tree.lowerBound = leaf_node.path_value
+        else:
             upperBoundCard = len(self.tree.get_hitting_set_for_leaf(leaf_node).get_elements()) 
-            prune_logger.debug(f"Highest value reached: {leaf_path_measure}, checking for lower cardinality lower than {upperBoundCard}")
+            prune_logger.debug(f"Highest value reached: {leaf_node.path_value}, checking for lower cardinality lower than {upperBoundCard}")
             if upperBoundCard < self.tree.upperBound:
                 self.tree.upperBound = upperBoundCard
                 prune_logger.debug(f"Lower found, updating upperBound to {upperBoundCard}")
@@ -41,16 +44,15 @@ class BestPruner(BasePruner):
             prune_logger.debug("Boundary is zero, not pruning.")
             return False
         
-        if not self.max_reached or self.tree.lowerBound:
+        if self.max_reached:
             prune_logger.debug("Max not reached, not pruning.")
-            return False
-        
-        if self.card_check:
-            hs_cardinality = len(self.tree.get_hitting_set_for_leaf(node).get_elements())
-            prune_logger.info(f"Hitting set cardinality: {hs_cardinality}, Best leaf cardinality: {self.tree.upperBound}")
-            return hs_cardinality >= self.tree.upperBound
-        
-        return False
+            if self.card_check: # Maybe unnessesary -> see initial check
+                hs_cardinality = len(self.tree.get_hitting_set_for_leaf(node).get_elements())
+                prune_logger.warning(f"Hitting set cardinality: {hs_cardinality}, Best leaf cardinality: {self.tree.upperBound}")
+                return hs_cardinality >= self.tree.upperBound
+        else:
+            prune_logger.debug(f"Prune?  {node.path_value < self.tree.lowerBound}, because path value {node.path_value} < lowerBound: {self.tree.lowerBound}, Max reached: {self.max_reached}")
+            return node.path_value < self.tree.lowerBound
     
     # Check if sum values of dataset qualify for best approach. 
     # True, if two subsets of the list with the same score and different cardinalities is possible
