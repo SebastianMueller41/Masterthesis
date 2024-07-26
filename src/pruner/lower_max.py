@@ -24,7 +24,7 @@ class LowerPruner(BasePruner):
     def should_prune(self, node):
         if self.remainder_flag:
             self.remainder_value = self.find_remainder_in_dataaset(self.tree.dataset).sum_values()
-            prune_logger.debug(f"Remainder_value = {remainder_value}")
+            prune_logger.debug(f"Remainder_value = {self.remainder_value}")
         if not self.tree.leaf_nodes:
         #if self.tree.upperBound > self.tree.dataset.sum_values():
             prune_logger.info(f"Not pruning, because no leafs: {self.tree.leaf_nodes}")

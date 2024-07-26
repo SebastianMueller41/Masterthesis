@@ -37,7 +37,7 @@ class BasePruner:
         if self.remainder_flag:
             remainder = self.find_remainder_in_dataaset(node.dataset)
             if remainder is not None:
-                self.remainder_value = remainder
+                self.remainder_value = remainder.sum_values()
                 subproblem_value = node.sub_value - self.remainder_value
         else:
             subproblem_value = node.sub_value
