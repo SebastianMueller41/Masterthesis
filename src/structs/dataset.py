@@ -38,6 +38,7 @@ class DataSet:
             strategy (str, optional): The strategy identifier (e.g., "A1").
         """
         self.elements = elements if elements is not None else []
+        self.strategy_param = ini_strategy_param
 
     def get_elements(self):
         """

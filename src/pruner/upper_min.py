@@ -30,20 +30,3 @@ class UpperPruner(BasePruner):
             return False
         prune_logger.debug(f"Prune: {node.sub_value <= self.tree.lowerBound}, because {node.sub_value} <= {self.tree.lowerBound}")
         return node.sub_value <= self.tree.lowerBound
-
-    """
-    def calculate_potential_bound(self, node):
-        # This method should be implemented to calculate the potential bound of the node
-        # For now, let's assume it returns some computed value
-        return node.path_value  # Placeholder implementation
-    """
-
-    """    
-    leaf_path_measure = self.tree.calculate_path_bbvalue_up_to_root(leaf_node)
-    prune_logger.debug(f"Boundary updated with leaf path measure: {leaf_path_measure}")
-    if leaf_path_measure > self.tree.lowerBound:
-        prune_logger.debug(f"leaf_path_measure {leaf_path_measure} > {self.tree.lowerBound} lower boundary")
-        self.tree.lowerBound = leaf_path_measure
-        prune_logger.debug(f"Updated lower boundary: {self.tree.lowerBound}")
-        print(f"Updated lower boundary: {self.tree.lowerBound}")
-    """

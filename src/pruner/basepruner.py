@@ -1,6 +1,5 @@
 # Set up logging for this module
 import logging
-from src.kernels.expandshrink import ExpandShrink
 from src.kernels.shrinkexpand import ShrinkExpand
 from src.structs.logger import setup_logging
 
@@ -20,13 +19,14 @@ class BasePruner:
         self.remainder_flag = False # Set Flag to True to calculate remainder value of node
         self.initial_remainder_flag = False
         self.remainder = ShrinkExpand(window_size=1, divide_and_conquer=True,alpha=self.kernel_strategy.alpha)
+        self.remainder_value = 0
         if self.initial_remainder_flag:
             possible_HS_value = self.tree.dataset.sum_values() - self.remainder_value
             self.tree.lowerBound = possible_HS_value
             self.tree.upperBound = possible_HS_value
 
     def calculate_subproblem(self, node):
-        subproblem_value = node.dataset.sum_values()
+        subproblem_value = node.dataset.get_elements().sum_values()
         node.sub_value = subproblem_value
         return subproblem_value
     
@@ -35,13 +35,14 @@ class BasePruner:
     
     def calculate_potential_bound(self, node):
         if self.remainder_flag:
-            remainder = self.shrink_expand.find_remainder(node.dataset)
+            remainder = self.find_remainder_in_dataaset(node.dataset)
             if remainder is not None:
-                subproblem_value = node.sub_value - remainder.sum_values()
-                prune_logger.debug(f"Computed Remainder: {node.dataset.get_elements()}, with value {remainder.sum_values()}, subproblem value {subproblem_value} = node_dataset value {node.dataset.sum_values()} - remainder value {- remainder.sum_values()}")
+                self.remainder_value = remainder
+                subproblem_value = node.sub_value - self.remainder_value
         else:
             subproblem_value = node.sub_value
-            prune_logger.debug(f"Calculating subproblem from node: {node.edge} subproblem value {subproblem_value}")
+            #subproblem_value = node.sub_value
+        prune_logger.debug(f"Computed Remainder: {node.dataset.get_elements()}, with value {self.remainder_value}, potential subproblem value {subproblem_value} = node_dataset value {node.sub_value} - remainder value {self.remainder_value}")
 
         prune_logger.debug(f"Path value: {node.path_value} with subproblem value: {subproblem_value} and remaining dataset: {node.get_dataset().get_elements()}")
         return subproblem_value

@@ -1,3 +1,4 @@
+from itertools import combinations
 import random
 from src.values.inconsistency import calculate_inconsistency
 

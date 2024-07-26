@@ -40,12 +40,13 @@ class PBS(Search):
         while self.brancher.queue:
             element = self.brancher.queue.pop(0)
             ss_logger.info(f"Queue: {self.brancher.queue}")
+            sub_value, path_value, current_node, cardinality = element
             if element is None:
                 ss_logger.error("Attempted to pop from an empty heap")
                 break
-            node_path = self.tree.get_hitting_set_for_leaf(element[1]).get_elements()
-            ss_logger.debug(f"Popped element: {element[1].edge}, with value: {element[0]}, Path: {node_path}")
-            sub_value, current_node, cardinality = element
+            node_path = self.tree.get_hitting_set_for_leaf(current_node).get_elements()
+            ss_logger.debug(f"Popped element: {current_node.edge}, with sub value: {current_node.sub_value}, Path value: {current_node.path_value}")
+            ss_logger.info(f"Node Path: {node_path}")
             if self.pruner.should_prune(current_node):
                 ss_logger.info("Node pruned")
                 current_node.kernel = "PRUNED"

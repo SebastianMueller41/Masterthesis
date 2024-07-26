@@ -23,11 +23,8 @@ class BestPruner(BasePruner):
     def update_boundary_with_leaf(self, leaf_node):
         leaf_path_measure = leaf_node.path_value
         dataset_sum = self.tree.dataset.sum_values()
-        
         prune_logger.info(f"Leaf path measure: {leaf_path_measure}, Dataset sum: {dataset_sum}")
-
-        remainder_value = self.find_remainder_in_dataaset(self.tree.dataset).sum_values()
-        prune_logger.debug(f"Remaidner_value = {remainder_value}")
+        prune_logger.debug(f"Remaidner_value = {self.remainder_value}")
 
         if leaf_path_measure >= self.tree.lowerBound: # ASSUMPTION: We find the highest possible value with the first leaf!
             self.tree.lowerBound = leaf_path_measure

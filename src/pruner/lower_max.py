@@ -22,9 +22,14 @@ class LowerPruner(BasePruner):
             print(f"Updated upperBound: {self.tree.upperBound}")
 
     def should_prune(self, node):
-        if self.tree.upperBound > self.tree.dataset.sum_values():
-            prune_logger.info(f"Not pruning, because leafs: {self.tree.leaf_nodes}")
+        if self.remainder_flag:
+            self.remainder_value = self.find_remainder_in_dataaset(self.tree.dataset).sum_values()
+            prune_logger.debug(f"Remainder_value = {remainder_value}")
+        if not self.tree.leaf_nodes:
+        #if self.tree.upperBound > self.tree.dataset.sum_values():
+            prune_logger.info(f"Not pruning, because no leafs: {self.tree.leaf_nodes}")
             return False
-        prune_logger.warning(f"Pruning {node.sub_value >= self.tree.upperBound}, because Subvale {node.sub_value} >= {self.tree.upperBound} upperBound")
-        prune_logger.warning(f"Node path value: {node.path_value}")
-        return node.sub_value <= self.tree.upperBound
+        
+        calculated_sub_value = self.calculate_potential_bound(node)
+        prune_logger.warning(f"Pruning {calculated_sub_value <= self.tree.upperBound}, because sub vale {calculated_sub_value} <= {self.tree.upperBound} upperBound")
+        return calculated_sub_value <= self.tree.upperBound
