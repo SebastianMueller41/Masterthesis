@@ -1,8 +1,5 @@
 import logging
-from sortedcontainers import SortedList
-from src.pruner.upper_min import UpperPruner
 from src.search.search import Search
-from src.search.strategy import Strategy
 from src.tree.hittingsettree import HSTreeNode
 from src.structs.logger import setup_logging
 

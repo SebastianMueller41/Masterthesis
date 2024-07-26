@@ -95,7 +95,7 @@ if __name__ == "__main__":
                 sys.exit(1)
 
         # Initialize the HittingSetTree
-        hitting_set_tree = HittingSetTree(dataset)
+        hitting_set_tree = HittingSetTree(dataset=dataset)
         main_logger.debug("Tree initialized.")
         """
         best_index = 0 # Index to peak at hitting_set_collection

@@ -1,7 +1,6 @@
 import logging
 
 from sortedcontainers import SortedList
-from src.pruner.upper_min import UpperPruner
 from src.structs.logger import setup_logging
 from src.tree.basebrancher import BaseBrancher
 from src.tree.hittingsettree import HSTreeNode
