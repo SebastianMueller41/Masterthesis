@@ -22,6 +22,7 @@ class Search(Strategy):
         self.tree = HittingSetTree(dataset=dataset)
         self.brancher = Brancher(kernelStrategy, self.dataset, self.tree)
         ss_logger.info("BRANCHER INITIALIZED")
+        self.pruner_type = pruner_type
         self.leaf_nodes = []
         self.pruned_nodes = []
         

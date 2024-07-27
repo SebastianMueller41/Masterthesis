@@ -1,7 +1,11 @@
 import csv
+import io
 import logging
+import sys
+from src.database.database import log_execution_data
 from src.pruner.lower_max import LowerPruner
 from src.pruner.upper_min import UpperPruner
+from src.pruner.best import BestPruner  # Assuming BestPruner is imported from this module
 from src.structs.dataset import get_incon_values, get_random_values
 from src.structs.logger import setup_logging
 
@@ -12,29 +16,26 @@ setup_logging()
 data_logger = logging.getLogger(__name__)
 
 class ResultCalculator:
-    def __init__(self, kernelStrategy, search_strategy, tree, execution_time, ressources, value, filename, output_file):
+    def __init__(self, conn, kernelStrategy, search_strategy, tree, execution_time, resources, filename, output_file, value):
         self.random_values = get_random_values()
         self.incon_values = get_incon_values()
+        self.conn = conn
         self.kernelStrategy = kernelStrategy
         self.search_strategy = search_strategy
         self.tree = tree
         self.execution_time = execution_time
-        self.ressources = ressources
-        self.value = value
+        self.resources = resources
+        self.value_param = value
         self.filename = filename
         self.output_file = output_file
         self.best_leaf_index = 0
         self.leaf_nodes = []
         self.result = {
-            'max_hs_val': None,
-            'max_hs_card': None,
-            'min_hs_val': None,
-            'min_hs_card': None,
             'num_kernels': None,
             'num_branches': None,
             'tree_depth': None,
-            #'upperBound' : None,
-            #'lowerBound': None,
+            'upperBound': None,
+            'lowerBound': None,
             'pruned_branches_count': None,
             'result_value': None,
             'cardinality_value': None,
@@ -49,7 +50,12 @@ class ResultCalculator:
             'max_hs_random_card': None,
             'max_hs_incon_card': None,
             'min_hs_random_card': None,
-            'min_hs_incon_card': None
+            'min_hs_incon_card': None,
+            'card_max_random': None,
+            'card_max_incon': None,
+            'card_min_random': None,
+            'card_min_incon': None,
+            'optimal_solution_found': False
         }
         self.create_leaf_node_dict()
 
@@ -59,29 +65,29 @@ class ResultCalculator:
         self.sort_leaf_nodes_desc()
 
     def sort_leaf_nodes_asc(self):
-        # Sort the list based on BBVALUE (descending) and then Cardinality (ascending)
-        self.leaf_nodes = sorted(self.leaf_nodes, key=lambda x: (x[0], x[1])) 
+        # Sort the list based on BBVALUE (ascending) and then Cardinality (ascending)
+        self.leaf_nodes = sorted(self.leaf_nodes, key=lambda x: (x[0], x[1]))
 
     def sort_leaf_nodes_desc(self):
         # Sort the list based on BBVALUE (descending) and then Cardinality (ascending)
-        self.leaf_nodes = sorted(self.leaf_nodes, key=lambda x: (-x[0], x[1])) 
+        self.leaf_nodes = sorted(self.leaf_nodes, key=lambda x: (-x[0], x[1]))
 
     def print_results(self):
         self.calculate()
 
         print(f"\n*********** EXECUTION AND PERFORMANCE PARAMETERS ***********")
-        print(f"\nExecution time: {self.execution_time} \nMemory Used: {self.ressources} \nKernels: {self.result['num_kernels']}, \nBranches {self.result['num_branches']}:")
+        print(f"\nExecution time: {self.execution_time} \nMemory Used: {self.resources} \nKernels: {self.result['num_kernels']}")
         print(f"\nBranches: {self.result['num_branches']} \nTree depth: {self.result['tree_depth']} \nPruned branches: {self.result['pruned_branches_count']}")
         
         print(f"Upper Bound: {self.tree.upperBound}, Lower Bound: {self.tree.lowerBound}")
 
         print(f"\n*********** SEARCH & STRATEGY PARAMETERS ***********")
-        print(f"\nAlpha: {self.kernelStrategy.alpha} \nValue Assignment Strategy: {self.value}, \nSearch Strategy: {self.search_strategy}")
-        print(f"Pruner: {self.search_strategy.pruner.__class__.__name__} \nShrink Sliding Window size: {self.search_strategy.kernelStrategy.sw_shrink} \nExpand Sliding Window size: {self.search_strategy.kernelStrategy.sw_expand} \nShrink Divide and Conquer: {self.search_strategy.kernelStrategy.div_conq_shrink} \nExpand Divide and Conquer: {self.search_strategy.kernelStrategy.div_conq_expand}")
+        print(f"\nAlpha: {self.kernelStrategy.alpha} \nValue Assignment Strategy: {self.value_param}, \nSearch Strategy: {self.search_strategy.__class__.__name__}")
+        print(f"Pruner: {self.search_strategy.pruner_type} \nShrink Sliding Window size: {self.search_strategy.kernelStrategy.sw_shrink} \nExpand Sliding Window size: {self.search_strategy.kernelStrategy.sw_expand} \nShrink Divide and Conquer: {self.search_strategy.kernelStrategy.div_conq_shrink} \nExpand Divide and Conquer: {self.search_strategy.kernelStrategy.div_conq_expand}")
 
-        print(f"\n*********** RESULTS ***********")
+        print(f"\n*********** RESULT PARAMETERS ***********")
         if self.leaf_nodes:
-            print(f"\nOptimal hitting set: {self.tree.get_hitting_set_for_leaf(self.leaf_nodes[self.best_leaf_index][2]).get_elements()} with: \n- Value: {self.result['result_value']} \n- Cardinality: {self.result['cardinality_value']}")
+            print(f"\nOptimal hitting set: {self.result['optimal_HS'].get_elements()} with: \n- Value: {self.result['result_value']} \n- Cardinality: {self.result['cardinality_value']}")
         else:
             print(f"No Hitting Sets Found.")
 
@@ -90,24 +96,75 @@ class ResultCalculator:
             print(f"{bbvalue}, {hitting_set_card}, {self.tree.get_hitting_set_for_leaf(leaf).get_elements()}")
 
         print(f"\n*********** VERIFICATION ***********")
-        print(f"\nMax values (Cardinality, Random, Inconsistency): \n- Value: {self.result['max_hs_val']}, {self.result['max_random_value']}, {self.result['max_incon_value']}\n- Cardinality: {self.result['max_hs_random_card']}, {self.result['max_hs_incon_card']}")
-        print(f"\nMin values (Cardinality, Random, Inconsistency): \n- Value: {self.result['min_hs_val']}, {self.result['min_rand_value']}, {self.result['min_incon_val']}\n- Cardinality: {self.result['min_hs_random_card']}, {self.result['min_hs_incon_card']}")
+        print(f"\nMax values (Cardinality, Random, Inconsistency): \n- Value: {self.result['max_card']}, {self.result['max_random_value']}, {self.result['max_incon_value']}\n- Cardinality: {self.result['card_max_random']}, {self.result['card_max_incon']}")
+        print(f"\nMin values (Cardinality, Random, Inconsistency): \n- Value: {self.result['min_card']}, {self.result['min_rand_value']}, {self.result['min_incon_val']}\n- Cardinality: {self.result['card_min_random']}, {self.result['card_min_incon']}")
+
+        print("\nLEAFS found in order: (Path_value, Cardinality, Hitting_set)\n")
+        for leaf in self.search_strategy.leaf_nodes: 
+            print(f"{leaf.path_value}, {len(self.tree.get_hitting_set_for_leaf(leaf).get_elements())},{self.tree.get_hitting_set_for_leaf(leaf).get_elements()}") 
+
+        # Print the optimal solution found status
+        print("\n**************** OPTIMAL RESULT FOUND? ****************")
+        print(f"-------> {self.result['optimal_solution_found']} <-------")
 
     def print_results_to_file(self):
+        # Create a StringIO object to capture the print output
+        old_stdout = sys.stdout
+        new_stdout = io.StringIO()
+        sys.stdout = new_stdout
+
+        try:
+            # Call the print_results method to capture its output
+            self.print_results()
+        finally:
+            # Restore the original standard output
+            sys.stdout = old_stdout
+
+        # Get the captured output
+        output = new_stdout.getvalue()
+
+        # Write the captured output to the output file
+        with open(self.output_file, 'a') as file:
+            file.write(output)
+
+    def print_baseline_results_to_file(self):
         self.write_to_csv()
 
-    def log_results(self, conn):
-        self.log_execution_data()
-        conn.close()
+    def log_results(self):
+        log_execution_data(
+            self.conn,
+            self.execution_time,
+            self.resources,
+            self.tree.dataset.get_elements(),
+            self.value_param,
+            self.result['num_kernels'],
+            self.result['num_branches'],
+            self.result['tree_depth'],
+            self.result['pruned_branches_count'],
+            self.filename,
+            self.result['optimal_HS'].get_elements(),
+            self.kernelStrategy.div_conq_shrink,
+            self.kernelStrategy.sw_expand,
+            self.kernelStrategy.alpha,
+            self.search_strategy.__class__.__name__,
+            self.result['opt_hs_value'],
+            self.kernelStrategy.div_conq_expand,
+            self.kernelStrategy.sw_shrink,
+            self.result['opt_hs_card'],
+            self.search_strategy.pruner_type,
+            self.tree.lowerBound,
+            self.tree.upperBound,
+            self.result['optimal_solution_found']
+        )
+        self.conn.close()
 
     def write_to_csv(self):
         num_kernels, num_branches = self.tree.count_kernels_and_branches()
         tree_depth = self.tree.tree_depth()
-        strategy_param = 2
         # Write the leaf nodes with their BBVALUE, cardinality, and hitting set to a CSV file
         with open(self.output_file, 'a', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
-            csvwriter.writerow([self.execution_time, self.filename, strategy_param, num_kernels, num_branches, tree_depth, self.kernelStrategy.alpha, 'NONE'])
+            csvwriter.writerow([self.execution_time, self.filename, self.value_param, num_kernels, num_branches, tree_depth, self.kernelStrategy.alpha, 'NONE'])
             for bbvalue, cardinality, leaf in self.leaf_nodes:
                 hitting_set = self.tree.get_hitting_set_for_leaf(leaf).get_elements()
                 # Convert hitting_set to a string
@@ -128,12 +185,12 @@ class ResultCalculator:
 
         # Check and calculate max_hs_val and max_hs_card
         if self.leaf_nodes:
-            self.result['opt_hs_val'] = self.leaf_nodes[0][0]
+            self.result['opt_hs_value'] = int(self.leaf_nodes[0][0])
             self.result['opt_hs_card'] = self.leaf_nodes[0][1]
-            print(f"\nOptimal HS Val: {self.result['opt_hs_val']}, Optimal HS Card: {self.result['opt_hs_card']}")
+            self.result['optimal_HS'] = self.tree.get_hitting_set_for_leaf(self.leaf_nodes[self.best_leaf_index][2])
+            print(f"\nOptimal Hitting Set: \n{self.result['optimal_HS'].get_elements()}")
+            print(f"\nOptimal HS Value: {self.result['opt_hs_value']}, Optimal HS Cardinality: {self.result['opt_hs_card']}")
 
-        #self.result['upperBound'] = self.search_strategy.pruner.upperBound
-        #self.result['lowerBound'] = self.search_strategy.pruner.lowerBound
         self.result['num_kernels'], self.result['num_branches'] = self.tree.count_kernels_and_branches()
         self.result['tree_depth'] = self.tree.tree_depth()
         self.result['pruned_branches_count'] = self.tree.count_pruned_nodes()
@@ -142,18 +199,69 @@ class ResultCalculator:
         self.result['result_value'] = self.best_hitting_set.sum_values()
         self.result['cardinality_value'] = len(self.best_hitting_set.get_elements())
 
-        max_random_value, max_incon_value, min_rand_value, min_incon_val, max_card, min_card = self.get_values_from_db()
+        self.get_values_from_db()
 
-        self.result['max_random_value'] = max_random_value
-        self.result['max_incon_value'] = max_incon_value
-        self.result['min_rand_value'] = min_rand_value
-        self.result['min_incon_val'] = min_incon_val
-        self.result['max_card'] = max_card
-        self.result['min_card'] = min_card
-        self.result['max_hs_random_card'] = 0
-        self.result['max_hs_incon_card'] = 0
-        self.result['min_hs_random_card'] = 0
-        self.result['min_hs_incon_card'] = 0
+        # Determine if the optimal solution is found based on parameters and pruner type
+        optimal_solution_found = False
+
+        if isinstance(self.search_strategy.pruner, LowerPruner):
+            print(f"{self.value_param} == 1 and {self.result['result_value']} == {self.result['max_card']}")
+            if self.value_param == 1 and self.result['result_value'] == self.result['max_card']:
+                optimal_solution_found = True
+            elif self.value_param == 2 and self.result['opt_hs_value'] == self.result['max_random_value']:
+                optimal_solution_found = True
+            elif self.value_param == 3 and self.result['opt_hs_value'] == self.result['max_incon_value']:
+                optimal_solution_found = True
+
+        elif isinstance(self.search_strategy.pruner, UpperPruner):
+            if self.value_param == 1 and self.result['opt_hs_value'] == self.result['min_card']:
+                optimal_solution_found = True
+            elif self.value_param == 2 and self.result['opt_hs_value'] == self.result['min_rand_value']:
+                optimal_solution_found = True
+            elif self.value_param == 3 and self.result['opt_hs_value'] == self.result['min_incon_val']:
+                optimal_solution_found = True
+
+        elif isinstance(self.search_strategy.pruner, BestPruner): 
+            if self.result['opt_hs_value'] == self.result['max_incon_value'] and self.result['opt_hs_card'] == self.result['card_min_incon']:
+                optimal_solution_found = True
+
+        self.result['optimal_solution_found'] = optimal_solution_found
 
     def get_values_from_db(self):
-        return 0, 0, 0, 0, 0, 0
+        # Define the SQL query to retrieve the values
+        query = """
+        SELECT max_random_value, max_incon_value, min_random_value, min_incon_value, max_cardinality, min_cardinality, card_max_random, card_max_incon, card_min_random, card_min_incon
+        FROM EXE_RESULTS.OPTIMAL
+        WHERE filename = %s
+        """
+
+        try:
+            # Create a cursor object
+            cursor = self.conn.cursor()
+            
+            # Execute the query
+            cursor.execute(query, (self.filename,))
+            
+            # Fetch the result
+            row = cursor.fetchone()
+            
+            if row:
+                # Assign the fetched values to the corresponding keys in self.result
+                self.result['max_random_value'] = row[0]
+                self.result['max_incon_value'] = row[1]
+                self.result['min_rand_value'] = row[2]
+                self.result['min_incon_val'] = row[3]
+                self.result['max_card'] = row[4]
+                self.result['min_card'] = row[5]
+                self.result['card_max_random'] = row[6]
+                self.result['card_max_incon'] = row[7]
+                self.result['card_min_random'] = row[8]
+                self.result['card_min_incon'] = row[9]
+            else:
+                raise ValueError("No data found in the table EXE_RESULTS.OPTIMAL")
+            
+        except Exception as e:
+            print(f"An error occurred while fetching data from the database: {e}")
+        finally:
+            # Close the cursor
+            cursor.close()
