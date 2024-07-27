@@ -16,7 +16,7 @@ class BasePruner:
         self.best_solution = None
         self.optimal_reached = False
         self.kernel_strategy = kernel_strategy
-        self.remainder_flag = True # Set Flag to True to calculate remainder value of node
+        self.remainder_flag = False # Set Flag to True to calculate remainder value of node
         self.initial_remainder_flag = True
         self.remainder = ShrinkExpand(window_size=1, divide_and_conquer=True,alpha=self.kernel_strategy.alpha)
         self.remainder_value = float('inf')

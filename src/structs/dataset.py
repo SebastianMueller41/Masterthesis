@@ -156,6 +156,10 @@ class DataSet:
         Returns:
             DataSet: A new dataset containing unique elements from both datasets.
         """
+        if other is None:
+            # Return a copy of the current dataset
+            return DataSet(elements=list(set(self.get_elements())))
+        
         # Use a set to ensure uniqueness
         combined_elements_set = set(self.get_elements()) | set(other.get_elements())
         # Return a new DataSet with the combined unique elements
