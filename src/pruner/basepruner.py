@@ -17,25 +17,21 @@ class BasePruner:
         self.optimal_reached = False
         self.kernel_strategy = kernel_strategy
         self.remainder_flag = True # Set Flag to True to calculate remainder value of node
-        self.initial_remainder_flag = False
+        self.initial_remainder_flag = True
         self.remainder = ShrinkExpand(window_size=1, divide_and_conquer=True,alpha=self.kernel_strategy.alpha)
-        self.remainder_value = 0
-        if self.initial_remainder_flag:
-            possible_HS_value = self.tree.dataset.sum_values() - self.remainder_value
-            self.tree.lowerBound = possible_HS_value
-            self.tree.upperBound = possible_HS_value
+        self.remainder_value = float('inf')
 
     def calculate_subproblem(self, node):
         subproblem_value = node.dataset.get_elements().sum_values()
         node.sub_value = subproblem_value
         return subproblem_value
     
-    def find_remainder_in_dataaset(self, dataset):
+    def find_remainder_in_dataset(self, dataset):
         return self.remainder.find_remainder(dataset)
     
     def calculate_potential_bound(self, node):
         if self.remainder_flag:
-            remainder = self.find_remainder_in_dataaset(node.dataset)
+            remainder = self.find_remainder_in_dataset(node.dataset)
             if remainder is not None:
                 self.remainder_value = remainder.sum_values()
                 subproblem_value = node.sub_value - self.remainder_value

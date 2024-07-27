@@ -30,5 +30,7 @@ class LowerPruner(BasePruner):
             return False
         
         calculated_sub_value = self.calculate_potential_bound(node)
+        if self.initial_remainder_flag:
+            self.tree.upperBound = self.remainder_value
         prune_logger.warning(f"Pruning {calculated_sub_value <= self.tree.upperBound}, because sub vale {calculated_sub_value} <= {self.tree.upperBound} upperBound")
         return calculated_sub_value <= self.tree.upperBound
