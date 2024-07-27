@@ -14,8 +14,8 @@ MISSING_COMBINATION_FILES=(
 )
 
 # Strategy parameters and corresponding pruner combinations
-STRATEGY_PARAMS=(1 2 3)
-PRUNER_OPTIONS=('LOWER')
+STRATEGY_PARAMS=(2 3)
+PRUNER_OPTIONS=('LOWER' 'UPPER' 'BEST') # Correct length and values
 
 # Search strategies
 SEARCH_STRATEGIES=('PBS')
@@ -54,7 +54,7 @@ for MISSING_COMBINATIONS_FILE in "${MISSING_COMBINATION_FILES[@]}"; do
                 echo "Found file name: $FILE_NAME"
                 for i in "${!STRATEGY_PARAMS[@]}"; do
                     strategy_param=${STRATEGY_PARAMS[$i]}
-                    pruner_option=${PRUNER_OPTIONS[$i]}
+                    pruner_option=${PRUNER_OPTIONS[$i]:-LOWER} # Default to LOWER if out of bounds
                     echo "Using strategy_param: $strategy_param, pruner_option: $pruner_option"
                     for search_strategy in "${SEARCH_STRATEGIES[@]}"; do
                         echo "Using search_strategy: $search_strategy"
