@@ -42,4 +42,47 @@ JOIN (
         (
             SELECT MIN(inner_hs.cardinality)
             FROM EXE_RESULTS.HITTING_SETS inner_hs
-            WHERE inner_hs.file
+            WHERE inner_hs.filename = hs.filename
+              AND inner_hs.inconsistency_sum = (
+                  SELECT MIN(min_hs.inconsistency_sum)
+                  FROM EXE_RESULTS.HITTING_SETS min_hs
+                  WHERE min_hs.filename = hs.filename
+              )
+        ) AS card_min_incon,
+        (
+            SELECT MIN(inner_hs.cardinality)
+            FROM EXE_RESULTS.HITTING_SETS inner_hs
+            WHERE inner_hs.filename = hs.filename
+              AND inner_hs.random_sum = (
+                  SELECT MAX(max_hs.random_sum)
+                  FROM EXE_RESULTS.HITTING_SETS max_hs
+                  WHERE max_hs.filename = hs.filename
+              )
+        ) AS min_card_max_value_random,
+        (
+            SELECT MIN(inner_hs.cardinality)
+            FROM EXE_RESULTS.HITTING_SETS inner_hs
+            WHERE inner_hs.filename = hs.filename
+              AND inner_hs.inconsistency_sum = (
+                  SELECT MAX(max_hs.inconsistency_sum)
+                  FROM EXE_RESULTS.HITTING_SETS max_hs
+                  WHERE max_hs.filename = hs.filename
+              )
+        ) AS min_card_max_value_incon
+    FROM EXE_RESULTS.HITTING_SETS hs
+    GROUP BY hs.filename
+) sub ON o.filename = sub.filename
+SET 
+    o.max_cardinality = sub.max_cardinality,
+    o.max_random_value = sub.max_random_value,
+    o.max_incon_value = sub.max_incon_value,
+    o.min_random_value = sub.min_random_value,
+    o.min_incon_value = sub.min_incon_value,
+    o.min_cardinality = sub.min_cardinality,
+    o.num_leafs = sub.num_leafs,
+    o.card_max_random = sub.card_max_random,
+    o.card_max_incon = sub.card_max_incon,
+    o.card_min_random = sub.card_min_random,
+    o.card_min_incon = sub.card_min_incon,
+    o.min_card_max_value_random = sub.min_card_max_value_random,
+    o.min_card_max_value_incon = sub.min_card_max_value_incon;

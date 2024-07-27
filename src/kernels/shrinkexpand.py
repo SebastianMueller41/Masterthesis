@@ -12,6 +12,7 @@ kr_logger = logging.getLogger(__name__)
 
 class ShrinkExpand(KernelStrategy):
     def __init__(self, window_size=1, divide_and_conquer=False, alpha=None):  
+        print("INITIALIZE SHRINK")
         # Default to the basic expand-shrink method with window_size = 1 and without Divide_and_conquer
         self.alpha = alpha
         self.window_size = window_size
@@ -42,7 +43,8 @@ class ShrinkExpand(KernelStrategy):
 
     def find_remainder(self, dataset):
         remainder_dataset, removed_elements = self.shrink(dataset)
-        kr_logger.info(f"After shrink: {remainder_dataset.get_elements()}")
+        
+        kr_logger.info(f"Remainder After shrink: {remainder_dataset.get_elements()}")
         if self.div_conq:
             return self.divide_and_conquer(remainder_dataset, removed_elements)
         else:
@@ -59,17 +61,16 @@ class ShrinkExpand(KernelStrategy):
             B_prime = B_dataset.clone()
             for element in window_elements:
                 B_prime.remove_element(element)
-            kr_logger.debug(f"Checking and removing elements: {window_elements}, B_prime now with {len(B_prime.get_elements())} elements = {B_prime.get_elements()}")
-
-            if cn(B_prime, self.alpha):  # Use the imported cn function
-                kr_logger.info(f"SHRINK: CN = TRUE for window elements {window_elements}, B_dataset = {B_prime.get_elements()}, removed elements: {removed_elements.get_elements()}")
+            kr_logger.debug(f"TODO: Checking and removing elements: {window_elements}, B_prime now with {len(B_prime.get_elements())} elements = {B_prime.get_elements()}")
+            removed_elements.add_element(element)
+            if cn(B_prime, self.alpha):
+                kr_logger.info(f"TODO: SHRINK: CN = TRUE for window elements {window_elements}, B_dataset = {B_prime.get_elements()}, removed elements: {removed_elements.get_elements()}")
                 B_dataset = B_prime
-                removed_elements.add_element(element)
             else:
                 kr_logger.info(f"FINISHED SHRINK, CN = FALSE for window elements {window_elements}, Remainder output with {len(B_prime.get_elements())} elements: {B_prime.get_elements()}, removed elements: {removed_elements.get_elements()}")
-                return B_dataset, removed_elements
-
-        kr_logger.info(f"Remainder after sliding window shrink with {len(B_dataset.get_elements())} elements: {B_dataset.get_elements()}")
+                return B_prime, removed_elements
+        
+        kr_logger.info(f"TODO_HERE: Remainder after sliding window shrink with {len(B_dataset.get_elements())} elements: {B_dataset.get_elements()}, B_prime = {B_prime.get_elements()}")
         return B_dataset, removed_elements
 
     def expand(self, B_dataset, removed_elements):

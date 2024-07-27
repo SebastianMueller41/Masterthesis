@@ -16,7 +16,7 @@ class BasePruner:
         self.best_solution = None
         self.optimal_reached = False
         self.kernel_strategy = kernel_strategy
-        self.remainder_flag = False # Set Flag to True to calculate remainder value of node
+        self.remainder_flag = True # Set Flag to True to calculate remainder value of node
         self.initial_remainder_flag = False
         self.remainder = ShrinkExpand(window_size=1, divide_and_conquer=True,alpha=self.kernel_strategy.alpha)
         self.remainder_value = 0
@@ -39,10 +39,11 @@ class BasePruner:
             if remainder is not None:
                 self.remainder_value = remainder.sum_values()
                 subproblem_value = node.sub_value - self.remainder_value
+                prune_logger.debug(f"Computed Remainder: {remainder.get_elements()}, with value {self.remainder_value}, potential subproblem value {subproblem_value} = node_dataset value {node.sub_value} - remainder value {self.remainder_value}")
+            else:
+                subproblem_value = node.sub_value
         else:
             subproblem_value = node.sub_value
-            #subproblem_value = node.sub_value
-        prune_logger.debug(f"Computed Remainder: {node.dataset.get_elements()}, with value {self.remainder_value}, potential subproblem value {subproblem_value} = node_dataset value {node.sub_value} - remainder value {self.remainder_value}")
 
         prune_logger.debug(f"Path value: {node.path_value} with subproblem value: {subproblem_value} and remaining dataset: {node.get_dataset().get_elements()}")
         return subproblem_value
