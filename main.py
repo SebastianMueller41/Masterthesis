@@ -61,7 +61,7 @@ if __name__ == "__main__":
     main_logger.debug("Starting main script")
     # Prepare for timeout
     signal.signal(signal.SIGALRM, timeout_handler)
-    timeout_duration = 3  # 1800 seconds or 30 minutes
+    timeout_duration = 1800  # 1800 seconds or 30 minutes
     signal.alarm(timeout_duration)  # Start the timer
 
     if args.path_db:
