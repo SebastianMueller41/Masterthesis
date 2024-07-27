@@ -95,6 +95,7 @@ class ResultCalculator:
         else:
             print(f"No Hitting Sets Found.")
 
+        print()
         for bbvalue, hitting_set_card, leaf in self.leaf_nodes:
             print(f"{bbvalue}, {hitting_set_card}, {self.tree.get_hitting_set_for_leaf(leaf).get_elements()}")
 

@@ -1,9 +1,3 @@
-SET SQL_SAFE_UPDATES = 0;
-
-
-CREATE TABLE EXE_RESULTS.OPTIMAL_BU SELECT * FROM EXE_RESULTS.OPTIMAL
-
-/*
 UPDATE EXE_RESULTS.OPTIMAL o
 JOIN (
     SELECT 
@@ -93,22 +87,3 @@ SET
     o.min_card_max_value_random = sub.min_card_max_value_random,
     o.min_card_max_value_incon = sub.min_card_max_value_incon
 WHERE o.execution_time IS NOT NULL;
-*/
-
-#DELETE FROM EXE_RESULTS.HITTING_SETS where filename like '%sig10_15_25/srs_%'
-
-#DELETE FROM EXE_RESULTS.HITTING_SETS WHERE ID = 22744
-
-#USE EXE_RESULTS;
-
-#DELETE FROM EXE_RESULTS.RESULTS WHERE filename like '%sig5_15%';
-
-#DELETE FROM EXE_RESULTS.RESULTS WHERE pruner = 'LOWER';
-
-#ALTER TABLE EXE_RESULTS.RESULTS RENAME COLUMN optimal_value_incon TO max_incon_value;
-
-#UPDATE EXE_RESULTS.RESULTS SET optimal_cardinality = JSON_LENGTH(optimal_solution);
-
-#DELETE FROM EXE_RESULTS.RESULTS where filename like '%10_15_25%';
-
-

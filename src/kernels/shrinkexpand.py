@@ -12,7 +12,6 @@ kr_logger = logging.getLogger(__name__)
 
 class ShrinkExpand(KernelStrategy):
     def __init__(self, window_size=1, divide_and_conquer=False, alpha=None):  
-        print("INITIALIZE SHRINK")
         # Default to the basic expand-shrink method with window_size = 1 and without Divide_and_conquer
         self.alpha = alpha
         self.window_size = window_size
