@@ -133,22 +133,12 @@ if __name__ == "__main__":
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
-        results = ResultCalculator(kernelStrategy=kernel_strategy, search_strategy=search_strategy, tree=hitting_set_tree, execution_time=execution_time, ressources=resources_used, value=args.vp, filename=args.filepath, output_file="Results/All_hitting_sets.csv")
-        #results.log_results(conn)
+        results = ResultCalculator(conn, kernelStrategy=kernel_strategy, search_strategy=search_strategy, tree=hitting_set_tree, execution_time=execution_time, resources=resources_used, value=args.vp, filename=args.filepath, output_file="Results/All_hitting_sets.csv")
         results.print_results_to_file()
         results.print_results()
 
-        #print(f"\nNumber of computed kernels: {len(search_strategy.brancher.computed_kernels)}")
-        #for kernel in search_strategy.brancher.computed_kernels:
-        #    print(f"Path to node: {hitting_set_tree.get_hitting_set_for_leaf(kernel).get_elements()}, kernel: {kernel.kernel}")
-
-       # print(f"\nNumber of called shrink: {kernel_strategy.counter}")
-       # for kernel in kernel_strategy.computed_kernels:
-       #     print(f"Computed Kernel: {kernel.get_elements() if isinstance(kernel, DataSet) else ''}")
-
-        print("\n\nLEAFS VISITED IN ORDER: (Path_value, Cardinality, Hitting_set)\n")
-        for leaf in search_strategy.leaf_nodes: 
-            print(f"{leaf.path_value}, {len(hitting_set_tree.get_hitting_set_for_leaf(leaf).get_elements())},{hitting_set_tree.get_hitting_set_for_leaf(leaf).get_elements()}") 
+        if args.res_db:
+            results.log_results()
 
     except TimeoutError as e:
         main_logger.error(f"Timeout occurred: {e}")

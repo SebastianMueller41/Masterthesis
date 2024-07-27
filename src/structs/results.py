@@ -55,6 +55,8 @@ class ResultCalculator:
             'card_max_incon': None,
             'card_min_random': None,
             'card_min_incon': None,
+            'min_card_max_value_random': None,
+            'min_card_max_value_random': None,
             'optimal_solution_found': False
         }
         self.create_leaf_node_dict()
@@ -91,21 +93,20 @@ class ResultCalculator:
         else:
             print(f"No Hitting Sets Found.")
 
-        print()
         for bbvalue, hitting_set_card, leaf in self.leaf_nodes:
             print(f"{bbvalue}, {hitting_set_card}, {self.tree.get_hitting_set_for_leaf(leaf).get_elements()}")
 
         print(f"\n*********** VERIFICATION ***********")
-        print(f"\nMax values (Cardinality, Random, Inconsistency): \n- Value: {self.result['max_card']}, {self.result['max_random_value']}, {self.result['max_incon_value']}\n- Cardinality: {self.result['card_max_random']}, {self.result['card_max_incon']}")
-        print(f"\nMin values (Cardinality, Random, Inconsistency): \n- Value: {self.result['min_card']}, {self.result['min_rand_value']}, {self.result['min_incon_val']}\n- Cardinality: {self.result['card_min_random']}, {self.result['card_min_incon']}")
+        print(f"\nMax values (Cardinality, Random, Inconsistency): \n- Value: {self.result['max_card']}, {self.result['max_random_value']}, {self.result['max_incon_value']}\n- Cardinality: {self.result['max_card']}, {self.result['card_max_random']}, {self.result['card_max_incon']}")
+        print(f"\nMin values (Cardinality, Random, Inconsistency): \n- Value: {self.result['min_card']}, {self.result['min_rand_value']}, {self.result['min_incon_val']}\n- Cardinality: {self.result['min_card']}, {self.result['card_min_random']}, {self.result['card_min_incon']}")
 
-        print("\nLEAFS found in order: (Path_value, Cardinality, Hitting_set)\n")
+        print("\nLEAFS found in order: (Path_value, Cardinality, Hitting_set)")
         for leaf in self.search_strategy.leaf_nodes: 
             print(f"{leaf.path_value}, {len(self.tree.get_hitting_set_for_leaf(leaf).get_elements())},{self.tree.get_hitting_set_for_leaf(leaf).get_elements()}") 
 
         # Print the optimal solution found status
-        print("\n**************** OPTIMAL RESULT FOUND? ****************")
-        print(f"-------> {self.result['optimal_solution_found']} <-------")
+        print("\n*** OPTIMAL RESULT FOUND? ***")
+        print(f"----------> {self.result['optimal_solution_found']} <----------")
 
     def print_results_to_file(self):
         # Create a StringIO object to capture the print output
@@ -162,7 +163,7 @@ class ResultCalculator:
         num_kernels, num_branches = self.tree.count_kernels_and_branches()
         tree_depth = self.tree.tree_depth()
         # Write the leaf nodes with their BBVALUE, cardinality, and hitting set to a CSV file
-        with open(self.output_file, 'a', newline='') as csvfile:
+        with open(self.output_file, 'w', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow([self.execution_time, self.filename, self.value_param, num_kernels, num_branches, tree_depth, self.kernelStrategy.alpha, 'NONE'])
             for bbvalue, cardinality, leaf in self.leaf_nodes:
@@ -222,15 +223,20 @@ class ResultCalculator:
                 optimal_solution_found = True
 
         elif isinstance(self.search_strategy.pruner, BestPruner): 
-            if self.result['opt_hs_value'] == self.result['max_incon_value'] and self.result['opt_hs_card'] == self.result['card_min_incon']:
-                optimal_solution_found = True
+            if self.value_param == 1:
+                optimal_solution_found = self.result['opt_hs_value'] == self.result['max_card'] and self.result['opt_hs_card'] == self.result['max_card']
+            elif self.value_param == 2:
+                optimal_solution_found = self.result['opt_hs_value'] == self.result['max_random_value'] and self.result['opt_hs_card'] == self.result['min_card_max_value_random']
+            elif self.value_param == 3:
+                print(f"{self.result['opt_hs_value']} == {self.result['max_incon_value']} and {self.result['opt_hs_card']} == {self.result['min_card_max_value_incon']}")
+                optimal_solution_found = self.result['opt_hs_value'] == self.result['max_incon_value'] and self.result['opt_hs_card'] == self.result['min_card_max_value_incon']
 
         self.result['optimal_solution_found'] = optimal_solution_found
 
     def get_values_from_db(self):
         # Define the SQL query to retrieve the values
         query = """
-        SELECT max_random_value, max_incon_value, min_random_value, min_incon_value, max_cardinality, min_cardinality, card_max_random, card_max_incon, card_min_random, card_min_incon
+        SELECT max_random_value, max_incon_value, min_random_value, min_incon_value, max_cardinality, min_cardinality, card_max_random, card_max_incon, card_min_random, card_min_incon, min_card_max_value_random, min_card_max_value_incon
         FROM EXE_RESULTS.OPTIMAL
         WHERE filename = %s
         """
@@ -257,6 +263,8 @@ class ResultCalculator:
                 self.result['card_max_incon'] = row[7]
                 self.result['card_min_random'] = row[8]
                 self.result['card_min_incon'] = row[9]
+                self.result['min_card_max_value_random'] = row[10]
+                self.result['min_card_max_value_incon'] = row[11]
             else:
                 raise ValueError("No data found in the table EXE_RESULTS.OPTIMAL")
             
