@@ -61,15 +61,16 @@ if __name__ == "__main__":
     main_logger.debug("Starting main script")
     # Prepare for timeout
     signal.signal(signal.SIGALRM, timeout_handler)
-    timeout_duration = 1800  # 1800 seconds or 30 minutes
+    timeout_duration = 3  # 1800 seconds or 30 minutes
     signal.alarm(timeout_duration)  # Start the timer
 
     if args.path_db:
         conn = create_ssh_tunnel_and_connect()
     else:
         conn = False
-    
+
     try:
+       
         dataset = initialize_dataset(conn, input_file_path=args.filepath, strategy_param=args.vp, db=args.path_db)
         start_time = time.time()
         if dataset.size() == 0:
@@ -145,12 +146,12 @@ if __name__ == "__main__":
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
         if args.res_db and conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.vp, None, None, None, None, args.filepath, None, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner, None,None,None,None,None,None,None)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.vp, None, None, None, None, args.filepath, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner, None,None,None)
             conn.close()
             print("Program timed out.")
         sys.exit(1)
     except Exception as e:
-        main_logger.error(f"An error occurred: {e}")
+        main_logger.error(f"An error occurred: {e}. Error trying to process rule {str(e)}")
         sys.exit(1)
     finally:
         signal.alarm(0)  # Cancel the timeout

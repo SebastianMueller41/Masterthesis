@@ -59,7 +59,6 @@ class ResultCalculator:
             'min_card_max_value_random': None,
             'optimal_solution_found': False
         }
-        self.create_leaf_node_dict()
 
     def create_leaf_node_dict(self):
         # Create a list of tuples containing (BBVALUE, hitting_set, LEAF_NODE)
@@ -75,6 +74,9 @@ class ResultCalculator:
         self.leaf_nodes = sorted(self.leaf_nodes, key=lambda x: (-x[0], x[1]))
 
     def print_results(self):
+        if self.tree is None:
+            pass
+        self.create_leaf_node_dict()
         self.calculate()
 
         print(f"\n*********** EXECUTION AND PERFORMANCE PARAMETERS ***********")
