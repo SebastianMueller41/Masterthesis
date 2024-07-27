@@ -1,4 +1,5 @@
 import logging
+from sortedcontainers import SortedList
 from src.search.search import Search
 from src.tree.hittingsettree import HSTreeNode
 from src.structs.logger import setup_logging
@@ -12,21 +13,31 @@ ss_logger = logging.getLogger(__name__)
 class PBS(Search):
     def __init__(self, kernelStrategy, dataset, pruner):
         super().__init__(kernelStrategy, dataset, pruner)
-        self.brancher.initialize_queue(pruner)
+        self.queue = self.initialize_queue(pruner)
+
+    def initialize_queue(self, pruner):
+        if pruner == 'UPPER':
+            ss_logger.warning(f"Upper Pruner, Initializing SortedList with sub_value DESC and cardinality DESC")
+            return SortedList(key=lambda x: (-x[0], x[3]))  # Sort desc by sub_value and asc by cardinality
+        elif pruner == 'LOWER':
+            ss_logger.warning(f"Lower Pruner, Initializing SortedList with sub_value ASC, path_value DESC, and cardinality ASC")
+            return SortedList(key=lambda x: (x[0], -x[1], x[3]))  # Sort by sub_value, then path_value, then cardinality
+        else:
+            ss_logger.warning(f"Default Pruner, Initializing SortedList with path_value DESC and cardinality ASC")
+            return SortedList(key=lambda x: (-x[1], x[3]))  # Sort desc by path_value and asc by cardinality
 
     def find_kernels(self) -> None:
+        ss_logger.debug("FINDING KERNEL")
         initial_node = self.create_initial_node(self.dataset)
-        ss_logger.info("Initial kernel found!")
-        if initial_node is None:
-            ss_logger.info("Initial kernel is None, no need to span the tree.")
-            return
-        self.search(initial_node)
+        if initial_node is not None:
+            self.search(initial_node)
         self.tree.print_tree()
         self.log_tree()
 
     def create_initial_node(self, dataset):
         result = self.kernelStrategy.find_kernel(dataset)
         if result is None:
+            ss_logger.info("Initial kernel is None, no need to span the tree.")
             return None
         sub_value = dataset.sum_values()
         initial_node = HSTreeNode(kernel=result.get_elements(), dataset=dataset, path_value=0, parent=None, sub_value=sub_value)
@@ -34,39 +45,48 @@ class PBS(Search):
         return initial_node
 
     def search(self, root: HSTreeNode):
-        self.brancher.add_to_priority_queue(root)
-        ss_logger.info(f"Priority search started")
+        self.add_to_priority_queue(root, self.queue)
+        ss_logger.info("Priority search started")
 
-        while self.brancher.queue:
-            element = self.brancher.queue.pop(0)
-            ss_logger.info(f"Queue: {self.brancher.queue}")
+        while self.queue:
+            element = self.queue.pop(0)
+            ss_logger.debug(f"Queue: {self.queue}")
             sub_value, path_value, current_node, cardinality = element
-            if element is None:
-                ss_logger.error("Attempted to pop from an empty heap")
-                break
-            node_path = self.tree.get_hitting_set_for_leaf(current_node).get_elements()
-            ss_logger.debug(f"Popped element: {current_node.edge}, with sub value: {current_node.sub_value}, Path value: {current_node.path_value}")
-            ss_logger.info(f"Node Path: {node_path}")
+            ss_logger.debug(f"Popped element: {current_node}, with sub value: {sub_value}, path value: {path_value}, cardinality: {cardinality}")
+            
             if self.pruner.should_prune(current_node):
-                ss_logger.info("Node pruned")
                 current_node.kernel = "PRUNED"
-                self.pruned_nodes.append(current_node)
                 current_node.set_pruned()
+                self.pruned_nodes.append(current_node)
                 continue
-            ss_logger.info(f"Not prune path: {node_path} with value: {element[0]}!")
+
             if current_node.get_kernel() is None:
                 result = self.kernelStrategy.find_kernel(current_node.get_dataset())
                 if result is not None:
-                    ss_logger.info(f"Setting kernel to: {result.get_elements()}")
                     current_node.set_kernel(result.get_elements())
-                    self.brancher.expand_children(current_node)
+                    self.expand_children(current_node)
                 else:
-                    ss_logger.debug(f"LEAF FOUND! Calling Update Boundary wird {current_node.sub_value}")
                     current_node.set_kernel("LEAF")
                     self.tree.add_leaf_node(current_node)
                     self.leaf_nodes.append(current_node)
                     self.pruner.update_boundary_with_leaf(current_node)
             else:
-                self.brancher.expand_children(current_node)
+                self.expand_children(current_node)
 
             self.log_tree()
+
+    def expand_children(self, parent):
+        child_nodes = self.brancher.expand_children(parent)
+        ss_logger.info(f"Child nodes from brancher: {child_nodes}")
+        for child_node in child_nodes:
+            if child_node.get_kernel() is None:
+                result = self.kernelStrategy.find_kernel(child_node.get_dataset())
+                if result is not None:
+                    child_node.set_kernel(result.get_elements())
+            self.add_to_priority_queue(child_node, self.queue)
+
+    def add_to_priority_queue(self, node, queue):
+        cardinality = len(self.tree.get_hitting_set_for_leaf(node).get_elements())
+        queue.add((node.sub_value, node.path_value, node, cardinality))
+        ss_logger.debug(f"Added node to queue with sub_value: {node.sub_value}, path_value: {node.path_value}, cardinality: {cardinality}")
+        ss_logger.debug(f"Priority Queue: {queue}")
