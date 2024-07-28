@@ -248,7 +248,8 @@ class ResultCalculator:
             elif self.value_param == 3:
                 print(f"{self.result['opt_hs_value']} == {self.result['max_incon_value']} and {self.result['opt_hs_card']} == {self.result['min_card_max_value_incon']}")
                 optimal_solution_found = self.result['opt_hs_value'] == self.result['max_incon_value'] and self.result['opt_hs_card'] == self.result['min_card_max_value_incon']
-
+        else:
+            optimal_solution_found = True
         self.result['optimal_solution_found'] = optimal_solution_found
 
     def get_values_from_db(self):

@@ -1,10 +1,4 @@
-Makes on sense:
---sp 1 --pruner UPPER (because cardinality = minimal problem, would only work, if we use only remainder value)
-
---sp 1, LOWER
---sp 2, LOWER, UPPER, NONE
---sp 3, LOWER, UPPER, BEST
-
-LOWER -> Finds optimal solution with lowest Value
-UPPER -> Finds optimal solution with highest Value
-BEST -> Finds optimal solution with highest Value and Lowest Cardinality
+strategy_param: 1 2 3
+pruner: LOWER UPPER BEST
+--shrink-sw-size 5 --shrink-sw-size 10
+-expand-div-conq
