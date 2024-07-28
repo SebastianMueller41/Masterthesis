@@ -176,17 +176,19 @@ class ResultCalculator:
         self.conn.close()
 
     def write_to_csv(self):
+        print(self.tree.leaf_nodes)
         num_kernels, num_branches = self.tree.count_kernels_and_branches()
         tree_depth = self.tree.tree_depth()
         # Write the leaf nodes with their BBVALUE, cardinality, and hitting set to a CSV file
         with open(self.output_file, 'w', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow([self.execution_time, self.filename, self.value_param, num_kernels, num_branches, tree_depth, self.kernelStrategy.alpha, 'NONE'])
-            for bbvalue, cardinality, leaf in self.leaf_nodes:
+            for bbvalue, leaf in self.tree.leaf_nodes:
                 hitting_set = self.tree.get_hitting_set_for_leaf(leaf).get_elements()
+                hitting_set_card = len(hitting_set)
                 # Convert hitting_set to a string
                 hitting_set_str = ', '.join(hitting_set)
-                csvwriter.writerow([bbvalue, cardinality, hitting_set_str])
+                csvwriter.writerow([bbvalue, hitting_set_card, hitting_set_str])
 
     def calculate(self):
         if isinstance(self.search_strategy.pruner, UpperPruner):

@@ -137,8 +137,9 @@ if __name__ == "__main__":
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
         results = ResultCalculator(conn, kernelStrategy=kernel_strategy, dataset=dataset, search_strategy=search_strategy, tree=hitting_set_tree, execution_time=execution_time, resources=resources_used, value=args.vp, filename=args.filepath, output_file="Results/All_hitting_sets.csv")
-        results.print_results_to_file()
-        results.print_results()
+        #results.print_results_to_file()
+        #results.print_results()
+        results.print_baseline_results_to_file()
 
         if args.res_db:
             results.log_results()
