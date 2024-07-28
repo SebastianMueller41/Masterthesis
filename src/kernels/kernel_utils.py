@@ -179,6 +179,7 @@ def cn(B_dataset, alpha):
         kr_logger.debug(f"MiniSat result: SAT. Therefore, {alpha} is not in Cn({B_dataset.get_elements()})")
         return False
     else:
+        print(f"B_copy: {B_copy.get_elements()}")
         print("MiniSat output was unexpected.")
         kr_logger.debug("MiniSat output was unexpected.")
         sys.exit(1)

@@ -23,7 +23,7 @@ class BestPruner(BasePruner):
     def update_boundary_with_leaf(self, leaf_node):
         prune_logger.info(f"Leaf path measure: {leaf_node.path_value}, Dataset sum: {self.dataset_max}")
         if not self.max_reached:
-            if leaf_node.path_value == dataset_max:
+            if leaf_node.path_value == self.dataset_max:
                 self.max_reached = True
                 self.tree.lowerBound = leaf_node.path_value
                 self.tree.upperBound = len(self.tree.get_hitting_set_for_leaf(leaf_node).get_elements())
