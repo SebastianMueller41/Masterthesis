@@ -4,7 +4,7 @@
 PYTHON_SCRIPT="sat4im/src/sat4im.py"
 
 # CSV file containing filenames
-CSV_FILE="data/SRS/sig5_15_25.csv"
+CSV_FILE="data/ARG/ARG.csv"
 
 # Output results file
 RESULTS_FILE="tmp/results_con.txt"
