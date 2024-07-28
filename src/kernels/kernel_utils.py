@@ -163,18 +163,71 @@ def shrink_divide_and_conquer(B_dataset, alpha):
     kr_logger.info(f"DC: Both halves entail alpha, merging and shrinking with {combined_result.get_elements()}")
     return shrink(combined_result, alpha)
 
+import os
+import time
+import subprocess
+import logging
+import sys
+
+# Set up logging
+kr_logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
+
 def cn(B_dataset, alpha):
     temp_file = "tmp/temp_database.txt"
+    
+    # Clone the dataset and add the new element
     B_copy = B_dataset.clone()
-    B_copy.add_element("!("+alpha+")")
+    B_copy.add_element("!(" + alpha + ")")
+    
+    # Ensure the tmp directory exists
+    os.makedirs(os.path.dirname(temp_file), exist_ok=True)
+    
+    # Write to the temporary file
     B_copy.to_file(temp_file)
+    
+    # Ensure file is written and closed properly
+    if not os.path.exists(temp_file):
+        kr_logger.error(f"Temporary file {temp_file} was not created.")
+        sys.exit(1)
+    
+    with open(temp_file, 'r') as file:
+        content = file.read()
+        kr_logger.debug(f"File content before CNF conversion: {content}")
+    
+    # Convert to CNF
     converter = CNFConverter(verbose=False)
     converter.convert_to_cnf(temp_file, temp_file)
-    # Small delay to handle potential race condition
-    time.sleep(3)
-    result = subprocess.run(['minisat', temp_file], capture_output=True, text=True)
-    output = result.stdout
-    last_line = output.splitlines()[-1]
+    
+    # Ensure the file exists and check the content after conversion
+    if not os.path.exists(temp_file):
+        kr_logger.error(f"Temporary file {temp_file} does not exist after CNF conversion.")
+        sys.exit(1)
+    
+    with open(temp_file, 'r') as file:
+        content = file.read()
+        kr_logger.debug(f"File content after CNF conversion: {content}")
+    
+    # Run MiniSat and capture output
+    try:
+        result = subprocess.run(['minisat', temp_file], capture_output=True, text=True, timeout=10)
+    except subprocess.TimeoutExpired:
+        kr_logger.error("MiniSat process timed out.")
+        sys.exit(1)
+    except Exception as e:
+        kr_logger.error(f"Error running MiniSat: {e}")
+        sys.exit(1)
+    
+    output = result.stdout.strip()
+    kr_logger.debug(f"MiniSat raw output: {output}")
+    
+    # Handle unexpected empty output
+    if not output:
+        kr_logger.error("MiniSat returned an empty output.")
+        sys.exit(1)
+    
+    last_line = output.splitlines()[-1].strip()
+    kr_logger.debug(f"MiniSat last line of output: {last_line}")
     if "UNSAT" in last_line:
         kr_logger.debug(f"MiniSat result: UNSAT. Therefore, {alpha} is in Cn({B_dataset.get_elements()})")
         return True
@@ -182,6 +235,5 @@ def cn(B_dataset, alpha):
         kr_logger.debug(f"MiniSat result: SAT. Therefore, {alpha} is not in Cn({B_dataset.get_elements()})")
         return False
     else:
-        print("MiniSat output was unexpected.")
-        kr_logger.debug("MiniSat output was unexpected.")
+        kr_logger.error(f"MiniSat output was unexpected: {last_line}")
         sys.exit(1)
