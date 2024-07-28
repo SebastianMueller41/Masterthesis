@@ -29,13 +29,13 @@ parser.add_argument('--pruner', type=str, default='NONE', choices=['UPPER', 'LOW
 # Expand group with mutually exclusive options
 expand_group = parser.add_argument_group('expand')
 expand_me_group = expand_group.add_mutually_exclusive_group(required=False)
-expand_me_group.add_argument('--expand-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for expand')
+expand_me_group.add_argument('-expand-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for expand')
 expand_me_group.add_argument('--expand-sw-size', type=int, default=1, help='Window size for the sliding-window technique during expand')
 
 # Shrink group with mutually exclusive options
 shrink_group = parser.add_argument_group('shrink')
 shrink_me_group = shrink_group.add_mutually_exclusive_group(required=False)
-shrink_me_group.add_argument('--shrink-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for shrink')
+shrink_me_group.add_argument('-shrink-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for shrink')
 shrink_me_group.add_argument('--shrink-sw-size', type=int, default=1, help='Window size for the sliding-window technique during shrink')
 
 parser.add_argument('-res-db', action='store_true', help='Save results to database')
@@ -81,8 +81,10 @@ if __name__ == "__main__":
             adjusted_shrink_sw_size = min(args.shrink_sw_size, dataset.size())
             adjusted_expand_sw_size = min(args.expand_sw_size, dataset.size())
             main_logger.warning(f"--shrink-sw-size/--expand-sw-size must be between 1 and the length of the dataset ({dataset.size()}). Adjusting shrink_sw_size to {adjusted_shrink_sw_size} and expand_sw_size to {adjusted_expand_sw_size}.")
-            args.shrink_sw_size = adjusted_shrink_sw_size
-            args.expand_sw_size = adjusted_expand_sw_size
+            sys.exit(1)
+            # For batch don´t adjust window size
+            #args.shrink_sw_size = adjusted_shrink_sw_size
+            #args.expand_sw_size = adjusted_expand_sw_size
 
         if args.alpha:
             main_logger.info(f"Alpha: {args.alpha}")
