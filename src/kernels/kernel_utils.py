@@ -1,6 +1,8 @@
 import logging
+import os
 import subprocess
 import sys
+import time
 from src.CNFconverter.parse import CNFConverter
 from src.structs.dataset import DataSet
 from src.structs.logger import setup_logging
@@ -164,15 +166,34 @@ def shrink_divide_and_conquer(B_dataset, alpha):
 
 def cn(B_dataset, alpha):
     temp_file = "tmp/temp_database.txt"
-    temp_minisat = "tmp/temp_mini.cnf"
+    
+    # Clone the dataset and add the new element
     B_copy = B_dataset.clone()
-    B_copy.add_element("!("+alpha+")")
+    B_copy.add_element("!(" + alpha + ")")
+    
+    # Ensure the tmp directory exists
+    os.makedirs(os.path.dirname(temp_file), exist_ok=True)
+    
+    # Write to the temporary file
     B_copy.to_file(temp_file)
+    
+    # Ensure file is written and closed properly
+    with open(temp_file, 'r') as file:
+        file.read()
+    
+    # Small delay to handle potential race condition
+    time.sleep(0.1)
+    
+    # Convert to CNF
     converter = CNFConverter(verbose=False)
     converter.convert_to_cnf(temp_file, temp_file)
-    print("WAIT!")
+    
+    # Run MiniSat
     result = subprocess.run(['minisat', temp_file], capture_output=True, text=True)
     output = result.stdout
+    
+    kr_logger.debug(f"MiniSat output: {output}")
+    
     last_line = output.splitlines()[-1]
     if "UNSAT" in last_line:
         kr_logger.debug(f"MiniSat result: UNSAT. Therefore, {alpha} is in Cn({B_dataset.get_elements()})")
