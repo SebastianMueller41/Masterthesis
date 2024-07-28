@@ -21,11 +21,12 @@ class BasePruner:
         self.initial_remainder_flag = True
         self.remainder = ShrinkExpand(window_size=1, divide_and_conquer=True,alpha=self.kernel_strategy.alpha)
         self.remainder_value = float('inf')
-        if dataset.ini_strategy_param == 3:
-            self.dataset_max = dataset.ini_max_incon_value
-        else:
-            self.dataset_max = self.tree.dataset.sum_values()
-        print(f"MAX INCON VALUE: {self.dataset_max}")
+        self.dataset_max = self.tree.dataset.sum_values()
+        # There are datasets where ini_max_incon_value < self.tree.dataset.sum_values()
+        #if dataset.ini_strategy_param == 3:
+        #    self.dataset_max = dataset.ini_max_incon_value
+        #else:
+        #    self.dataset_max = self.tree.dataset.sum_values()
 
     def calculate_subproblem(self, node):
         subproblem_value = node.dataset.get_elements().sum_values()
