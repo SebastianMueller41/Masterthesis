@@ -2,6 +2,7 @@ import csv
 import io
 import logging
 import sys
+from src.CNFconverter.parse import CNFConverter
 from src.database.database import log_execution_data
 from src.pruner.lower_max import LowerPruner
 from src.pruner.upper_min import UpperPruner
@@ -16,7 +17,7 @@ setup_logging()
 data_logger = logging.getLogger(__name__)
 
 class ResultCalculator:
-    def __init__(self, conn, kernelStrategy, search_strategy, tree, execution_time, resources, filename, output_file, value):
+    def __init__(self, conn, kernelStrategy, dataset, search_strategy, tree, execution_time, resources, filename, output_file, value):
         self.random_values = get_random_values()
         self.incon_values = get_incon_values()
         self.conn = conn
@@ -28,6 +29,7 @@ class ResultCalculator:
         self.value_param = value
         self.filename = filename
         self.output_file = output_file
+        self.dataset = dataset
         self.best_leaf_index = 0
         self.leaf_nodes = []
         self.result = {
@@ -130,6 +132,17 @@ class ResultCalculator:
         # Write the captured output to the output file
         with open(self.output_file, 'a') as file:
             file.write(output)
+        self.print_cnf_repair()
+
+    def print_cnf_repair(self):
+        file_repair = "Results/dataset_repair.cnf"
+        if self.leaf_nodes:
+            repaired_dataset = self.dataset.clone()
+            for element in self.result['optimal_HS'].get_elements():
+                repaired_dataset.remove_element(element)
+            repaired_dataset.to_file(file_repair)
+            cnf_converter = CNFConverter(verbose=False)
+            cnf_converter.convert_to_cnf(file_repair, file_repair)
 
     def print_baseline_results_to_file(self):
         self.write_to_csv()
