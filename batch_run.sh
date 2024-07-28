@@ -5,7 +5,7 @@ PYTHON_SCRIPT="main.py"
 
 # List of CSV files containing missing combinations
 MISSING_COMBINATION_FILES=(
-    'data/SRS/sig5_5_15.csv'
+    'data/SRS/sig5_15_25.csv'
     #'data/SRS/sig10_15_25.csv'
     #'data/SRS/sig5_15_25.csv'
     #'data/SRS/sig15_15_25.csv'

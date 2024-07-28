@@ -4,7 +4,7 @@
 PYTHON_SCRIPT="sat4im/src/sat4im.py"
 
 # CSV file containing filenames
-CSV_FILE="data/SRS/sig5_15_25_consistent.csv"
+CSV_FILE="data/SRS/sig5_15_25.csv"
 
 # Output results file
 RESULTS_FILE="tmp/results_con.txt"
@@ -29,7 +29,7 @@ while IFS=, read -r FILE_NAME _; do
             while IFS= read -r line; do
                 if [[ $line == o* ]]; then
                     num=$(echo "$line" | awk '{print $2}')
-                    if (( num < 1 )); then
+                    if (( num == 0 )); then
                         echo "$FILE_NAME: $line" >> "$RESULTS_FILE"
                     fi
                 fi
