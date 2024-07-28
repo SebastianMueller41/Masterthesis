@@ -163,12 +163,13 @@ def shrink_divide_and_conquer(B_dataset, alpha):
     return shrink(combined_result, alpha)
 
 def cn(B_dataset, alpha):
-    temp_file = "tmp/temp_dimacs.cnf"
+    temp_file = "tmp/temp_database.txt"
+    temp_dimacs = "tmp/temp_dimacs.cnf"
     B_copy = B_dataset.clone()
     B_copy.add_element("!("+alpha+")")
     B_copy.to_file(temp_file)
     converter = CNFConverter(verbose=False)
-    converter.convert_to_cnf(temp_file, temp_file)
+    converter.convert_to_cnf(temp_file, temp_dimacs)
     result = subprocess.run(['minisat', temp_file], capture_output=True, text=True)
     output = result.stdout
     last_line = output.splitlines()[-1]
