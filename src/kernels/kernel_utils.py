@@ -171,7 +171,7 @@ def cn(B_dataset, alpha):
     converter = CNFConverter(verbose=False)
     converter.convert_to_cnf(temp_file, temp_file)
     # Small delay to handle potential race condition
-    time.sleep(0.1)
+    time.sleep(1)
     result = subprocess.run(['minisat', temp_file], capture_output=True, text=True)
     output = result.stdout
     last_line = output.splitlines()[-1]
