@@ -23,7 +23,7 @@ class BestPruner(BasePruner):
     def update_boundary_with_leaf(self, leaf_node):
         prune_logger.info(f"Leaf path measure: {leaf_node.path_value}, Dataset sum: {self.dataset_max}")
         if not self.max_reached:
-            if leaf_node.path_value == self.dataset_max:
+            if leaf_node.path_value == dataset_max:
                 self.max_reached = True
                 self.tree.lowerBound = leaf_node.path_value
                 self.tree.upperBound = len(self.tree.get_hitting_set_for_leaf(leaf_node).get_elements())
@@ -50,6 +50,7 @@ class BestPruner(BasePruner):
                 prune_logger.warning(f"Hitting set cardinality: {hs_cardinality}, Best leaf cardinality: {self.tree.upperBound}")
                 return hs_cardinality >= self.tree.upperBound
         else:
+            return False
             prune_logger.debug(f"Prune?  {node.path_value < self.tree.lowerBound}, because path value {node.path_value} < lowerBound: {self.tree.lowerBound}, Max reached: {self.max_reached}")
             return node.path_value < self.tree.lowerBound
     

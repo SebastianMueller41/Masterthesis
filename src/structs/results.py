@@ -180,7 +180,7 @@ class ResultCalculator:
         num_kernels, num_branches = self.tree.count_kernels_and_branches()
         tree_depth = self.tree.tree_depth()
         # Write the leaf nodes with their BBVALUE, cardinality, and hitting set to a CSV file
-        with open(self.output_file, 'w', newline='') as csvfile:
+        with open(self.output_file, 'a', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow([self.execution_time, self.filename, self.value_param, num_kernels, num_branches, tree_depth, self.kernelStrategy.alpha, 'NONE'])
             for bbvalue, leaf in self.tree.leaf_nodes:
