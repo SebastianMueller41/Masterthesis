@@ -170,6 +170,7 @@ def cn(B_dataset, alpha):
     B_copy.to_file(temp_file)
     converter = CNFConverter(verbose=False)
     converter.convert_to_cnf(temp_file, temp_file)
+    print("WAIT!")
     result = subprocess.run(['minisat', temp_file], capture_output=True, text=True)
     output = result.stdout
     last_line = output.splitlines()[-1]
@@ -180,7 +181,6 @@ def cn(B_dataset, alpha):
         kr_logger.debug(f"MiniSat result: SAT. Therefore, {alpha} is not in Cn({B_dataset.get_elements()})")
         return False
     else:
-        print(f"B_copy: {B_copy.get_elements()}")
         print("MiniSat output was unexpected.")
         kr_logger.debug("MiniSat output was unexpected.")
         sys.exit(1)
