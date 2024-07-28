@@ -49,9 +49,10 @@ class BestPruner(BasePruner):
                 hs_cardinality = len(self.tree.get_hitting_set_for_leaf(node).get_elements())
                 prune_logger.warning(f"Hitting set cardinality: {hs_cardinality}, Best leaf cardinality: {self.tree.upperBound}")
                 return hs_cardinality >= self.tree.upperBound
+            
         else:
+            prune_logger.debug(f"Prune? {node.path_value < self.tree.lowerBound}, because path value {node.path_value} < lowerBound: {self.tree.lowerBound}, Max reached: {self.max_reached}")
             return False
-            prune_logger.debug(f"Prune?  {node.path_value < self.tree.lowerBound}, because path value {node.path_value} < lowerBound: {self.tree.lowerBound}, Max reached: {self.max_reached}")
             return node.path_value < self.tree.lowerBound
     
     # Check if sum values of dataset qualify for best approach. 

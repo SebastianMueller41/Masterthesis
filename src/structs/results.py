@@ -105,10 +105,6 @@ class ResultCalculator:
         print(f"\nMax values (Cardinality, Random, Inconsistency): \n- Value: {self.result['max_card']}, {self.result['max_random_value']}, {self.result['max_incon_value']}\n- Cardinality: {self.result['max_card']}, {self.result['card_max_random']}, {self.result['card_max_incon']}")
         print(f"\nMin values (Cardinality, Random, Inconsistency): \n- Value: {self.result['min_card']}, {self.result['min_rand_value']}, {self.result['min_incon_val']}\n- Cardinality: {self.result['min_card']}, {self.result['card_min_random']}, {self.result['card_min_incon']}")
 
-        print("\nLEAFS found in order: (Path_value, Cardinality, Hitting_set)")
-        for leaf in self.search_strategy.leaf_nodes: 
-            print(f"{leaf.path_value}, {len(self.tree.get_hitting_set_for_leaf(leaf).get_elements())},{self.tree.get_hitting_set_for_leaf(leaf).get_elements()}") 
-
         # Print the optimal solution found status
         print("\n*** OPTIMAL RESULT FOUND? ***")
         print(f"----------> {self.result['optimal_solution_found']} <----------")

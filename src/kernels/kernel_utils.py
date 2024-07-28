@@ -169,8 +169,8 @@ def cn(B_dataset, alpha):
     B_copy.add_element("!("+alpha+")")
     B_copy.to_file(temp_file)
     converter = CNFConverter(verbose=False)
-    converter.convert_to_cnf(temp_file, temp_minisat)
-    result = subprocess.run(['minisat', temp_minisat], capture_output=True, text=True)
+    converter.convert_to_cnf(temp_file, temp_file)
+    result = subprocess.run(['minisat', temp_file], capture_output=True, text=True)
     output = result.stdout
     last_line = output.splitlines()[-1]
     if "UNSAT" in last_line:
