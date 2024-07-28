@@ -182,7 +182,7 @@ def cn(B_dataset, alpha):
         file.read()
     
     # Small delay to handle potential race condition
-    time.sleep(0.1)
+    time.sleep(1)
     
     # Convert to CNF
     converter = CNFConverter(verbose=False)
