@@ -5,7 +5,7 @@ PYTHON_SCRIPT="main.py"
 
 # List of CSV files containing missing combinations
 MISSING_COMBINATION_FILES=(
-    'data/SRS/sig3_5_15.csv'
+    'data/SRS/sig5_5_15_v2.csv'
     #'data/SRS/sig10_15_25.csv'
     #'data/SRS/sig5_15_25.csv'
     #'data/SRS/sig15_15_25.csv'
@@ -13,20 +13,22 @@ MISSING_COMBINATION_FILES=(
     # Add more CSV file paths as needed
 )
 
-# Strategy parameters and corresponding pruner combinations
-STRATEGY_PARAMS=(2 3)
-PRUNER_OPTIONS=('LOWER' 'UPPER' 'BEST') # Correct length and values
+# Strategy parameters
+STRATEGY_PARAMS=(3)
+
+# Pruner options
+PRUNER_OPTIONS=('LOWER' 'BEST')
 
 # Search strategies
 SEARCH_STRATEGIES=('PBS')
 # SEARCH_STRATEGIES=('BFS' 'DFS' 'HYS' 'PBS')
 
 # Expand options
-EXPAND_OPTIONS=('')
+EXPAND_OPTIONS=('--expand-sw-size5' '--expand-sw-size 10')
 # EXPAND_OPTIONS=('--expand-div-conq' '--expand-sw-size 5' '')  # Add more if needed
 
 # Shrink options
-SHRINK_OPTIONS=('')
+SHRINK_OPTIONS=('-shrink-div-conq')
 # SHRINK_OPTIONS=('' '--shrink-sw-size 5' '--shrink-sw-size 10')  # Add more if needed
 
 # Parameter sets
@@ -52,21 +54,16 @@ for MISSING_COMBINATIONS_FILE in "${MISSING_COMBINATION_FILES[@]}"; do
         while IFS=, read -r FILE_NAME _; do
             if [ "$FILE_NAME" != "filename" ]; then
                 echo "Found file name: $FILE_NAME"
-                for i in "${!STRATEGY_PARAMS[@]}"; do
-                    strategy_param=${STRATEGY_PARAMS[$i]}
-                    pruner_option=${PRUNER_OPTIONS[$i]:-LOWER} # Default to LOWER if out of bounds
-                    echo "Using strategy_param: $strategy_param, pruner_option: $pruner_option"
-                    for search_strategy in "${SEARCH_STRATEGIES[@]}"; do
-                        echo "Using search_strategy: $search_strategy"
-                        for param_set in "${PARAMETER_SETS[@]}"; do
-                            echo "Using param_set: $param_set"
-                            for expand_option in "${EXPAND_OPTIONS[@]}"; do
-                                echo "Using expand_option: $expand_option"
-                                for shrink_option in "${SHRINK_OPTIONS[@]}"; do
-                                    echo "Using shrink_option: $shrink_option"
-                                    command="python3 $PYTHON_SCRIPT '$FILE_NAME' --vp $strategy_param --ss $search_strategy --pruner $pruner_option $expand_option $shrink_option $param_set"
-                                    echo "Command: $command"
-                                    execute_command "$command"
+                for strategy_param in "${STRATEGY_PARAMS[@]}"; do
+                    for pruner_option in "${PRUNER_OPTIONS[@]}"; do
+                        for search_strategy in "${SEARCH_STRATEGIES[@]}"; do
+                            for param_set in "${PARAMETER_SETS[@]}"; do
+                                for expand_option in "${EXPAND_OPTIONS[@]}"; do
+                                    for shrink_option in "${SHRINK_OPTIONS[@]}"; do
+                                        command="python3 $PYTHON_SCRIPT '$FILE_NAME' --vp $strategy_param --ss $search_strategy --pruner $pruner_option $expand_option $shrink_option $param_set"
+                                        echo "Command: $command"
+                                        execute_command "$command"
+                                    done
                                 done
                             done
                         done
