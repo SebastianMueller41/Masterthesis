@@ -1,5 +1,4 @@
 import logging
-import os
 import subprocess
 import sys
 import time
@@ -166,52 +165,15 @@ def shrink_divide_and_conquer(B_dataset, alpha):
 
 def cn(B_dataset, alpha):
     temp_file = "tmp/temp_database.txt"
-    
-    # Clone the dataset and add the new element
     B_copy = B_dataset.clone()
-    B_copy.add_element("!(" + alpha + ")")
-    
-    # Ensure the tmp directory exists
-    os.makedirs(os.path.dirname(temp_file), exist_ok=True)
-    
-    # Write to the temporary file
+    B_copy.add_element("!("+alpha+")")
     B_copy.to_file(temp_file)
-    
-    # Ensure file is written and closed properly
-    with open(temp_file, 'r') as file:
-        content = file.read()
-        kr_logger.debug(f"File content before CNF conversion: {content}")
-    
-    # Small delay to handle potential race condition
-    time.sleep(0.1)
-    
-    # Convert to CNF
     converter = CNFConverter(verbose=False)
     converter.convert_to_cnf(temp_file, temp_file)
-    
-    # Check the content after conversion
-    with open(temp_file, 'r') as file:
-        content = file.read()
-        kr_logger.debug(f"File content after CNF conversion: {content}")
-    
-    # Run MiniSat and capture output
-    try:
-        result = subprocess.run(['minisat', temp_file], capture_output=True, text=True, timeout=10)
-    except subprocess.TimeoutExpired:
-        kr_logger.error("MiniSat process timed out.")
-        sys.exit(1)
-    except Exception as e:
-        kr_logger.error(f"Error running MiniSat: {e}")
-        sys.exit(1)
-    
+    # Small delay to handle potential race condition
+    time.sleep(0.1)
+    result = subprocess.run(['minisat', temp_file], capture_output=True, text=True)
     output = result.stdout
-    kr_logger.debug(f"MiniSat raw output: {output}")
-    
-    # Handle unexpected empty output
-    if not output:
-        kr_logger.error("MiniSat returned an empty output.")
-        sys.exit(1)
-    
     last_line = output.splitlines()[-1]
     if "UNSAT" in last_line:
         kr_logger.debug(f"MiniSat result: UNSAT. Therefore, {alpha} is in Cn({B_dataset.get_elements()})")
@@ -220,5 +182,6 @@ def cn(B_dataset, alpha):
         kr_logger.debug(f"MiniSat result: SAT. Therefore, {alpha} is not in Cn({B_dataset.get_elements()})")
         return False
     else:
-        kr_logger.error("MiniSat output was unexpected.")
+        print("MiniSat output was unexpected.")
+        kr_logger.debug("MiniSat output was unexpected.")
         sys.exit(1)
