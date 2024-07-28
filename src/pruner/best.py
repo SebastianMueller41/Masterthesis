@@ -21,10 +21,9 @@ class BestPruner(BasePruner):
             return None         # If dataset does not qualify for approach, don´t execute
 
     def update_boundary_with_leaf(self, leaf_node):
-        dataset_sum = self.tree.dataset.sum_values()
-        prune_logger.info(f"Leaf path measure: {leaf_node.path_value}, Dataset sum: {dataset_sum}")
+        prune_logger.info(f"Leaf path measure: {leaf_node.path_value}, Dataset sum: {self.dataset_max}")
         if not self.max_reached:
-            if leaf_node.path_value == dataset_sum:
+            if leaf_node.path_value == self.dataset_max:
                 self.max_reached = True
                 self.tree.lowerBound = leaf_node.path_value
                 self.tree.upperBound = len(self.tree.get_hitting_set_for_leaf(leaf_node).get_elements())

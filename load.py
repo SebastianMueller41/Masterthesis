@@ -1,15 +1,13 @@
 import os
 import sys
 import random
-from src.database.database import create_connection, log_execution_data
-
+from src.database.database import create_ssh_tunnel_and_connect, log_execution_data
 import subprocess
 import tempfile
-import math
 
 
 def log_execution_data(sql):
-    conn = create_connection()
+    conn = create_ssh_tunnel_and_connect()
     if conn is not None:
         cursor = conn.cursor()
         try:
@@ -24,7 +22,7 @@ def log_execution_data(sql):
 
 def check_filename_exists(filename):
     """Check if the filename already exists in the DATA_SETS table."""
-    conn = create_connection()
+    conn = create_ssh_tunnel_and_connect()
     if conn is not None:
         cursor = conn.cursor()
         try:

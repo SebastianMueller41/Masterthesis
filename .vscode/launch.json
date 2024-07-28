@@ -15,7 +15,7 @@
                     "--ss",
                     "PBS",
                     "--pruner",
-                    "LOWER",
+                    "BEST",
                     "-path-db"
             ],
             "console": "integratedTerminal"

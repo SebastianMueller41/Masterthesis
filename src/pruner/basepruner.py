@@ -1,6 +1,7 @@
 # Set up logging for this module
 import logging
 from src.kernels.shrinkexpand import ShrinkExpand
+from src.structs import dataset
 from src.structs.logger import setup_logging
 
 setup_logging()
@@ -20,6 +21,11 @@ class BasePruner:
         self.initial_remainder_flag = True
         self.remainder = ShrinkExpand(window_size=1, divide_and_conquer=True,alpha=self.kernel_strategy.alpha)
         self.remainder_value = float('inf')
+        if dataset.ini_strategy_param == 3:
+            self.dataset_max = dataset.ini_max_incon_value
+        else:
+            self.dataset_max = self.tree.dataset.sum_values()
+        print(f"MAX INCON VALUE: {self.dataset_max}")
 
     def calculate_subproblem(self, node):
         subproblem_value = node.dataset.get_elements().sum_values()
@@ -54,17 +60,3 @@ class BasePruner:
             self.tree.upperBound = leaf_node.sub_value 
             prune_logger.debug(f"Updated upper boundary: {self.tree.upperBound}")
             print(f"Updated upperBound: {self.tree.upperBound}")
-
-    def should_prune(self, node):
-        prune_logger.debug(f"Prune CHECK: {node.sub_value <= self.tree.upperBound}, because {node.sub_value} <= {self.tree.upperBound}")
-        if self.tree.upperBound > self.tree.dataset.sum_values():
-            prune_logger.info(f"Not pruning, upperBound <= {self.tree.dataset.sum_values()}")
-        prune_logger.warning(f"Pruning {node.sub_value <= self.tree.upperBound}, because Subvale {node.sub_value} <= {self.tree.upperBound} upperBound")
-        pass
-    """
-    
-        def calculate_potential_bound(self, node):
-        subproblem_value = self.calculate_subproblem(node)
-        prune_logger.info(f"Node path value: {node.path_value}")
-        return node.path_value+subproblem_value
-        """

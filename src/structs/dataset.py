@@ -1,8 +1,8 @@
-import copy
 import sys
 from mysql.connector import Error
 
 import logging
+from load import call_sat_solver
 from src.structs.logger import setup_logging
 
 # Set up logging for this module
@@ -17,6 +17,7 @@ ini_elements = []
 ini_element_values = {}
 ini_random_values = {}
 ini_incon_values = {}
+ini_max_incon_value = 0
 
 class DataSet:
     """
@@ -247,6 +248,8 @@ def load_elements_from_db(conn, file_path):
     else:
         data_logger.error("Connection to MySQL database failed")
 
+    calculate_initial_inconsistency_bound(file_path)
+
 def apply_value_assignment_strategy():
     """
     Apply a value assignment strategy to each element in the dataset based on the specified parameter.
@@ -272,6 +275,13 @@ def apply_value_assignment_strategy():
     for element in ini_elements:
         if element not in ini_element_values:
             ini_element_values[element] = 0
+
+def calculate_initial_inconsistency_bound(file_path):
+    global ini_max_incon_value
+    ini_max_incon_value = call_sat_solver('sat4im/src/sat4im.py',file_path, option='c')
+
+def get_max_incon_value():
+    return ini_max_incon_value
 
 def get_incon_values():
     return ini_incon_values
