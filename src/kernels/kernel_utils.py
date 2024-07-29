@@ -166,7 +166,7 @@ def shrink_divide_and_conquer(B_dataset, alpha):
 
 def cn(B_dataset, alpha):
     temp_dir = "tmp"
-    temp_file = os.path.join(temp_dir, "temp_database.txt")
+    temp_file = os.path.join(temp_dir, "temp_dataset.txt")
     
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
@@ -176,14 +176,14 @@ def cn(B_dataset, alpha):
     B_copy.to_file(temp_file)
     
     converter = CNFConverter(verbose=False)
-    converter.convert_to_cnf(temp_file, temp_file)
+    converter.convert_to_cnf(temp_file)
     
     # Log the contents of the temp file
     with open(temp_file, 'r') as file:
         temp_file_contents = file.read()
     kr_logger.debug(f"Contents of {temp_file}:\n{temp_file_contents}")
     
-    result = subprocess.run(['minisat', temp_file], capture_output=True, text=True)
+    result = subprocess.run(['minisat', temp_file+'_result.cnf'], capture_output=True, text=True)
     output = result.stdout
     error_output = result.stderr
     
