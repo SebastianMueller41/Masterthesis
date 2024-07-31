@@ -1,5 +1,4 @@
 __pycache__
-tmp/
 pyenv/
 .DS_Store
 NOHUP
@@ -10,4 +9,3 @@ dataset.log
 nohup.out
 log/
 log/app.log
-Results/

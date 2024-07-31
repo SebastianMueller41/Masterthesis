@@ -1,0 +1,359 @@
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A0&&A1), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A0, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A0&&A1), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A0, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||A2)||(A1&&!A2)', '!A1', '!A2'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['A0', '(A2||(A1||A0))&&(A2||A2)', '!(A2&&A0)'], Edge: !A2, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A0&&A1), Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A0, Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A0&&A1), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A0, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||A2)||(A1&&!A2)', '!A1', '!A2'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['A0', '(A2||(A1||A0))&&(A2||A2)', '!(A2&&A0)'], Edge: !A2, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A0&&A1), Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A0, Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: None, Edge: (A2||(A1||A0))&&(A2||A2), Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['A0', '(A2||(A1||A0))&&(A2||A2)', '!(A2&&A0)'], Edge: !A2, Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A0&&A1), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A0, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||A2)||(A1&&!A2)', '!A1', '!A2'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['A0', '(A2||(A1||A0))&&(A2||A2)', '!(A2&&A0)'], Edge: !A2, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A0&&A1), Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A0, Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: None, Edge: (A2||(A1||A0))&&(A2||A2), Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['A0', '(A2||(A1||A0))&&(A2||A2)', '!(A2&&A0)'], Edge: !A2, Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: None, Edge: !(A0&&A1), Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['!(A0&&A1)', '!(A2||A2)&&(A0&&A0)', 'A1'], Edge: A0, Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: None, Edge: A1, Level: 4, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A0&&A1), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A0, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||A2)||(A1&&!A2)', '!A1', '!A2'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['A0', '(A2||(A1||A0))&&(A2||A2)', '!(A2&&A0)'], Edge: !A2, Level: 3, Bounds L / U: inf / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A0&&A1), Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A0, Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: None, Edge: (A2||(A1||A0))&&(A2||A2), Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['A0', '(A2||(A1||A0))&&(A2||A2)', '!(A2&&A0)'], Edge: !A2, Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: None, Edge: !(A0&&A1), Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: ['!(A0&&A1)', '!(A2||A2)&&(A0&&A0)', 'A1'], Edge: A0, Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: None, Edge: A1, Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: LEAF, Edge: A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: None, Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: !(A0&&A1), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A0, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||A2)||(A1&&!A2)', '!A1', '!A2'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['A0', '(A2||(A1||A0))&&(A2||A2)', '!(A2&&A0)'], Edge: !A2, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
+0Kernel: ['(A2||A2)||(A1&&!A2)', '!(A0&&A1)', '!(A2||A2)&&(A0&&A0)'], Edge: None, Level: 0, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 1, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: PRUNED, Edge: !(A0&&A1), Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: PRUNED, Edge: A0, Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: PRUNED, Edge: A1, Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: PRUNED, Edge: (A2||(A1||A0))&&(A2||A2), Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: PRUNED, Edge: !A2, Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: (A2||(A1||A0))&&(A2||A2), Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: PRUNED, Edge: !(A0&&A1), Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: PRUNED, Edge: A0, Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+4        Kernel: PRUNED, Edge: A1, Level: 4, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: LEAF, Edge: A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['(A2||A2)||(A1&&!A2)', '!(A2||A2)&&(A0&&A0)', '!A1'], Edge: !(A0&&A1), Level: 1, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: (A2||A2)||(A1&&!A2), Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: PRUNED, Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: PRUNED, Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: PRUNED, Edge: !A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: PRUNED, Edge: A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A2||A2)&&(A0&&A0)', '(A2||(A1||A0))&&(A2||A2)'], Edge: !A1, Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: PRUNED, Edge: !(A2||A2)&&(A0&&A0), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: PRUNED, Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+1  Kernel: ['!A1', 'A1'], Edge: !(A2||A2)&&(A0&&A0), Level: 1, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['!(A0&&A1)', 'A0', 'A1'], Edge: !A1, Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: PRUNED, Edge: !(A0&&A1), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: PRUNED, Edge: A0, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: PRUNED, Edge: A1, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+2    Kernel: ['(A2||(A1||A0))&&(A2||A2)', '!A2'], Edge: A1, Level: 2, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: PRUNED, Edge: (A2||(A1||A0))&&(A2||A2), Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+3      Kernel: PRUNED, Edge: !A2, Level: 3, Bounds L / U: 0 / 0, Path Value: 0.0, Sub Value: 0, Dataset Sum: 0
+
+
