@@ -5,7 +5,7 @@ PYTHON_SCRIPT="main.py"
 
 # List of CSV files containing missing combinations
 MISSING_COMBINATION_FILES=(
-    'sig10_vp1_LOWER.csv'
+    'sig3_vp0_NONE_DIVCONQ.csv'
     # Add more CSV file paths as needed
 )
 
@@ -13,7 +13,7 @@ MISSING_COMBINATION_FILES=(
 STRATEGY_PARAMS=(1)
 
 # Pruner options
-PRUNER_OPTIONS=('LOWER')
+PRUNER_OPTIONS=('NONE')
 
 # Search strategies
 SEARCH_STRATEGIES=('PBS')
@@ -24,9 +24,8 @@ EXPAND_OPTIONS=(
     ''
     '--expand-sw-size 5'
     '--expand-sw-size 10'
-    '--expand-div-conq 1'
-    '--expand-div-conq 5'
-    '--expand-div-conq 10'
+    '--expand-sw-size 1'
+    '--expand-div-conq'
 )
 
 # Shrink options
@@ -34,9 +33,8 @@ SHRINK_OPTIONS=(
     ''
     '--shrink-sw-size 5'
     '--shrink-sw-size 10'
-    '--shrink-div-conq 1'
+    '--shrink-sw-size 1'
     '--shrink-div-conq 5'
-    '--shrink-div-conq 10'
 )
 
 # Parameter sets
