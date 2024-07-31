@@ -5,34 +5,43 @@ PYTHON_SCRIPT="main.py"
 
 # List of CSV files containing missing combinations
 MISSING_COMBINATION_FILES=(
-    'data/SRS/sig5_15_25.csv'
-    #'data/SRS/sig5_15_25.csv'
-    #'data/SRS/sig15_15_25.csv'
-    #'data/SRS/sig15_25_50.csv'
+    'sig10_vp1_LOWER.csv'
     # Add more CSV file paths as needed
 )
 
 # Strategy parameters
-STRATEGY_PARAMS=(1 2)
+STRATEGY_PARAMS=(1)
 
 # Pruner options
-PRUNER_OPTIONS=('UPPER')
+PRUNER_OPTIONS=('LOWER')
 
 # Search strategies
 SEARCH_STRATEGIES=('PBS')
-# SEARCH_STRATEGIES=('BFS' 'DFS' 'HYS' 'PBS')
+#SEARCH_STRATEGIES=('BFS' 'DFS' 'HYS' 'PBS')
 
 # Expand options
-EXPAND_OPTIONS=('')
-# EXPAND_OPTIONS=('--expand-div-conq' '--expand-sw-size 5' '')  # Add more if needed
+EXPAND_OPTIONS=(
+    ''
+    '--expand-sw-size 5'
+    '--expand-sw-size 10'
+    '--expand-div-conq 1'
+    '--expand-div-conq 5'
+    '--expand-div-conq 10'
+)
 
 # Shrink options
-SHRINK_OPTIONS=('')
-# SHRINK_OPTIONS=('' '--shrink-sw-size 5' '--shrink-sw-size 10')  # Add more if needed
+SHRINK_OPTIONS=(
+    ''
+    '--shrink-sw-size 5'
+    '--shrink-sw-size 10'
+    '--shrink-div-conq 1'
+    '--shrink-div-conq 5'
+    '--shrink-div-conq 10'
+)
 
 # Parameter sets
 PARAMETER_SETS=(
-    "--alpha '(A0&&!A0)' -path-db -res-db"
+    "--alpha '(A0||A1)' -path-db -res-db"
     # Add more parameter sets if needed
 )
 

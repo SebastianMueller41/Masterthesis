@@ -7,16 +7,17 @@
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "args": [
-                "data/ARG/Small-result-b42.tgf.pl",
+                "data/SRS/Dataset_A/sig10_15_25/srs_0.txt",
                     "--vp",
-                    "2",
+                    "1",
                     "--alpha",
-                    "(arg_0&&!arg_0)",
+                    "(A0&&!A0)",
                     "--ss",
                     "PBS",
                     "--pruner",
-                    "NONE",
-                    "-path-db"
+                    "BEST",
+                    "-path-db",
+                    "-res-db"
             ],
             "console": "integratedTerminal"
         }

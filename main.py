@@ -29,13 +29,13 @@ parser.add_argument('--pruner', type=str, default='NONE', choices=['UPPER', 'LOW
 # Expand group with mutually exclusive options
 expand_group = parser.add_argument_group('expand')
 expand_me_group = expand_group.add_mutually_exclusive_group(required=False)
-expand_me_group.add_argument('-expand-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for expand')
+expand_me_group.add_argument('--expand-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for expand')
 expand_me_group.add_argument('--expand-sw-size', type=int, default=1, help='Window size for the sliding-window technique during expand')
 
 # Shrink group with mutually exclusive options
 shrink_group = parser.add_argument_group('shrink')
 shrink_me_group = shrink_group.add_mutually_exclusive_group(required=False)
-shrink_me_group.add_argument('-shrink-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for shrink')
+shrink_me_group.add_argument('--shrink-div-conq', action='store_true', default=False, help='Activate the divide and conquer technique for shrink')
 shrink_me_group.add_argument('--shrink-sw-size', type=int, default=1, help='Window size for the sliding-window technique during shrink')
 
 parser.add_argument('-res-db', action='store_true', help='Save results to database')
@@ -136,8 +136,8 @@ if __name__ == "__main__":
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
 
-        results = ResultCalculator(conn, kernelStrategy=kernel_strategy, dataset=dataset, search_strategy=search_strategy, tree=hitting_set_tree, execution_time=execution_time, resources=resources_used, value=args.vp, filename=args.filepath, output_file="Results/All_hitting_sets.csv")
-        #results.print_results_to_file()
+        results = ResultCalculator(conn, kernelStrategy=kernel_strategy, dataset=dataset, search_strategy=search_strategy, tree=hitting_set_tree, execution_time=execution_time, resources=resources_used, value=args.vp, output_file="Results/All_hitting_sets.csv")
+        results.print_results_to_file()
         results.print_results()
         #results.print_baseline_results_to_file()
 

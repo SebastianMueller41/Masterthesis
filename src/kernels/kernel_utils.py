@@ -178,16 +178,9 @@ def cn(B_dataset, alpha):
     converter = CNFConverter(verbose=False)
     converter.convert_to_cnf(temp_file)
     
-    # Log the contents of the temp file
-    with open(temp_file, 'r') as file:
-        temp_file_contents = file.read()
-    kr_logger.debug(f"Contents of {temp_file}:\n{temp_file_contents}")
-    
     result = subprocess.run(['minisat', temp_file+'_result.cnf'], capture_output=True, text=True)
     output = result.stdout
     error_output = result.stderr
-    
-    kr_logger.debug(f"MiniSat stdout:\n{output}")
     if error_output:
         kr_logger.debug(f"MiniSat stderr:\n{error_output}")
     

@@ -53,7 +53,7 @@ class BestPruner(BasePruner):
         else:
             prune_logger.debug(f"Prune? {node.path_value < self.tree.lowerBound}, because path value {node.path_value} < lowerBound: {self.tree.lowerBound}, Max reached: {self.max_reached}")
             return False
-            return node.path_value < self.tree.lowerBound
+            #return node.path_value < self.tree.lowerBound
     
     # Check if sum values of dataset qualify for best approach. 
     # True, if two subsets of the list with the same score and different cardinalities is possible

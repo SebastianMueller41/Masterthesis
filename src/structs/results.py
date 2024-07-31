@@ -7,7 +7,7 @@ from src.database.database import log_execution_data
 from src.pruner.lower_max import LowerPruner
 from src.pruner.upper_min import UpperPruner
 from src.pruner.best import BestPruner  # Assuming BestPruner is imported from this module
-from src.structs.dataset import get_incon_values, get_random_values
+from src.structs.dataset import get_incon_values, get_random_values, get_filename
 from src.structs.logger import setup_logging
 
 # Set up logging for this module
@@ -17,9 +17,10 @@ setup_logging()
 data_logger = logging.getLogger(__name__)
 
 class ResultCalculator:
-    def __init__(self, conn, kernelStrategy, dataset, search_strategy, tree, execution_time, resources, filename, output_file, value):
+    def __init__(self, conn, kernelStrategy, dataset, search_strategy, tree, execution_time, resources, output_file, value):
         self.random_values = get_random_values()
         self.incon_values = get_incon_values()
+        self.filename = get_filename()
         self.conn = conn
         self.kernelStrategy = kernelStrategy
         self.search_strategy = search_strategy
@@ -27,7 +28,6 @@ class ResultCalculator:
         self.execution_time = execution_time
         self.resources = resources
         self.value_param = value
-        self.filename = filename
         self.output_file = output_file
         self.dataset = dataset
         self.best_leaf_index = 0
@@ -82,7 +82,7 @@ class ResultCalculator:
         self.calculate()
 
         print(f"\n*********** EXECUTION AND PERFORMANCE PARAMETERS ***********")
-        print(f"\nExecution time: {self.execution_time} \nMemory Used: {self.resources} \nKernels: {self.result['num_kernels']}")
+        print(f"\nFile: {self.filename} \nExecution time: {self.execution_time} \nMemory Used: {self.resources} \nKernels: {self.result['num_kernels']}")
         print(f"\nBranches: {self.result['num_branches']} \nTree depth: {self.result['tree_depth']} \nPruned branches: {self.result['pruned_branches_count']}")
         
         print(f"Upper Bound: {self.tree.upperBound}, Lower Bound: {self.tree.lowerBound}")
@@ -220,7 +220,6 @@ class ResultCalculator:
         optimal_solution_found = False
 
         if isinstance(self.search_strategy.pruner, LowerPruner):
-            print(f"{self.value_param} == 1 and {self.result['result_value']} == {self.result['max_card']}")
             if self.value_param == 1 and self.result['result_value'] == self.result['max_card']:
                 optimal_solution_found = True
             elif self.value_param == 2 and self.result['opt_hs_value'] == self.result['max_random_value']:
@@ -255,7 +254,7 @@ class ResultCalculator:
         FROM EXE_RESULTS.OPTIMAL
         WHERE filename = %s
         """
-
+        cursor = None
         try:
             # Create a cursor object
             cursor = self.conn.cursor()

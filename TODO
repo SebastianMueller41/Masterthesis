@@ -1,6 +1,4 @@
-CHECK REMAINDER VALUE UPPER Boundary
-CHECK PRINTING OF Results
-CHECK GENERATION OF HITTING TREES WITHOUT PRUNING (DIFFERENT ALPHA)
-MARK DATASETS WITH NO HITTING SET AS TIMEOUTS IN SQL
 
-CHECK TREE OF srs_101
+
+EXPAND_OPTIONS=('' '--expand-div-conq' '--shrink-sw-size 5' '--shrink-sw-size 10') 
+SHRINK_OPTIONS=('' '--shrink-div-conq' '--shrink-sw-size 5' '--shrink-sw-size 10') 

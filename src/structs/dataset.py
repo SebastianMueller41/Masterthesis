@@ -18,6 +18,7 @@ ini_element_values = {}
 ini_random_values = {}
 ini_incon_values = {}
 ini_max_incon_value = 0
+ini_filename = ''
 
 class DataSet:
     """
@@ -191,6 +192,9 @@ class DataSet:
 
 def initialize_dataset(conn, input_file_path, strategy_param, db):
     global ini_strategy_param
+    global ini_filename
+
+    ini_filename = input_file_path
 
     ini_strategy_param = strategy_param
     if input_file_path:
@@ -291,3 +295,6 @@ def get_random_values():
 
 def get_strategy_param():
     return ini_strategy_param
+
+def get_filename():
+    return ini_filename
