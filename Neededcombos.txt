@@ -1,4 +1,0 @@
-strategy_param: 1 2 3
-pruner: LOWER UPPER BEST
---shrink-sw-size 5 --shrink-sw-size 10
--expand-div-conq

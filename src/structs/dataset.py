@@ -1,8 +1,13 @@
+"""
+This module provides the DataSet class for managing a collection of elements and various functions 
+for initializing and manipulating datasets, including loading from files or databases and applying 
+value assignment strategies.
+"""
+
 import sys
 from mysql.connector import Error
-
 import logging
-from load import call_sat_solver
+from src.database.load import call_sat_solver
 from src.structs.logger import setup_logging
 
 # Set up logging for this module
@@ -32,12 +37,10 @@ class DataSet:
     
     def __init__(self, elements=None):
         """
-        Initialize a new DataSet instance, optionally loading elements from a file and applying a value assignment strategy.
+        Initialize a new DataSet instance.
 
         Args:
-            input_file_path (str, optional): The path to a file from which to load elements.
             elements (list, optional): An initial list of elements to populate the dataset.
-            strategy (str, optional): The strategy identifier (e.g., "A1").
         """
         self.elements = elements if elements is not None else []
         self.strategy_param = ini_strategy_param
@@ -68,7 +71,7 @@ class DataSet:
             element (str): The element for which to retrieve the value.
 
         Returns:
-            The value assigned to the element, or None if the element is not found.
+            The value assigned to the element, or 0 if the element is not found.
         """
         return ini_element_values.get(element, 0)
 
@@ -88,22 +91,17 @@ class DataSet:
         Returns:
             int: The sum of the values of the elements.
         """
-        summe = 0
-        for element in self.elements:
-            summe += ini_element_values[element]
-        return summe
-
+        return sum(ini_element_values[element] for element in self.elements)
 
     def add_element(self, element):
-            """
-            Add an element to the dataset if it is not already present.
-            Optionally, add a value for the element.
+        """
+        Add an element to the dataset if it is not already present.
 
-            Args:
-                element (str): The element to add to the dataset.
-            """
-            if element not in self.elements:
-                self.elements.append(element)
+        Args:
+            element (str): The element to add to the dataset.
+        """
+        if element not in self.elements:
+            self.elements.append(element)
     
     def add_element_at_start(self, element):
         """
@@ -113,7 +111,7 @@ class DataSet:
             element (str): The element to add to the dataset.
         """
         if element not in self.elements:
-            self.elements.insert(0, element)  # Inserts element at the start of the list
+            self.elements.insert(0, element)
 
     def remove_element(self, element):
         """
@@ -132,13 +130,13 @@ class DataSet:
         Create a copy of the current DataSet instance.
 
         Returns:
-            DataSet: A new DataSet instance containing the same elements and their values.
+            DataSet: A new DataSet instance containing the same elements.
         """
         return DataSet(elements=list(self.elements))
 
     def split(self):
         """
-        Splits the dataset into two halves.
+        Split the dataset into two halves.
 
         Returns:
             tuple of DataSet: Two DataSet instances representing the split dataset.
@@ -159,12 +157,9 @@ class DataSet:
             DataSet: A new dataset containing unique elements from both datasets.
         """
         if other is None:
-            # Return a copy of the current dataset
             return DataSet(elements=list(set(self.get_elements())))
         
-        # Use a set to ensure uniqueness
         combined_elements_set = set(self.get_elements()) | set(other.get_elements())
-        # Return a new DataSet with the combined unique elements
         return DataSet(elements=list(combined_elements_set))
 
     def size(self):
@@ -191,12 +186,24 @@ class DataSet:
 # --------------------------------------------------------------------------------------- #
 
 def initialize_dataset(conn, input_file_path, strategy_param, db):
+    """
+    Initialize the dataset by loading elements from a file or database and applying a value assignment strategy.
+
+    Args:
+        conn (mysql.connector.connection.MySQLConnection): The MySQL database connection.
+        input_file_path (str): The path to the input file.
+        strategy_param (int): The strategy parameter for value assignment.
+        db (bool): Flag to indicate if loading from a database.
+
+    Returns:
+        DataSet: The initialized dataset.
+    """
     global ini_strategy_param
     global ini_filename
 
     ini_filename = input_file_path
-
     ini_strategy_param = strategy_param
+
     if input_file_path:
         if db:
             load_elements_from_db(conn, input_file_path)
@@ -209,20 +216,36 @@ def initialize_dataset(conn, input_file_path, strategy_param, db):
     return DataSet(ini_elements)
 
 def load_elements_from_file(file_path):
-        """
-        Load elements from the specified file path into the dataset.
-        Each line in the file is treated as a separate element.
-        """
-        global ini_elements
-        global ini_element_values
-        try:
-            with open(file_path, 'r') as file:
-                ini_elements = [line.strip() for line in file.readlines()]
-                data_logger.debug(f"Dataset loaded: {ini_elements}")
-        except FileNotFoundError:
-            sys.exit(f"File {file_path} not found.\nPlease check file path: {file_path}.")
-    
+    """
+    Load elements from the specified file path into the dataset.
+    Each line in the file is treated as a separate element.
+
+    Args:
+        file_path (str): The path to the input file.
+
+    Returns:
+        None
+    """
+    global ini_elements
+    global ini_element_values
+    try:
+        with open(file_path, 'r') as file:
+            ini_elements = [line.strip() for line in file.readlines()]
+            data_logger.debug(f"Dataset loaded: {ini_elements}")
+    except FileNotFoundError:
+        sys.exit(f"File {file_path} not found.\nPlease check file path: {file_path}.")
+
 def load_elements_from_db(conn, file_path):
+    """
+    Load elements from the database into the dataset.
+
+    Args:
+        conn (mysql.connector.connection.MySQLConnection): The MySQL database connection.
+        file_path (str): The filename used to query the database.
+
+    Returns:
+        None
+    """
     global ini_elements
     global ini_element_values
     global ini_random_values
@@ -235,15 +258,12 @@ def load_elements_from_db(conn, file_path):
             cursor.execute(query)
             rows = cursor.fetchall()
 
-            # Process the rows as needed, skipping empty lines
             for row in rows:
-                # Example processing: log non-empty rows
-                if row['randomvalue'] == "" or row['inconsistencyvalue'] == "" or row['filename'] == "" or row['line'] == "":
-                    continue
-                data_logger.debug(f"Random Value: {row['randomvalue']}, Inconsistency Value: {row['inconsistencyvalue']}, Filename: {row['filename']}, Formula: {row['line']}")
-                ini_elements.append(row['line'])
-                ini_random_values[row['line']] = row['randomvalue']
-                ini_incon_values[row['line']] = row['inconsistencyvalue']
+                if all(row.values()):
+                    data_logger.debug(f"Random Value: {row['randomvalue']}, Inconsistency Value: {row['inconsistencyvalue']}, Filename: {row['filename']}, Formula: {row['line']}")
+                    ini_elements.append(row['line'])
+                    ini_random_values[row['line']] = row['randomvalue']
+                    ini_incon_values[row['line']] = row['inconsistencyvalue']
 
         except Error as e:
             data_logger.error(f"Failed to load data from MySQL database: {e}")
@@ -258,8 +278,8 @@ def apply_value_assignment_strategy():
     """
     Apply a value assignment strategy to each element in the dataset based on the specified parameter.
 
-    Args:
-        strategy_param (int): The parameter defining the value assignment strategy.
+    Returns:
+        None
     """
     global ini_element_values
 
@@ -270,31 +290,69 @@ def apply_value_assignment_strategy():
         for element in ini_elements:
             ini_element_values[element] = 1
             data_logger.warning(f"Value: {ini_element_values[element]}")
-
-    if ini_strategy_param == 2:
+    elif ini_strategy_param == 2:
         ini_element_values = ini_random_values
-    if ini_strategy_param == 3:
+    elif ini_strategy_param == 3:
         ini_element_values = ini_incon_values
-    # Ensure all elements have values assigned
+    
     for element in ini_elements:
         if element not in ini_element_values:
             ini_element_values[element] = 0
 
 def calculate_initial_inconsistency_bound(file_path):
+    """
+    Calculate the initial inconsistency bound for the dataset using a SAT solver.
+
+    Args:
+        file_path (str): The path to the input file.
+
+    Returns:
+        None
+    """
     global ini_max_incon_value
-    ini_max_incon_value = call_sat_solver('sat4im/src/sat4im.py',file_path, option='c')
+    ini_max_incon_value = call_sat_solver('sat4im/src/sat4im.py', file_path, option='c')
 
 def get_max_incon_value():
+    """
+    Get the maximum inconsistency value for the dataset.
+
+    Returns:
+        int: The maximum inconsistency value.
+    """
     return ini_max_incon_value
 
 def get_incon_values():
+    """
+    Get the inconsistency values for the dataset elements.
+
+    Returns:
+        dict: A dictionary of elements and their inconsistency values.
+    """
     return ini_incon_values
 
 def get_random_values():
+    """
+    Get the random values for the dataset elements.
+
+    Returns:
+        dict: A dictionary of elements and their random values.
+    """
     return ini_random_values
 
 def get_strategy_param():
+    """
+    Get the strategy parameter used for value assignment.
+
+    Returns:
+        int: The strategy parameter.
+    """
     return ini_strategy_param
 
 def get_filename():
+    """
+    Get the filename of the dataset.
+
+    Returns:
+        str: The filename.
+    """
     return ini_filename

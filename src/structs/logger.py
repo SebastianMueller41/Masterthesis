@@ -1,3 +1,8 @@
+"""
+This module sets up the logging configuration for various components of the project.
+It includes functions to configure and control logging behavior.
+"""
+
 import logging
 import logging.config
 
@@ -89,13 +94,30 @@ LOGGING_CONFIG = {
 }
 
 def setup_logging(disable_logging=False):
+    """
+    Set up logging configuration.
+
+    Args:
+        disable_logging (bool): If True, disables all logging. Default is False.
+
+    Returns:
+        None
+    """
     if disable_logging:
         logging.disable(logging.CRITICAL)
     else:
         logging.config.dictConfig(LOGGING_CONFIG)
 
-
 def log_execution_data(res_db):
+    """
+    Placeholder function for logging execution data to the database.
+
+    Args:
+        res_db (bool): Placeholder argument indicating whether to log execution data.
+
+    Returns:
+        None
+    """
     """
     if res_db:
         if conn is not None:

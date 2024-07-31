@@ -1,6 +1,11 @@
+"""
+This module sets up logging and defines the DFS class, which extends the Search class.
+The DFS class implements the Depth-First Search algorithm for finding kernels in a dataset.
+"""
+
+import logging
 from src.search.search import Search
 from src.tree.hittingsettree import HSTreeNode
-import logging
 from src.structs.logger import setup_logging
 
 # Set up logging for this module
@@ -10,12 +15,30 @@ setup_logging()
 ss_logger = logging.getLogger(__name__)
 
 class DFS(Search):
+    """
+    A class for performing Depth-First Search (DFS) to find kernels in a dataset.
+    """
+
     def __init__(self, kernelStrategy, dataset, pruner):
+        """
+        Initialize the DFS with a kernel strategy, dataset, and pruner.
+
+        Args:
+            kernelStrategy (KernelStrategy): The strategy used to find kernels.
+            dataset (DataSet): The dataset to search.
+            pruner (Pruner): The pruner used to prune nodes in the search tree.
+        """
         super().__init__(kernelStrategy, dataset, pruner)
         ss_logger.debug("Initialized DFS")
         self.stack = []
 
     def find_kernels(self) -> None:
+        """
+        Find kernels in the dataset using DFS and populate the search tree.
+
+        Returns:
+            None
+        """
         ss_logger.debug("FINDING KERNEL")
         initial_node = self.create_initial_node(self.dataset)
         if initial_node is not None:
@@ -25,6 +48,15 @@ class DFS(Search):
         self.log_tree()
 
     def create_initial_node(self, dataset):
+        """
+        Create the initial node for the DFS search tree.
+
+        Args:
+            dataset (DataSet): The dataset to create the initial node from.
+
+        Returns:
+            HSTreeNode: The initial node of the search tree.
+        """
         result = self.kernelStrategy.find_kernel(dataset)
         if result is None:
             ss_logger.info("Initial kernel is None, no need to span the tree.")
@@ -35,6 +67,12 @@ class DFS(Search):
         return initial_node
 
     def dfs(self):
+        """
+        Perform the Depth-First Search (DFS) to explore the search tree and find kernels.
+
+        Returns:
+            None
+        """
         while self.stack:
             parent = self.stack.pop()
             if self.pruner.should_prune(parent):

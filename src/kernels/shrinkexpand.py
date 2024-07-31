@@ -1,3 +1,9 @@
+"""
+This module defines the ShrinkExpand strategy for finding kernels within a dataset.
+It utilizes various techniques such as sliding window and divide-and-conquer.
+Logging is set up for debugging purposes.
+"""
+
 import logging
 from .kernelstrategy import KernelStrategy
 from src.structs.dataset import DataSet
@@ -11,46 +17,82 @@ setup_logging()
 kr_logger = logging.getLogger(__name__)
 
 class ShrinkExpand(KernelStrategy):
-    def __init__(self, window_size=1, divide_and_conquer=False, alpha=None):  
-        # Default to the basic expand-shrink method with window_size = 1 and without Divide_and_conquer
+    """
+    A strategy class for shrinking and expanding datasets to find kernels.
+    """
+
+    def __init__(self, window_size=1, divide_and_conquer=False, alpha=None):
+        """
+        Initialize the ShrinkExpand strategy.
+
+        Args:
+            window_size (int): Window size for the expand and shrink phases. Default is 1.
+            divide_and_conquer (bool): Flag to use divide-and-conquer strategy. Default is False.
+            alpha (str, optional): The element to find the kernel for. Default is None.
+        """
         self.alpha = alpha
         self.window_size = window_size
-        self.div_conq = divide_and_conquer  # Set to FALSE PER DEFAULT UNTIL STRATEGY IMPLEMENTED
-    
+        self.div_conq = divide_and_conquer
+
     def find_kernel(self, dataset):
-        # Make a clone of the dataset to ensure the original is not altered
-        dataset_clone = dataset.clone()  # Ensure your dataset object supports cloning
+        """
+        Find the kernel of the dataset with respect to alpha.
+
+        Args:
+            dataset (DataSet): The dataset to find the kernel in.
+
+        Returns:
+            DataSet: The resulting kernel if found, else None.
+        """
+        dataset_clone = dataset.clone()  # Ensure the original dataset is not altered
         if cn(dataset_clone, self.alpha):  # Use the imported cn function
             remainder = self.find_remainder(dataset_clone)
-            kr_logger.warn(f"Found remainder {len(remainder.get_elements())} elements: {remainder.get_elements()}")
+            kr_logger.warning(f"Found remainder {len(remainder.get_elements())} elements: {remainder.get_elements()}")
             
             # Compute kernel as the difference between original dataset elements and remainder
             original_elements = set(dataset.get_elements())  # Use set for efficient lookup
             remainder_elements = set(remainder.get_elements())
             if original_elements == remainder_elements:
-                kr_logger.warn(f"No kernel found, remainder = dataset")
+                kr_logger.warning("No kernel found, remainder = dataset")
                 return None
             else:
                 kernel_elements = original_elements - remainder_elements
                 kernel = DataSet(elements=list(kernel_elements))  # Create a new dataset from the kernel elements
 
-                kr_logger.warn(f"Kernel found with {len(kernel.get_elements())} elements: {kernel.get_elements()}")
+                kr_logger.warning(f"Kernel found with {len(kernel.get_elements())} elements: {kernel.get_elements()}")
                 return kernel
         else:
-            kr_logger.warn(f"Dataset does not entail {self.alpha}, remainder = {dataset.get_elements()}, kernel = empty")
+            kr_logger.warning(f"Dataset does not entail {self.alpha}, remainder = {dataset.get_elements()}, kernel = empty")
             return None
 
     def find_remainder(self, dataset):
+        """
+        Find the remainder of the dataset after shrinking.
+
+        Args:
+            dataset (DataSet): The dataset to find the remainder in.
+
+        Returns:
+            DataSet: The remainder of the dataset.
+        """
         remainder_dataset, removed_elements = self.shrink(dataset)
         
-        kr_logger.info(f"Remainder After shrink: {remainder_dataset.get_elements()}")
+        kr_logger.info(f"Remainder after shrink: {remainder_dataset.get_elements()}")
         if self.div_conq:
             return self.divide_and_conquer(remainder_dataset, removed_elements)
         else:
             return self.expand(remainder_dataset, removed_elements)
 
     def shrink(self, B_dataset):
-        """ Shrinks the dataset using a sliding window until alpha is no longer a consequence. """
+        """
+        Shrink the dataset using a sliding window until alpha is no longer a consequence.
+
+        Args:
+            B_dataset (DataSet): The dataset to be shrunk.
+
+        Returns:
+            tuple: A tuple containing the shrunk dataset and the removed elements.
+        """
         removed_elements = DataSet()
         elements = B_dataset.get_elements()
 
@@ -60,20 +102,29 @@ class ShrinkExpand(KernelStrategy):
             B_prime = B_dataset.clone()
             for element in window_elements:
                 B_prime.remove_element(element)
-            kr_logger.debug(f"TODO: Checking and removing elements: {window_elements}, B_prime now with {len(B_prime.get_elements())} elements = {B_prime.get_elements()}")
+            kr_logger.debug(f"Checking and removing elements: {window_elements}, B_prime now with {len(B_prime.get_elements())} elements = {B_prime.get_elements()}")
             removed_elements.add_element(element)
             if cn(B_prime, self.alpha):
-                kr_logger.info(f"TODO: SHRINK: CN = TRUE for window elements {window_elements}, B_dataset = {B_prime.get_elements()}, removed elements: {removed_elements.get_elements()}")
+                kr_logger.info(f"SHRINK: CN = TRUE for window elements {window_elements}, B_dataset = {B_prime.get_elements()}, removed elements: {removed_elements.get_elements()}")
                 B_dataset = B_prime
             else:
                 kr_logger.info(f"FINISHED SHRINK, CN = FALSE for window elements {window_elements}, Remainder output with {len(B_prime.get_elements())} elements: {B_prime.get_elements()}, removed elements: {removed_elements.get_elements()}")
                 return B_prime, removed_elements
         
-        kr_logger.info(f"TODO_HERE: Remainder after sliding window shrink with {len(B_dataset.get_elements())} elements: {B_dataset.get_elements()}, B_prime = {B_prime.get_elements()}")
+        kr_logger.info(f"Remainder after sliding window shrink with {len(B_dataset.get_elements())} elements: {B_dataset.get_elements()}, B_prime = {B_prime.get_elements()}")
         return B_dataset, removed_elements
 
     def expand(self, B_dataset, removed_elements):
-        """ Expands the dataset to ensure maximality while alpha is not entailed. """
+        """
+        Expand the dataset to ensure maximality while alpha is not entailed.
+
+        Args:
+            B_dataset (DataSet): The dataset to be expanded.
+            removed_elements (DataSet): Elements that were removed and might be added back.
+
+        Returns:
+            DataSet: The expanded dataset.
+        """
         kr_logger.info(f"Starting expanding B {B_dataset.get_elements()} with removed elements: {removed_elements.get_elements()}")
         for element in removed_elements.get_elements():
             kr_logger.debug(f"EXPAND: Checking element {element} with B = {B_dataset.get_elements()}")
@@ -85,7 +136,16 @@ class ShrinkExpand(KernelStrategy):
         return B_dataset
 
     def divide_and_conquer(self, B_dataset, removed_elements):
-        """ Divide-and-conquer expansion method. """
+        """
+        Expand the dataset using a divide-and-conquer technique.
+
+        Args:
+            B_dataset (DataSet): The dataset to be expanded.
+            removed_elements (DataSet): Elements that were removed and might be added back.
+
+        Returns:
+            DataSet: The expanded dataset.
+        """
         if removed_elements.size() <= 1:
             return self.expand(B_dataset, removed_elements)
 
@@ -102,13 +162,13 @@ class ShrinkExpand(KernelStrategy):
         if not cn_left:
             B_dataset = left_expanded
             removed_elements = right_removed
-            kr_logger.info(f"D&C: Left halve added to B, call D&C again with right halve!")
+            kr_logger.info("D&C: Left half added to B, call D&C again with right half!")
             self.divide_and_conquer(B_dataset, removed_elements)
         else:
             if not cn_right:
                 B_dataset = right_expanded
                 removed_elements = left_removed
-                kr_logger.info(f"D&C: Right halve added to B, call D&C again with left halve!")
+                kr_logger.info("D&C: Right half added to B, call D&C again with left half!")
                 self.divide_and_conquer(B_dataset, removed_elements)
             else:
                 B_dataset = B_dataset.combine(self.divide_and_conquer(B_dataset, left_removed))

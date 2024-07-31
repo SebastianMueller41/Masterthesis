@@ -1,3 +1,8 @@
+"""
+This module sets up logging and defines the Search class, which implements a search strategy
+for finding kernels in a dataset. The Search class supports different pruning strategies.
+"""
+
 import logging
 from src.pruner.basepruner import BasePruner
 from src.pruner.best import BestPruner
@@ -16,7 +21,19 @@ setup_logging()
 ss_logger = logging.getLogger(__name__)
 
 class Search(Strategy):
-    def __init__(self, kernelStrategy: KernelStrategy, dataset: DataSet, pruner_type):
+    """
+    A class for performing search to find kernels in a dataset using different pruning strategies.
+    """
+
+    def __init__(self, kernelStrategy: KernelStrategy, dataset: DataSet, pruner_type: str):
+        """
+        Initialize the Search with a kernel strategy, dataset, and pruner type.
+
+        Args:
+            kernelStrategy (KernelStrategy): The strategy used to find kernels.
+            dataset (DataSet): The dataset to search.
+            pruner_type (str): The type of pruner to use ('UPPER', 'LOWER', 'BEST', or default to 'BASE').
+        """
         self.kernelStrategy = kernelStrategy
         self.dataset = dataset
         self.tree = HittingSetTree(dataset=dataset)
@@ -38,12 +55,33 @@ class Search(Strategy):
         ss_logger.info("PRUNER INITIALIZED")
 
     def find_kernels(self) -> None:
+        """
+        Find kernels in the dataset using the specified strategy.
+
+        Returns:
+            None
+        """
         self.strategy.find_kernels()
 
     def search(self) -> None:
+        """
+        Perform the search to find kernels.
+
+        Returns:
+            None
+        """
         self.strategy.search()
 
     def compute_node_kernel(self, node):
+        """
+        Compute the kernel for a given node in the search tree.
+
+        Args:
+            node (HSTreeNode): The node to compute the kernel for.
+
+        Returns:
+            None
+        """
         result = self.kernelStrategy.find_kernel(node.dataset)
         if result is not None:
             node.set_kernel(result.get_elements())
@@ -53,5 +91,11 @@ class Search(Strategy):
             self.tree.add_leaf_node(node)
 
     def log_tree(self):
+        """
+        Log the current state of the search tree.
+
+        Returns:
+            None
+        """
         self.tree.print_tree_to_file()
         self.tree.print_newline()

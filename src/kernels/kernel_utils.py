@@ -1,8 +1,13 @@
+"""
+This module contains functions for expanding and shrinking datasets to find kernels,
+utilizing various techniques such as sliding window and divide-and-conquer. Logging
+is set up for debugging purposes.
+"""
+
 import logging
 import os
 import subprocess
 import sys
-import time
 from src.CNFconverter.parse import CNFConverter
 from src.structs.dataset import DataSet
 from src.structs.logger import setup_logging
@@ -14,6 +19,17 @@ setup_logging()
 kr_logger = logging.getLogger(__name__)
 
 def expand(B_dataset, alpha, window_size=1):
+    """
+    Expand the dataset using a sliding window technique.
+
+    Args:
+        B_dataset (DataSet): The dataset to be expanded.
+        alpha (str): The element to find the kernel for.
+        window_size (int): The size of the sliding window. Default is 1.
+
+    Returns:
+        DataSet: The expanded dataset.
+    """
     elements = B_dataset.get_elements()
     kr_logger.info(f"{len(elements)} ELEMENTS: {elements}")
     B_prime = DataSet()
@@ -33,7 +49,17 @@ def expand(B_dataset, alpha, window_size=1):
     return B_prime
 
 def expand_divide_and_conquer(B_dataset, alpha, removed_elements=None):
-    """ Divide-and-conquer expansion method. """
+    """
+    Expand the dataset using a divide-and-conquer technique.
+
+    Args:
+        B_dataset (DataSet): The dataset to be expanded.
+        alpha (str): The element to find the kernel for.
+        removed_elements (DataSet, optional): Elements to be considered for removal. Default is None.
+
+    Returns:
+        DataSet: The expanded dataset.
+    """
     if removed_elements is None:
         removed_elements = B_dataset.clone()  # Initially, consider all elements for removal
 
@@ -60,33 +86,18 @@ def expand_divide_and_conquer(B_dataset, alpha, removed_elements=None):
         combined_result = expand_divide_and_conquer(B_dataset, alpha, left_removed)
         combined_result = combined_result.combine(expand_divide_and_conquer(B_dataset, alpha, right_removed))
         return combined_result
-    
-def expand_divide_and_conquer(B_dataset, alpha):
-    """Divide-and-conquer expansion method"""
-    if B_dataset.size() <= 1:
-        return B_dataset
-    else:
-        kr_logger.info(f"DC_EXPAND: Splitting B: {B_dataset.get_elements()}")
-        B1, B2 = B_dataset.split()
-        cn_B1 = cn(B1, alpha)
-        cn_B2 = cn(B2, alpha)
-
-        kr_logger.info(f"DC_EXP: Left half {B1.get_elements()},cn(alpha):{cn_B1} ")
-        kr_logger.info(f"DC_EXP: Right half {B2.get_elements()},cn(alpha):{cn_B2}")
-
-        if cn_B1:
-            kr_logger.info(f"DC_EXP CALLING DC WITH LEFT HALVE: {B1.get_elements()}")
-            return expand_divide_and_conquer(B1,alpha)
-        else:
-            if cn_B2:
-                kr_logger.info(f"DC_EXP CALLING DC WITH RIGHT HALVE: {B2.get_elements()}")
-                return expand_divide_and_conquer(B2, alpha)
-            else:
-                B_dataset = B1.combine(B2)
-                kr_logger.info(f"B1 and B2 does not entail alpha, returning B: {B_dataset.get_elements()}")
-                return expand(B_dataset, alpha)
 
 def shrink(B_dataset, alpha):
+    """
+    Shrink the dataset to find the kernel.
+
+    Args:
+        B_dataset (DataSet): The dataset to be shrunk.
+        alpha (str): The element to find the kernel for.
+
+    Returns:
+        DataSet: The shrunk dataset.
+    """
     i = 0
     max_iterations = len(B_dataset.get_elements()) + 5
     current_iteration = 0
@@ -112,7 +123,17 @@ def shrink(B_dataset, alpha):
     return B_dataset
 
 def shrink_sliding_window(B_dataset, alpha, window_size):
-    """ Shrinks the dataset using a sliding window until alpha is no longer a consequence. """
+    """
+    Shrink the dataset using a sliding window technique.
+
+    Args:
+        B_dataset (DataSet): The dataset to be shrunk.
+        alpha (str): The element to find the kernel for.
+        window_size (int): The size of the sliding window.
+
+    Returns:
+        DataSet: The shrunk dataset.
+    """
     removed_elements = DataSet()
     elements = B_dataset.get_elements()
     start = 0
@@ -139,7 +160,16 @@ def shrink_sliding_window(B_dataset, alpha, window_size):
     return shrink(B_dataset, alpha)
 
 def shrink_divide_and_conquer(B_dataset, alpha):
-    """ Divide-and-conquer shrink method. """
+    """
+    Shrink the dataset using a divide-and-conquer technique.
+
+    Args:
+        B_dataset (DataSet): The dataset to be shrunk.
+        alpha (str): The element to find the kernel for.
+
+    Returns:
+        DataSet: The shrunk dataset.
+    """
     if B_dataset.size() <= 1:
         kr_logger.info("DC: Dataset size <= 1")
         return B_dataset
@@ -165,6 +195,16 @@ def shrink_divide_and_conquer(B_dataset, alpha):
     return shrink(combined_result, alpha)
 
 def cn(B_dataset, alpha):
+    """
+    Check if alpha is a consequence of the dataset using a SAT solver.
+
+    Args:
+        B_dataset (DataSet): The dataset to check.
+        alpha (str): The element to check for entailment.
+
+    Returns:
+        bool: True if alpha is a consequence of the dataset, False otherwise.
+    """
     temp_dir = "tmp"
     temp_file = os.path.join(temp_dir, "temp_dataset.txt")
     

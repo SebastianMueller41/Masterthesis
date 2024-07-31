@@ -1,3 +1,8 @@
+"""
+This module sets up and executes the kernelization process using various search strategies and pruning techniques.
+It includes options for logging, database interaction, and result calculation.
+"""
+
 import argparse
 import sys
 import time
@@ -8,11 +13,9 @@ from src.search.hybrid import HYS
 from src.search.bfs import BFS
 from src.search.dfs import DFS
 from src.search.priority import PBS
-from src.search.search import Search
-from src.search.strategy import Strategy
 from src.solver.kernelsolver import KernelSolver
 from src.kernels.expandshrink import ExpandShrink
-from src.structs.dataset import DataSet, initialize_dataset
+from src.structs.dataset import initialize_dataset
 from src.structs.results import ResultCalculator
 from src.database.database import create_ssh_tunnel_and_connect, log_execution_data
 from src.structs.logger import setup_logging
@@ -70,7 +73,6 @@ if __name__ == "__main__":
         conn = False
 
     try:
-       
         dataset = initialize_dataset(conn, input_file_path=args.filepath, strategy_param=args.vp, db=args.path_db)
         start_time = time.time()
         if dataset.size() == 0:
@@ -82,9 +84,6 @@ if __name__ == "__main__":
             adjusted_expand_sw_size = min(args.expand_sw_size, dataset.size())
             main_logger.warning(f"--shrink-sw-size/--expand-sw-size must be between 1 and the length of the dataset ({dataset.size()}). Adjusting shrink_sw_size to {adjusted_shrink_sw_size} and expand_sw_size to {adjusted_expand_sw_size}.")
             sys.exit(1)
-            # For batch don´t adjust window size
-            #args.shrink_sw_size = adjusted_shrink_sw_size
-            #args.expand_sw_size = adjusted_expand_sw_size
 
         if args.alpha:
             main_logger.info(f"Alpha: {args.alpha}")
@@ -93,28 +92,13 @@ if __name__ == "__main__":
         kernel_strategy = ExpandShrink(args.expand_sw_size, args.shrink_sw_size, args.shrink_div_conq, args.expand_div_conq, args.alpha)
 
         if dataset.sum_values() == 0 and args.vp == 3:
-                print(f"DataSet Inconsistency Weights == {dataset.sum_values()}")
-                main_logger.error(f"DataSet Inconsistency Values == {dataset.sum_values()}")
-                sys.exit(1)
+            print(f"DataSet Inconsistency Weights == {dataset.sum_values()}")
+            main_logger.error(f"DataSet Inconsistency Values == {dataset.sum_values()}")
+            sys.exit(1)
 
         # Initialize the HittingSetTree
         hitting_set_tree = HittingSetTree(dataset=dataset)
         main_logger.debug("Tree initialized.")
-        """
-        best_index = 0 # Index to peak at hitting_set_collection
-        # Initialize the appropriate pruner based on user input
-        if args.pruner == 'UPPER':
-            pruner = UpperPruner(kernel_strategy, hitting_set_tree, args.alpha)
-        elif args.pruner == 'LOWER':
-            best_index = -1 # To get leaf with least priority 
-            pruner = LowerPruner(kernel_strategy, hitting_set_tree, args.alpha)
-        elif args.pruner == 'BEST':
-            pruner = BestPruner(kernel_strategy, hitting_set_tree, args.alpha)
-        else:  # Default to BasePruner for no pruning
-            pruner = BasePruner(kernel_strategy, hitting_set_tree, args.alpha)
-        
-        main_logger.debug("Pruner initialized.")
-        """
 
         # Initialize the appropriate search strategy
         if args.ss == 'BFS':
@@ -139,7 +123,6 @@ if __name__ == "__main__":
         results = ResultCalculator(conn, kernelStrategy=kernel_strategy, dataset=dataset, search_strategy=search_strategy, tree=hitting_set_tree, execution_time=execution_time, resources=resources_used, value=args.vp, output_file="Results/All_hitting_sets.csv")
         results.print_results_to_file()
         results.print_results()
-        #results.print_baseline_results_to_file()
 
         if args.res_db:
             results.log_results()
@@ -149,7 +132,7 @@ if __name__ == "__main__":
         execution_time = time.time() - start_time
         resources_used = f"{resource.getrusage(resource.RUSAGE_SELF).ru_maxrss} KB"
         if args.res_db and conn is not None:
-            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.vp, None, None, None, None, args.filepath, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner, None,None,None)
+            log_execution_data(conn, execution_time, resources_used, dataset.get_elements(), args.vp, None, None, None, None, args.filepath, None, args.shrink_div_conq, args.expand_sw_size, args.alpha, args.ss, None, args.expand_div_conq, args.shrink_sw_size, None, args.pruner, None, None, None)
             conn.close()
             print("Program timed out.")
         sys.exit(1)

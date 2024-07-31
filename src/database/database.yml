@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.2.0
+    # volumes:
+    #   - ~/volumes/thesis/mysql/:/var/lib/mysql/
+    environment:
+      - MYSQL_DATABASE=thesis
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 127.0.0.1:3306:3306

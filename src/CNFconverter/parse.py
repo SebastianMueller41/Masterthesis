@@ -6,7 +6,6 @@ arguments, along with an optional flag to control console output verbosity.
 
 import sys
 import os
-import tempfile
 
 # Add the project root directory to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -14,6 +13,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 from src.CNFconverter.core import KnowledgeBase
 
 class CNFConverter:
+    """
+    A class to convert a knowledge base into Conjunctive Normal Form (CNF) and save it to a file.
+    """
+    
     def __init__(self, verbose=False):
         """
         Initialize the CNFConverter with an option to enable or disable verbose output.
@@ -44,6 +47,9 @@ class CNFConverter:
             input_filename (str): The path to the input file containing the knowledge base.
             output_filename (str, optional): The path to the output file for the CNF result. If not provided,
                                              a default name is generated based on the input filename.
+
+        Output:
+            Writes the CNF representation to the specified output file.
         """
         if output_filename is None:
             output_filename = self.generate_output_filename(input_filename)
@@ -51,7 +57,7 @@ class CNFConverter:
         kb = KnowledgeBase(open(input_filename).read().split("\n"))
         clauses, lits = kb.to_group_cnf()
 
-        n_vars = next(kb.var_counter)-1
+        n_vars = next(kb.var_counter) - 1
         n_clauses = len(clauses) + len(lits)
 
         if self.verbose:

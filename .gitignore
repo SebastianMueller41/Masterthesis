@@ -1,7 +1,6 @@
 __pycache__
 tmp/
 pyenv/
-src/database
 .DS_Store
 NOHUP
 dataset.log

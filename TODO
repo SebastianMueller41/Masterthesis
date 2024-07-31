@@ -1,4 +1,0 @@
-
-
-EXPAND_OPTIONS=('' '--expand-div-conq' '--shrink-sw-size 5' '--shrink-sw-size 10') 
-SHRINK_OPTIONS=('' '--shrink-div-conq' '--shrink-sw-size 5' '--shrink-sw-size 10') 

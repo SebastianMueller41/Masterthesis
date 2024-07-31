@@ -1,3 +1,8 @@
+"""
+This module sets up logging and defines the Brancher class.
+The Brancher class is used to expand child nodes in a tree structure during a search process.
+"""
+
 import logging
 from sortedcontainers import SortedList
 from src.structs.logger import setup_logging
@@ -10,10 +15,36 @@ setup_logging()
 tree_logger = logging.getLogger(__name__)
 
 class Brancher(BaseBrancher):
+    """
+    A class to expand child nodes in a tree structure during a search process.
+
+    Attributes:
+        kernelStrategy (KernelStrategy): The strategy used to find kernels.
+        dataset (DataSet): The dataset used in the search.
+        tree (HittingSetTree): The tree structure used in the search.
+    """
+
     def __init__(self, kernelStrategy, dataset, tree):
+        """
+        Initialize the Brancher with a kernel strategy, dataset, and tree.
+
+        Args:
+            kernelStrategy (KernelStrategy): The strategy used to find kernels.
+            dataset (DataSet): The dataset used in the search.
+            tree (HittingSetTree): The tree structure used in the search.
+        """
         super().__init__(kernelStrategy, dataset, tree)
 
     def expand_children(self, current_node):
+        """
+        Expand child nodes from the current node.
+
+        Args:
+            current_node (HSTreeNode): The current node to expand.
+
+        Returns:
+            list: A list of child nodes.
+        """
         if current_node.get_kernel() is None or current_node.get_kernel() == "LEAF":
             return []
 

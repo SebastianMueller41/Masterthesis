@@ -1,3 +1,8 @@
+"""
+This module defines the ExpandShrink strategy for finding kernels within a dataset
+using various expansion and shrinking techniques. Logging is set up for debugging purposes.
+"""
+
 import logging
 from .kernelstrategy import KernelStrategy
 from src.kernels.kernel_utils import expand, expand_divide_and_conquer, shrink, shrink_divide_and_conquer, shrink_sliding_window, cn
@@ -10,15 +15,20 @@ setup_logging()
 kr_logger = logging.getLogger(__name__)
 
 class ExpandShrink(KernelStrategy):
+    """
+    A strategy class for expanding and shrinking datasets to find kernels.
+    """
+
     def __init__(self, sw_expand=1, sw_shrink=1, div_conq_shrink=False, div_conq_expand=False, alpha=None):
         """
         Initialize the ExpandShrink strategy.
 
-        Parameters:
-        sw_expand (int): Window size for the expand phase.
-        sw_shrink (int): Window size for the shrink phase.
-        div_conq_shrink (bool): Flag to use divide-and-conquer in the shrink phase.
-        div_conq_expand (bool): Flag to use divide-and-conquer in the expand phase.
+        Args:
+            sw_expand (int): Window size for the expand phase. Default is 1.
+            sw_shrink (int): Window size for the shrink phase. Default is 1.
+            div_conq_shrink (bool): Flag to use divide-and-conquer in the shrink phase. Default is False.
+            div_conq_expand (bool): Flag to use divide-and-conquer in the expand phase. Default is False.
+            alpha (str, optional): The element to find the kernel for. Default is None.
         """
         self.div_conq_shrink = div_conq_shrink
         self.div_conq_expand = div_conq_expand
@@ -32,14 +42,13 @@ class ExpandShrink(KernelStrategy):
         """
         Find the kernel of the dataset with respect to alpha.
 
-        Parameters:
-        dataset (DataSet): The dataset to find the kernel in.
-        alpha (str): The element to find the kernel for.
-
+        Args:
+            dataset (DataSet): The dataset to find the kernel in.
+        
         Returns:
-        DataSet: The resulting kernel if found, else None.
+            DataSet: The resulting kernel if found, else None.
         """
-        self.counter +=1
+        self.counter += 1
         if cn(dataset, self.alpha):
             kr_logger.debug(f"Finding kernel for dataset with {len(dataset.get_elements_with_values())} elements: {dataset.get_elements_with_values()}")
             # Expand phase
